@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+    <script src="js/text2label.js"></script>
+    <script>
+
+      function display_cites(answer,group) {
+        var sentNo = parseInt(answer.match(/(\d+)$/)[0]);
+        var itemNo = answer.replace(/\-(\d+)$/, (""));
+
+        var minus3 = sentNo-3;
+        var minus2 = sentNo-2;
+        var minus1 = sentNo-1;
+        var plus1 = sentNo+1;
+        var plus2 = sentNo+2;
+        var plus3 = sentNo+3;
+
+        if (SentTexts[itemNo+"-"+minus3]) {
+          var last3 = SentTexts[itemNo+"-"+minus3] + " ";
+        } else {
+          var last3 = "";
+        }
+        if (SentTexts[itemNo+"-"+minus2]) {
+          var last2 = SentTexts[itemNo+"-"+minus2] + " ";
+        } else {
+          var last2 = "";
+        }
+        if (SentTexts[itemNo+"-"+minus1]) {
+          var last1 = SentTexts[itemNo+"-"+minus1] + " ";
+        } else {
+          var last1 = "";
+        }
+
+        var thisSent = SentTexts[itemNo+"-"+sentNo] + " ";
+        //console.log(SentTexts[itemNo+plus1],itemNo,plus1);
+
+        if (SentTexts[itemNo+plus1]) {
+          var next1 = SentTexts[itemNo+"-"+plus1] + " ";
+        } else {
+          var next1 = "";
+        }
+        if (SentTexts[itemNo+"-"+plus2]) {
+          var next2 = SentTexts[itemNo+"-"+plus2] + " ";
+        } else {
+          var next2 = "";
+        }
+        if (SentTexts[itemNo+"-"+plus3]) {
+          var next3 = SentTexts[itemNo+"-"+plus3] + " ";
+        } else {
+          var next3 = "";
+        }
+
+        $('#answer').html( $('#answer').html() + "<hr style='height:1px;border:none;color:#333;background-color:#333;margin-bottom:35px;'><blockquote style='border-left; solid 4px #eee;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p>See: <a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file</a></p>Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>");
+
+        return true
+
+      }
+
+      function test_understanding(string) {
+      // This function makes use of text2lable to find the best answer
+        answers = getNClosest(10, vectorize(string))
+        // getNClosestAnswer allows for the return of multiple labels
+        // here we've limited it to one. Additionally, we're filtering by
+        // QLabels to apply consistent labels. To allow for multiple instances
+        // of the same labels we append a #n to the label. This removes that.
+
+        var group = document.getElementById('group').value
+
+        $('#answer').html( "<h3>Top 10 Matches</h3>");
+        display_cites(answers[0][0],group);
+        display_cites(answers[1][0],group);
+        display_cites(answers[2][0],group);
+        display_cites(answers[3][0],group);
+        display_cites(answers[4][0],group);
+        display_cites(answers[5][0],group);
+        display_cites(answers[6][0],group);
+        display_cites(answers[7][0],group);
+        display_cites(answers[8][0],group);
+        display_cites(answers[9][0],group);
+      }
+
+    </script>
+  </head>
+  <body><form>
+    <div id="msg" style="position:absolute;top:0;z-index:100;width:100%;margin:0;">
+      <div style="margin:15px auto 0 auto;max-width:900px;text-align:center;background:#fff;padding:0px 15px 0 15px;">
+      <p><img src="images/patience.gif" style="width:100%"/></p>
+      <b> This may take some time. I am currently:</b>
+      <p id="output">Loading 25,000 word vectors...</p>
+      </div>
+    </div>
+    <div id="content" style="display:none;margin:50px auto 0 auto;max-width:900px;">
+      <h1 style="text-align:center;">Find My Cite</h1>
+      <hr style="height:1px;border:none;color:#333;background-color:#333;">
+      <h3>API Key</h3>
+      <p>
+        <a href="https://www.zotero.org/settings/keys/new" target="_blank">generate new key</a>
+        API-Key: <input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
+      </p>
+      <h3>Group ID</h3>
+      <p>
+          <a href="https://www.zotero.org/groups" target="_blank">Your groups</a> Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
+      </p>
+      <h3>Citation Style</h3>
+      <p>
+        <select id="bib" style="padding:5px;width:300px;font-size:15px;">
+          <option value="https://colarusso.github.io/findmycite/cls/bluebook-law-review.csl">bluebook-law-review</option>
+          <option value="chicago-note-bibliography">chicago-note-bibliography</option>
+        </select>
+      </p>
+      <p style="margin-bottom:25px;">
+        <input type="button" value='Build Library' style="width:100%;background:#eee;padding:5px;" onclick="zotero(document.getElementById('group').value,0,document.getElementById('bib').value,document.getElementById('api_key').value)"/>
+      </p>
+
+      <div id="search" style="display:none;">
+      <a name="search"><hr style="height:1px;border:none;color:#333;background-color:#333;"></a>
+      <h2>Year Search</h2>
+        <p><input id="q" style="width:100%;border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;" onkeypress="if (event.keyCode==13){test_understanding(this.value)}"/></p>
+        <p style="margin-bottom:50px;">
+          <input type="button" value='Find Cite' style="width:100%;background:#eee;padding:5px;" onclick="test_understanding(document.getElementById('q').value)"/>
+        </p>
+        <p id="answer" style="text-align:left;"></p>
+      </div>
+      <hr style="height:1px;border:none;color:#333;background-color:#333;">
+      <p style='text-align:center;margin-bottom:150px;'>~ End of Page ~</p>
+
+    </div>
+  </form></body>
+  <script src="js/word2vec.js"></script>
+  <script>
+    $('#content').show();
+    $('#msg').hide();
+    $('#output').html("Thinking...")
+
+    document.getElementById('group').value = "2765496";
+    document.getElementById('api_key').value = "qs1mJr6QpCe3DZDHBkaBnfLK";
+
+  </script>
+</html>
