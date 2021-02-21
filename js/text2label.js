@@ -30,8 +30,6 @@
   -----------------------------------------------------------------*/
   var SentVecs = {};
   var SentTexts = {};
-  localStorage.SentVecs = JSON.stringify(SentVecs);
-  localStorage.SentTexts = JSON.stringify(SentTexts);
 
   function extractContent(s) {
     var span = document.createElement('span');
@@ -41,7 +39,7 @@
 
   function vectorize(string){
     // get a list of words
-    words = string.replace(/[^a-zA-Z\s]+/g,'').replace(/\s{2,}/g,' ').toLowerCase().trim().split(" ");
+    words = string.replace(/[^a-zA-Z\s]+/g,' ').replace(/\s{2,}/g,' ').toLowerCase().trim().split(" ");
     var vector = [];
     var usable_words = 0;
     var found = []
@@ -53,7 +51,7 @@
         found.push(words[i]);
         //console.log(wordVecs[words[i]]);
         if (usable_words==0) {
-          vector = wordVecs[words[i]]
+          vector = wordVecs[words[i]].slice();
         } else {
           // average the word vectors
           for (j = 0; j < 300; j++) {
@@ -66,19 +64,49 @@
       }
     }
 
-    for (j = 0; j < 300; j++) {
-      vector[j] = vector[j]/usable_words;
+    //for (j = 0; j < 300; j++) {
+    //  vector[j] = vector[j]/usable_words;
+    //}
+
+    if (notfound.length > 0) {
+      $('#missing_words').html("<p><b>Unrecognized Word(s):</b> <span style='background:orange;'>"+notfound.join(", ")+"</span>. The more unrecognized words, the worse the search will do at matching your input.</p>");
+    } else {
+      $('#missing_words').html("");
     }
+
     // return a best-guess vector for the string
-    return norm(vector);
+    return norm(vector).map(a => a.toFixed(6));
+  }
+
+  function run_search(val) {
+		var nresults = 0;
+		var arr = Object.values(SentTexts);
+    var keys = Object.keys(SentTexts);
+    answers = [];
+    for (i = 0; i < arr.length; i++) {
+      /*check if the item starts with the same letters as the text field value:*/
+      if (arr[i].toUpperCase().match(val.toUpperCase())) {
+        answers.push([keys[i],1]);
+        nresults++;
+      }
+      if (nresults > 21){
+        break;
+      }
+    }
+    if (answers.length < 21){
+      answers = answers.concat(getNClosest(21-answers.length, vectorize(val),answers.map(x => x[0])));
+    }
+    return answers
   }
 
 
-  function getNClosest(n, vec) {
+  function getNClosest(n, vec, existing) {
     var sims = [];
     for (var ans in SentVecs) {
       var sim = getCosSim(vec, SentVecs[ans]);
-      sims.push([ans, sim]);
+      if (sim>=0.7 & !existing.includes(ans)) {
+        sims.push([ans, sim]);
+      }
     }
     sims.sort(function(a, b) {
       return b[1] - a[1];
@@ -88,7 +116,16 @@
 
   function tokenize(text){
     text = text.replace(/\n/g, " ");
-    return text.replace(/([.?!])\s*(?=[A-Z0-9])/g, "$1<break>").split("<break>")
+    text = text.replace(/“/g, '"');
+    text = text.replace(/”/g, '"');
+    text = text.replace(/’/g, "'");
+    text = text.replace(/\s{2,}/g,' ');
+    text = text.replace(/([a-z])([A-Z])/g, "$1 $2");
+    text = text.replace(/([a-zA-Z])(\d)/g, "$1 $2");
+    text = text.replace(/(\d)([a-zA-Z])/g, "$1 $2");
+    text = text.replace(/([.?!]"?)\s+(?=[A-Z0-9])/g, "$1<break>");
+    text = text.replace(/([;])\s+(?=[a-zA-Z0-9])/g, "$1<break>").split("<break>");
+    return text
   }
 
   function zotero_fulltext(group,key,api_key) {
@@ -105,7 +142,7 @@
     for (var key in docs) {
       $('#output').html("Retrieveing &amp; vectorizing text for item "+key+" ("+j+" of "+nitems+")...")
       j = j + 1;
-      console.log(key);
+      //console.log(key);
       try {
         docs[key] = await zotero_fulltext(group,key,api_key);
         sentences = tokenize(docs[key]);
@@ -117,11 +154,13 @@
       } catch (error) {
         //console.error(error);
         $('#output').html("Failed to find full text for item "+key+".")
-        console.log("Failed to retrive or vectorize texts: "+error);
+        //console.log("Failed to retrive or vectorize texts: "+error);
       }
     }
+    autocomplete(document.getElementById("q"), Object.values(SentTexts));
     $('#output').html("Done adding texts.")
     console.log("Done adding texts.");
+    $('#missing_words').html("");
     $('#content').show();
     $('#search').show();
     $('#msg').hide();
@@ -131,17 +170,21 @@
   var docs = {};
   var bib = {};
   function zotero(group,start,bibstyle,api_key) {
+
+      localStorage.group = group;
+      localStorage.api_key = api_key;
+
       $('#msg').show();
       $('#content').hide();
   		apicall = "https://api.zotero.org/groups/"+group+"/items/?include=bib&style="+bibstyle+"&start="+start;
-      console.log("API Call:"+apicall)
+      //console.log("API Call:"+apicall)
   		axios.get(
   		 	apicall,
         {headers: { Authorization: "Bearer "+ api_key} }
       ).then(function(response){
         var end = start + 25;
-        $('#output').html("Reading library contents items "+start+" through "+end+"...")
-        console.log("Connected to Zotero.")
+        $('#output').html("Reading library contents, items "+start+" through "+end+"...")
+        //console.log("Connected to Zotero.")
         //x = response.data
         //console.log(response.data);
         if (response.data.length > 0) {
@@ -167,6 +210,8 @@
       	console.log(error);
         $('#output').html("There was a problem connecting to Zotero ("+error+"). Check your credenials et al.")
       	alert("There was a problem connecting to Zotero ("+error+"). Check your credenials et al.");
+        $('#content').show();
+        $('#msg').hide();
       })
   }
 

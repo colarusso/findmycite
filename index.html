@@ -4,14 +4,74 @@
       xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	  <meta name="apple-mobile-web-app-capable" content="no" />
+    <!-- <link rel="apple-touch-icon" href="../images/icon_300.png"/> -->
+
+    <meta property="og:type" content="website"/>
+  	<meta property="og:title" content="Find My Site"/>
+  	<meta property="og:description" content=" "/>
+  	<meta property="og:image" content="../images/lasm_2-1.jpg"/>
+
+  	<meta name="twitter:card" content="summary_large_image">
+  	<meta name="twitter:site" content="@Colarusso">
+  	<meta name="twitter:creator" content="@Colarusso">
+  	<meta name="twitter:title" content="Find My Site">
+  	<meta name="twitter:description" content=" ">
+  	<meta name="twitter:image" content="http://www.davidcolarusso.com/images/lasm_2-1.jpg"/>
+
+    <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    /*the container must be positioned relative:*/
+    .autocomplete {
+      position: relative;
+      display: inline-block;
+    }
+
+    .autocomplete-items {
+      position: absolute;
+      border: 1px solid #d4d4d4;
+      border-bottom: none;
+      border-top: none;
+      z-index: 99;
+      /*position the autocomplete items to be the same width as the container:*/
+      top: 100%;
+      left: 0;
+      right: 0;
+    }
+
+    .autocomplete-items div {
+      padding: 10px;
+      cursor: pointer;
+      background-color: #d9fcf3;
+      border-bottom: 1px solid #d4d4d4;
+    }
+
+    /*when hovering an item:*/
+    .autocomplete-items div:hover {
+      background-color: #e9e9e9;
+    }
+
+    /*when navigating through the items using the arrow keys:*/
+    .autocomplete-active {
+      background-color: DodgerBlue !important;
+      color: #ffffff;
+    }
+    </style>
+
+    <!-- INSERT ANAYLITICS -->
+
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
     <script src="js/text2label.js"></script>
     <script>
 
       function display_cites(answer,group) {
-        var sentNo = parseInt(answer.match(/(\d+)$/)[0]);
-        var itemNo = answer.replace(/\-(\d+)$/, (""));
+        var sentNo = parseInt(answer[0].match(/(\d+)$/)[0]);
+        var itemNo = answer[0].replace(/\-(\d+)$/, (""));
 
         var minus3 = sentNo-3;
         var minus2 = sentNo-2;
@@ -55,15 +115,17 @@
           var next3 = "";
         }
 
-        $('#answer').html( $('#answer').html() + "<hr style='height:1px;border:none;color:#333;background-color:#333;margin-bottom:35px;'><blockquote style='border-left; solid 4px #eee;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p>See: <a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file</a></p>Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>");
-
-        return true
+        return "<hr style='height:1px;border:none;color:#333;background-color:#333;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"%</font></p><blockquote style='border-left; solid 4px #eee;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
 
       }
 
       function test_understanding(string) {
-      // This function makes use of text2lable to find the best answer
-        answers = getNClosest(10, vectorize(string))
+        $('#missing_words').hide();
+        $('#missing_words').html("");
+        $('#answer').hide();
+        $('#loading').show();
+
+
         // getNClosestAnswer allows for the return of multiple labels
         // here we've limited it to one. Additionally, we're filtering by
         // QLabels to apply consistent labels. To allow for multiple instances
@@ -71,22 +133,35 @@
 
         var group = document.getElementById('group').value
 
-        $('#answer').html( "<h3>Top 10 Matches</h3>");
-        display_cites(answers[0][0],group);
-        display_cites(answers[1][0],group);
-        display_cites(answers[2][0],group);
-        display_cites(answers[3][0],group);
-        display_cites(answers[4][0],group);
-        display_cites(answers[5][0],group);
-        display_cites(answers[6][0],group);
-        display_cites(answers[7][0],group);
-        display_cites(answers[8][0],group);
-        display_cites(answers[9][0],group);
+        setTimeout(function (){
+
+          answers = run_search(string);
+
+          var html = "<h3>Results</h3>";
+
+          if (answers.length>0) {
+            for (var i = 0; i < answers.length; i++) {
+              if (i<21) {
+                html = html + display_cites(answers[i],group);
+              } else {
+                html = html + "<p style='padding:15px;background:orange;'><i>Additional matches found but not displayed. Consider refining your query.</i></p>"
+              }
+            }
+          } else {
+            html = html + "<p style='padding:15px;background:orange;'><i>No matches found</i></p>";
+          }
+
+          $('#answer').html(html);
+          $('#loading').hide();
+          $('#answer').show();
+          $('#missing_words').show();
+        }, 50);
+
       }
 
     </script>
   </head>
-  <body><form>
+  <body><form autocomplete="off">
     <div id="msg" style="position:absolute;top:0;z-index:100;width:100%;margin:0;">
       <div style="margin:15px auto 0 auto;max-width:900px;text-align:center;background:#fff;padding:0px 15px 0 15px;">
       <p><img src="images/patience.gif" style="width:100%"/></p>
@@ -109,8 +184,9 @@
       <h3>Citation Style</h3>
       <p>
         <select id="bib" style="padding:5px;width:300px;font-size:15px;">
-          <option value="https://colarusso.github.io/findmycite/cls/bluebook-law-review.csl">bluebook-law-review</option>
           <option value="chicago-note-bibliography">chicago-note-bibliography</option>
+          <option value="modern-language-association">modern-language-association</option>
+          <!-- <option value="https://colarusso.github.io/findmycite/cls/bluebook-law-review.csl">bluebook-law-review</option> -->
         </select>
       </p>
       <p style="margin-bottom:25px;">
@@ -118,16 +194,34 @@
       </p>
 
       <div id="search" style="display:none;">
+
+
+
       <a name="search"><hr style="height:1px;border:none;color:#333;background-color:#333;"></a>
-      <h2>Year Search</h2>
-        <p><input id="q" style="width:100%;border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;" onkeypress="if (event.keyCode==13){test_understanding(this.value)}"/></p>
-        <p style="margin-bottom:50px;">
-          <input type="button" value='Find Cite' style="width:100%;background:#eee;padding:5px;" onclick="test_understanding(document.getElementById('q').value)"/>
+      <h2>Your Search</h2>
+        <p>This search will do its best to match the semantic content of the text you input with a sentence in your library. Because the work is being done by your browser, it only knows 25,000 words. So, it's not great, but it is better than a simple "find this phrase" or "find these words" search, and it's fee. ;)</p>
+        <p>
+          <input type="checkbox" id="suggest" name="suggest" value="1" CHECKED>
+          <label for="suggest"> Auto suggest (type to see matching text from your library)</label>
         </p>
+        <div style="margin-bottom:50px;">
+          <table><tr><td width="100%">
+            <div class="autocomplete" style="width:100%;">
+              <input id="q" type="text" name="q" placeholder="the proposition you wish to cite" style="width:100%;border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;">
+            </div>
+          </td><td width="50px">
+            <input type="button" value='Find Cite' style="width:100px;background:#eee;padding:5px;margin-left:5px;" onclick="test_understanding(document.getElementById('q').value)"/>
+          </td></tr></table>
+          <span id="missing_words"></span>
+        </div>
+
+        <div id="loading" style="display:none;width:100%;margin:50px auto;text-align:center;">
+                <img src="images/Ajax-loader.gif" width="35px;" height="35px;"/>
+        </div>
         <p id="answer" style="text-align:left;"></p>
       </div>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
-      <p style='text-align:center;margin-bottom:150px;'>~ End of Page ~</p>
+      <p style='text-align:center;margin-bottom:150px;'>Site by <a href="https://twitter.com/Colarusso" target="_blank">Colarusso</a> | <a href="https://github.com/colarusso/findmycite" target="_blank">GitHub</a> | <a href="https://suffolklitlab.org/" target="_blank">You may also like</a></p>
 
     </div>
   </form></body>
@@ -137,8 +231,123 @@
     $('#msg').hide();
     $('#output').html("Thinking...")
 
-    document.getElementById('group').value = "2765496";
-    document.getElementById('api_key').value = "qs1mJr6QpCe3DZDHBkaBnfLK";
+    if (localStorage.group) {
+      document.getElementById('group').value = localStorage.group;
+    }
+    if (localStorage.api_key) {
+      document.getElementById('api_key').value = localStorage.api_key;
+    }
 
   </script>
+  <script>
+
+  // adapted from https://www.w3schools.com/howto/howto_js_autocomplete.asp
+
+  function autocomplete(inp, arr) {
+    /*the autocomplete function takes two arguments,
+    the text field element and an array of possible autocompleted values:*/
+    var currentFocus;
+    /*execute a function when someone writes in the text field:*/
+    inp.addEventListener("input", function(e) {
+        var a, b, i, val = this.value;
+        /*close any already open lists of autocompleted values*/
+        closeAllLists();
+        if ($('#suggest').is(":checked")) {
+          if (!val) { return false;}
+          currentFocus = -1;
+          /*create a DIV element that will contain the items (values):*/
+          a = document.createElement("DIV");
+          a.setAttribute("id", this.id + "autocomplete-list");
+          a.setAttribute("class", "autocomplete-items");
+          /*append the DIV element as a child of the autocomplete container:*/
+          this.parentNode.appendChild(a);
+
+          var nresults = 0;
+          /*for each item in the array...*/
+          for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].toUpperCase().match(val.toUpperCase())) {
+              /*create a DIV element for each matching element:*/
+              b = document.createElement("DIV");
+              /*make the matching letters bold:*/
+              var pos = arr[i].toUpperCase().match(val.toUpperCase()).index
+              b.innerHTML = arr[i].substr(0,pos);
+              b.innerHTML += "<strong>" + arr[i].substr(pos, val.length) + "</strong>";
+              b.innerHTML += arr[i].substr(pos + val.length);
+              /*insert a input field that will hold the current array item's value:*/
+              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+              /*execute a function when someone clicks on the item value (DIV element):*/
+              b.addEventListener("click", function(e) {
+                  /*insert the value for the autocomplete text field:*/
+                  inp.value = this.getElementsByTagName("input")[0].value;
+                  /*close the list of autocompleted values,
+                  (or any other open lists of autocompleted values:*/
+                  closeAllLists();
+              });
+              a.appendChild(b);
+              nresults++;
+            }
+            if (nresults > 2){
+              break;
+            }
+          }
+        }
+    });
+    /*execute a function presses a key on the keyboard:*/
+    inp.addEventListener("keydown", function(e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+          /*If the arrow DOWN key is pressed,
+          increase the currentFocus variable:*/
+          currentFocus++;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 38) { //up
+          /*If the arrow UP key is pressed,
+          decrease the currentFocus variable:*/
+          currentFocus--;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 13) {
+          /*If the ENTER key is pressed, prevent the form from being submitted,*/
+          e.preventDefault();
+          if (currentFocus > -1) {
+            /*and simulate a click on the "active" item:*/
+            if (x) x[currentFocus].click();
+          }
+        }
+    });
+    function addActive(x) {
+      /*a function to classify an item as "active":*/
+      if (!x) return false;
+      /*start by removing the "active" class on all items:*/
+      removeActive(x);
+      if (currentFocus >= x.length) currentFocus = 0;
+      if (currentFocus < 0) currentFocus = (x.length - 1);
+      /*add class "autocomplete-active":*/
+      x[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(x) {
+      /*a function to remove the "active" class from all autocomplete items:*/
+      for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+      }
+    }
+    function closeAllLists(elmnt) {
+      /*close all autocomplete lists in the document,
+      except the one passed as an argument:*/
+      var x = document.getElementsByClassName("autocomplete-items");
+      for (var i = 0; i < x.length; i++) {
+        if (elmnt != x[i] && elmnt != inp) {
+          x[i].parentNode.removeChild(x[i]);
+        }
+      }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+  }
+</script>
 </html>
