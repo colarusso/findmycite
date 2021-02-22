@@ -89,18 +89,20 @@
       <h1 style="text-align:center;">Find My Cite</h1>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
       <p>Are you a <a href="https://www.zotero.org/" target="_blank">Zotero</a> user? Do you ever wish you could search your libraries by ideas—not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.</p>
+      <p>To make this site widely available (i.e., let me run it from a free web server), the work is offloaded to your browser. This means you'll have to reload a bunch of stuff every time you load this page. So you might consider leaving this tab open. ;)</p>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
       <h3>API Key</h3>
-      <p>In order to use this tool, you will need to generate a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these directions</a> and paste the API key in the field below. Be sure to write down this key and to provide the key with at least READ access to your group or groups.</p>
+      <p>In order to use this tool, you will need to generate a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these directions</a> and paste the API key in the field below. Be sure to write down the key and to provide it with  READ access to your group or groups.</p>
       <p>
         API-Key: <input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
       </p>
       <h3>Group ID</h3>
-      <p>This tool works by accessing the contents of a group library. If you don't have one already, you will need to <a href="https://www.zotero.org/groups" target="_blank">create a group</a> and fill it with content. We perform our search on the full text content of your group's library. If it isn't part of your library we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>2305186</i> is the ID found in the following url: <i>https://www.zotero.org/groups/<span style="background:yellow;">2305186</span>/library_name/</i>.</p>
+      <p>This tool works by accessing the contents of a group library. If you don't have one already, you will need to create <a href="https://www.zotero.org/groups" target="_blank">a group</a> and fill it with content. We perform our search on the full text content of your group's library. If it isn't part of your library we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>2305186</i> is the ID found in the following url: <i>https://www.zotero.org/groups/<span style="background:yellow;">2305186</span>/library_name/</i>.</p>
       <p>
           Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
       </p>
       <h3>Citation Style</h3>
+      <p>I'm planning to add more styles soon, but I've hit a snag with Zotero's API and the <i>bluebook-law-review</i> that has made me hit pause. Patience.;)</p>
       <p>
         <select id="bib" style="padding:5px;width:300px;font-size:15px;">
           <option value="chicago-note-bibliography">chicago-note-bibliography</option>
@@ -118,10 +120,10 @@
 
       <a name="search"><hr style="height:1px;border:none;color:#333;background-color:#333;"></a>
       <h2>Your Search</h2>
-        <p>This search will do its best to match the semantic content of the text you input with a sentence in your library. Because the work is being done by your browser, it only knows 25,000 words. So, it's not great, but it is better than a simple "find this phrase" or "find these words" search, and it's fee. ;)</p>
+        <p>This search will do its best to match the semantic content of the text you input with a sentence in your library. Because the work is being done by your browser, it only knows 25,000 words. So, it can be slow for big libraries and the match isn't perfect, but it is better than a simple "find this phrase" or "find these words" search, and it's free. ;)</p>
         <p>
           <input type="checkbox" id="suggest" name="suggest" value="1" CHECKED>
-          <label for="suggest"> Auto suggest (shows up to 3 matching texts from your library as you type)</label>
+          <label for="suggest"> Auto suggest (shows up to 3 matching texts from your library)</label>
         </p>
         <div style="margin-bottom:50px;">
           <table><tr><td width="100%">

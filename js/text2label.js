@@ -80,23 +80,25 @@
 
   function run_search(val) {
     answers = [];
-    if (val.trim().length> 0) {  
+    if (val.trim().length> 0) {
+      var existing = answers.map(x => x[0]);
   		var nresults = 0;
   		var arr = Object.values(SentTexts);
       var keys = Object.keys(SentTexts);
       var vectorized_text = vectorize(val);
       for (i = 0; i < arr.length; i++) {
-        /*check if the item starts with the same letters as the text field value:*/
         if (arr[i].toUpperCase().match(val.toUpperCase())) {
-          answers.push([keys[i],1]);
-          nresults++;
+          if (!existing.includes(ans) & !existing.includes(ans.replace(/\|\d+/, (""))) & !existing.includes(ans.replace(/-(\d+)\|/, ("-")))) {
+            answers.push([keys[i],1]);
+            nresults++;
+          }
         }
         if (nresults > 21){
           break;
         }
       }
-      if (answers.length < 21 && vectorized_text.length > 0){
-        answers = answers.concat(getNClosest(21-answers.length, vectorized_text,answers.map(x => x[0])));
+      if ((answers.length < 21) && (vectorized_text.length > 0)) {
+        answers = answers.concat(getNClosest(21-answers.length, vectorized_text,existing));
       }
     }
     return answers
@@ -107,7 +109,7 @@
     var sims = [];
     for (var ans in SentVecs) {
       var sim = getCosSim(vec, SentVecs[ans]);
-      if (sim>=0.7 & !existing.includes(ans)) {
+      if (sim>=0.7 & !existing.includes(ans) & !existing.includes(ans.replace(/\|\d+/, (""))) & !existing.includes(ans.replace(/-(\d+)\|/, ("-")))) {
         sims.push([ans, sim]);
       }
     }
@@ -126,8 +128,8 @@
     text = text.replace(/([a-z])([A-Z])/g, "$1 $2");
     text = text.replace(/([a-zA-Z])(\d)/g, "$1 $2");
     text = text.replace(/(\d)([a-zA-Z])/g, "$1 $2");
-    text = text.replace(/([.?!]"?)\s+(?=[A-Z0-9])/g, "$1<break>").split("<break>");
-    //text = text.replace(/([;])\s+(?=[a-zA-Z0-9])/g, "$1<break>").split("<break>");
+    text = text.replace(/([.?!]"?)\s+(?=[[A-Z0-9])/g, "$1<break>");
+    text = text.replace(/([;])\s+(?=[[a-zA-Z0-9])/g, "$1<break>").split("<break>");
     return text
   }
 
@@ -152,6 +154,10 @@
         for (var i = 0; i < sentences.length; i++) {
         	SentTexts[key+"-"+i] = sentences[i];
           SentVecs[key+"-"+i] = vectorize(sentences[i]);
+          var i2 = i + 1;
+          if (i2 < sentences.length) {
+            SentVecs[key+"-"+i+"|"+i2] = vectorize(sentences[i]+" "+sentences[i2]);
+          }
         }
         $('#output').html("Found full text for item "+key+".")
       } catch (error) {
@@ -221,8 +227,10 @@
 
 
   function display_cites(answer,group) {
-    var sentNo = parseInt(answer[0].match(/(\d+)$/)[0]);
-    var itemNo = answer[0].replace(/\-(\d+)$/, (""));
+    var sentNo = parseInt(answer[0].match(/(\d+)($|\|)/)[1]);
+    var itemNo = answer[0].replace(/\-(\d+\|?\d+)$/, (""));
+
+    var double = answer[0].includes("|")
 
     var minus3 = sentNo-3;
     var minus2 = sentNo-2;
@@ -247,14 +255,18 @@
       var last1 = "";
     }
 
-    var thisSent = SentTexts[itemNo+"-"+sentNo] + " ";
-    //console.log(SentTexts[itemNo+plus1],itemNo,plus1);
-
-    if (SentTexts[itemNo+plus1]) {
-      var next1 = SentTexts[itemNo+"-"+plus1] + " ";
-    } else {
+    if (double) {
+      var thisSent = SentTexts[itemNo+"-"+sentNo] + " " + SentTexts[itemNo+"-"+plus1] + " ";
       var next1 = "";
+    } else {
+      var thisSent = SentTexts[itemNo+"-"+sentNo] + " ";
+      if (SentTexts[itemNo+plus1]) {
+        var next1 = SentTexts[itemNo+"-"+plus1] + " ";
+      } else {
+        var next1 = "";
+      }
     }
+
     if (SentTexts[itemNo+"-"+plus2]) {
       var next2 = SentTexts[itemNo+"-"+plus2] + " ";
     } else {
@@ -266,7 +278,7 @@
       var next3 = "";
     }
 
-    return "<hr style='height:1px;border:none;color:#333;background-color:#333;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"%</font></p><blockquote style='border-left; solid 4px #eee;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
+    return "<hr style='height:1px;border:none;color:#333;background-color:#333;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"% "+"</font></p><blockquote style='border-left; solid 4px #eee;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
 
   }
 
