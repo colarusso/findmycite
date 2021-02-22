@@ -11,15 +11,15 @@
 
     <meta property="og:type" content="website"/>
   	<meta property="og:title" content="Find My Site"/>
-  	<meta property="og:description" content=" "/>
-  	<meta property="og:image" content="../images/lasm_2-1.jpg"/>
+  	<meta property="og:description" content="Are you a Zotero user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite."/>
+  	<meta property="og:image" content="images/thefuture.png"/>
 
   	<meta name="twitter:card" content="summary_large_image">
   	<meta name="twitter:site" content="@Colarusso">
   	<meta name="twitter:creator" content="@Colarusso">
   	<meta name="twitter:title" content="Find My Site">
-  	<meta name="twitter:description" content=" ">
-  	<meta name="twitter:image" content="http://www.davidcolarusso.com/images/lasm_2-1.jpg"/>
+  	<meta name="twitter:description" content="Are you a Zotero user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.">
+  	<meta name="twitter:image" content="http://www.davidcolarusso.com/images/thefuture.png"/>
 
     <style>
     * {
@@ -180,15 +180,16 @@
     </div>
     <div id="content" style="display:none;margin:50px auto 0 auto;max-width:900px;">
       <h1 style="text-align:center;">Find My Cite</h1>
+      <hr style="height:1px;border:none;color:#333;background-color:#333;">
       <p>Are you a <a href="https://www.zotero.org/" target="_blank">Zotero</a> user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.</p>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
       <h3>API Key</h3>
-      <p>In order to use this tool, you will need to generate an API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these direction</a> and paste the API key in the field below. Be sure to provide the key with at least READ access to your group or groups.</p>
+      <p>In order to use this tool, you will need to generate a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these directions</a> and paste the API key in the field below. Be sire to write down this key and to provide the key with at least READ access to your group or groups.</p>
       <p>
         API-Key: <input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
       </p>
       <h3>Group ID</h3>
-      <p>This tool works by accessing the contents of a group library. If you don't have one already, you will need to <a href="https://www.zotero.org/groups" target="_blank">create a group</a>. </p>
+      <p>This tool works by accessing the contents of a group library. If you don't have one already, you will need to <a href="https://www.zotero.org/groups" target="_blank">create a group</a> and fill it with content. We perform our search on the full text content of your group's library. So, if it isn't part of your library we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>https://www.zotero.org/groups/<span style="background:yellow;">2305186</span>/library_name/</i>.</p>
       <p>
           Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
       </p>
