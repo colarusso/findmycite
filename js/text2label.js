@@ -288,6 +288,7 @@
     $('#missing_words').hide();
     $('#missing_words').html("");
     $('#answer').hide();
+    $('#output').html("");
     $('#loading').show();
 
 
@@ -302,7 +303,13 @@
 
       answers = run_search(string);
 
-      var html = "<h3>Results</h3>";
+      if (answers.length>20) {
+        result_count = "20+"
+      } else {
+        result_count = answers.length
+      }
+
+      var html = "<h3>"+result_count+" Results</h3>";
 
       if (answers.length>0) {
         for (var i = 0; i < answers.length; i++) {
