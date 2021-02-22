@@ -81,7 +81,6 @@
   function run_search(val) {
     answers = [];
     if (val.trim().length> 0) {
-      var existing = answers.map(x => x[0]);
   		var nresults = 0;
   		var arr = Object.values(SentTexts);
       var keys = Object.keys(SentTexts);
@@ -89,7 +88,7 @@
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().match(val.toUpperCase())) {
           var ans = keys[i];
-          if (!existing.includes(ans) & !existing.includes(ans.replace(/\|\d+/, (""))) & !existing.includes(ans.replace(/-(\d+)\|/, ("-")))) {
+          if (!answers.map(x => x[0]).includes(ans) & !answers.map(x => x[0]).includes(ans.replace(/\|\d+/, (""))) & !answers.map(x => x[0]).includes(ans.replace(/-(\d+)\|/, ("-")))) {
             answers.push([ans,1]);
             nresults++;
           }
@@ -99,7 +98,7 @@
         }
       }
       if ((answers.length < 21) && (vectorized_text.length > 0)) {
-        answers = answers.concat(getNClosest(21-answers.length, vectorized_text,existing));
+        answers = answers.concat(getNClosest(21-answers.length, vectorized_text,answers.map(x => x[0])));
       }
     }
     return answers
@@ -112,6 +111,8 @@
       var sim = getCosSim(vec, SentVecs[ans]);
       if (sim>=0.7 & !existing.includes(ans) & !existing.includes(ans.replace(/\|\d+/, (""))) & !existing.includes(ans.replace(/-(\d+)\|/, ("-")))) {
         sims.push([ans, sim]);
+      } else if (sim>=0.7) {
+        console.log("didn't add "+ans+" ("+sim+")")
       }
     }
     sims.sort(function(a, b) {
