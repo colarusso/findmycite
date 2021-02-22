@@ -256,8 +256,9 @@
       }
     }
     autocomplete(document.getElementById("q"), Object.values(SentTexts));
-    $('#output').html("Done adding texts.")
+    $('#output').html("Done adding texts.");
     console.log("Done adding texts.");
+    $('#build_button').val("Rebuild Library")
     $('#missing_words').html("");
     $('#content').show();
     $('#search').show();
@@ -273,7 +274,8 @@
 
       $('#msg').show();
       $('#content').hide();
-  		apicall = "https://api.zotero.org/groups/"+group+"/items/?include=bib&style="+bibstyle+"&start="+start;
+  		//apicall = "https://api.zotero.org/groups/"+group+"/items/?include=citation&style="+bibstyle+"&start="+start;
+      apicall = "https://api.zotero.org/groups/"+group+"/items/?include=bib&style="+bibstyle+"&start="+start;
       //console.log("API Call:"+apicall)
   		axios.get(
   		 	apicall,
@@ -292,6 +294,7 @@
             //docs[0]["ZIBXXK2T"]["fulltext"] = await zotero_fulltext("2765496","RD6TX2AY","qs1mJr6QpCe3DZDHBkaBnfLK")
             //obj_tmp[key_tmp+"-"+i] = {fulltext: "" ,sentences:[]};
             docs[key_tmp] = [];
+            //bib[key_tmp] = response.data[key].citation;
             bib[key_tmp] = response.data[key].bib;
             //var obj_tmp = {id:key_tmp, fulltext: "" ,sentences:[]};
            	//docs.push(obj_tmp);
@@ -398,7 +401,7 @@
     $('#missing_words').hide();
     $('#missing_words').html("");
     $('#answer').hide();
-    $('#output').html("");
+    $('#output').html("Thinking...");
     $('#loading').show();
 
 

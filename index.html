@@ -32,7 +32,7 @@
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css?build=1">
-    <script src="js/text2label.js?build=6"></script>
+    <script src="js/text2label.js?build=7"></script>
 
   </head>
   <body><form autocomplete="off">
@@ -72,17 +72,18 @@
       </p>
       <h3>Citation Style</h3>
       <p>
-        I'm planning to add more styles soon, but I've hit a snag with Zotero's API and the <i>bluebook-law-review</i> style that has made me hit pause. Patience. ;)
+        Note: Because the style <i>Bluebook Law Review</i> makes use of a special CLS file, selecting it will cause your library build to run <b>very</b> slowly.
       </p>
       <p>
-        <select id="bib" style="padding:5px;width:300px;font-size:15px;">
-          <option value="chicago-note-bibliography">chicago-note-bibliography</option>
-          <option value="modern-language-association">modern-language-association</option>
-          <!-- <option value="https://colarusso.github.io/findmycite/cls/bluebook-law-review.csl">bluebook-law-review</option> -->
+        <select id="bib" style="padding:5px;font-size:15px;">
+          <option value="apa">American Psychological Association 7th edition</option>
+          <option value="https://findmycite.org/cls/bluebook-law-review.csl" SELECTED>Bluebook Law Review</option>
+          <option value="chicago-note-bibliography">Chicago Manual of Style 17th edition (note)</option>
+          <option value="modern-language-association">Modern Language Association 8th edition</option>
         </select>
       </p>
       <p style="margin-bottom:25px;">
-        <input type="button" value='Build Library' style="width:100%;background:#eee;padding:5px;" onclick="zotero(document.getElementById('group').value,0,document.getElementById('bib').value,document.getElementById('api_key').value)"/>
+        <input id="build_button" type="button" value='Build Library' style="width:100%;background:#eee;padding:5px;" onclick="zotero(document.getElementById('group').value,0,document.getElementById('bib').value,document.getElementById('api_key').value)"/>
       </p>
 
       <div id="search" style="display:none;">
