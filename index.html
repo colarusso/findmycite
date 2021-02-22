@@ -7,7 +7,6 @@
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 	  <meta name="apple-mobile-web-app-capable" content="no" />
-    <!-- <link rel="apple-touch-icon" href="../images/icon_300.png"/> -->
 
     <meta property="og:type" content="website"/>
   	<meta property="og:title" content="Find My Site"/>
@@ -21,48 +20,6 @@
   	<meta name="twitter:description" content="Are you a Zotero user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.">
   	<meta name="twitter:image" content="http://www.davidcolarusso.com/images/thefuture.png"/>
 
-    <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    /*the container must be positioned relative:*/
-    .autocomplete {
-      position: relative;
-      display: inline-block;
-    }
-
-    .autocomplete-items {
-      position: absolute;
-      border: 1px solid #d4d4d4;
-      border-bottom: none;
-      border-top: none;
-      z-index: 99;
-      /*position the autocomplete items to be the same width as the container:*/
-      top: 100%;
-      left: 0;
-      right: 0;
-    }
-
-    .autocomplete-items div {
-      padding: 10px;
-      cursor: pointer;
-      background-color: #d9fcf3;
-      border-bottom: 1px solid #d4d4d4;
-    }
-
-    /*when hovering an item:*/
-    .autocomplete-items div:hover {
-      background-color: #e9e9e9;
-    }
-
-    /*when navigating through the items using the arrow keys:*/
-    .autocomplete-active {
-      background-color: DodgerBlue !important;
-      color: #ffffff;
-    }
-    </style>
-
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-G1R2NYXS7D"></script>
     <script>
@@ -72,10 +29,11 @@
 
       gtag('config', 'G-G1R2NYXS7D');
     </script>
-
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
-    <script src="js/text2label.js?build=4"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css?build=1">
+    <script src="js/text2label.js?build=5"></script>
+
   </head>
   <body><form autocomplete="off">
     <div id="msg" style="position:absolute;top:0;z-index:100;width:100%;margin:0;">
@@ -86,23 +44,36 @@
       </div>
     </div>
     <div id="content" style="display:none;margin:50px auto 0 auto;max-width:900px;">
+
       <h1 style="text-align:center;">Find My Cite</h1>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
-      <p>Are you a <a href="https://www.zotero.org/" target="_blank">Zotero</a> user? Do you ever wish you could search your libraries by ideas—not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, it will match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.</p>
-      <p>To make this site widely available (i.e., let me run it from a free web server), the work is offloaded to your browser. This means you'll have to reload a bunch of stuff every time you load this page. So you might consider leaving this tab open. ;)</p>
+
+      <p>
+        Are you a <a href="https://www.zotero.org/" target="_blank">Zotero</a> user? Do you ever wish you could search your libraries by ideas—not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, it will match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.
+      </p>
+      <p>
+        To make this site widely available (i.e., let me run it from a free web server), the work is offloaded to your browser. This means you'll have to reload a bunch of stuff every time you load this page. So you might consider leaving this tab open. ;)
+      </p>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
+
       <h3>API Key</h3>
-      <p>In order to use this tool, you will need to generate a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these directions</a> and paste the API key in the field below. Be sure to write down the key and to provide it with  READ access to your group or groups.</p>
+      <p>
+        In order to use this tool, you will need to generate a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these directions</a> and paste the API key in the field below. Be sure to write down the key and to provide it with  READ access to your group or groups.
+      </p>
       <p>
         API-Key: <input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
       </p>
       <h3>Group ID</h3>
-      <p>This tool works by accessing the contents of a group library. If you don't have one already, you will need to create <a href="https://www.zotero.org/groups" target="_blank">a group</a> and fill it with content. We perform our search on the full text content of your group's library. If it isn't part of your library, we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>2305186</i> is the ID found in the following url: <i>https://www.zotero.org/groups/<span style="background:yellow;">2305186</span>/library_name/</i>.</p>
+      <p>
+        This tool works by accessing the contents of a group library. If you don't have one already, you will need to create <a href="https://www.zotero.org/groups" target="_blank">a group</a> and fill it with content. We perform our search on the full text content of your group's library. If it isn't part of your library, we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>2305186</i> is the ID found in the following url: <i>https://www.zotero.org/groups/<span style="background:yellow;">2305186</span>/library_name/</i>.
+      </p>
       <p>
           Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
       </p>
       <h3>Citation Style</h3>
-      <p>I'm planning to add more styles soon, but I've hit a snag with Zotero's API and the <i>bluebook-law-review</i> style that has made me hit pause. Patience. ;)</p>
+      <p>
+        I'm planning to add more styles soon, but I've hit a snag with Zotero's API and the <i>bluebook-law-review</i> style that has made me hit pause. Patience. ;)
+      </p>
       <p>
         <select id="bib" style="padding:5px;width:300px;font-size:15px;">
           <option value="chicago-note-bibliography">chicago-note-bibliography</option>
@@ -115,12 +86,10 @@
       </p>
 
       <div id="search" style="display:none;">
-
-
-
-      <a name="search"><hr style="height:1px;border:none;color:#333;background-color:#333;"></a>
-      <h2>Your Search</h2>
-        <p>This search will do its best to match the semantic content of the text you input with a sentence in your library. Because the work is being done by your browser, it only knows 25,000 words. So, it can be slow for big libraries and the match isn't perfect, but it is better than a simple "find this phrase" or "find these words" search, and it's free. ;)</p>
+        <a name="search"><hr style="height:1px;border:none;color:#333;background-color:#333;"></a>
+        <h2>Your Search</h2>
+        <p>
+          This search will do its best to match the semantic content of the text you input with a sentence in your library. Because the work is being done by your browser, and I didn't want to overload it, this tool only knows 25,000 words. So, know that the search can be slow for big libraries, and matches aren't perfect. That being said, this search beats a simple "find this phrase" or "find these words" search, and it's free. ;)</p>
         <p>
           <input type="checkbox" id="suggest" name="suggest" value="1" CHECKED>
           <label for="suggest"> Auto suggest (shows up to 3 matching texts from your library)</label>
@@ -135,14 +104,16 @@
           </td></tr></table>
           <span id="missing_words"></span>
         </div>
-
         <div id="loading" style="display:none;width:100%;margin:50px auto;text-align:center;">
                 <img src="images/Ajax-loader.gif" width="35px;" height="35px;"/>
         </div>
         <p id="answer" style="text-align:left;"></p>
       </div>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
-      <p style='text-align:center;margin-bottom:400px;'>Site by <a href="https://twitter.com/Colarusso" target="_blank">Colarusso</a> | <a href="https://github.com/colarusso/findmycite" target="_blank">GitHub</a> | <a href="https://suffolklitlab.org/" target="_blank">You may also like</a></p>
+
+      <p style='text-align:center;margin-bottom:400px;'>
+        Site by <a href="https://twitter.com/Colarusso" target="_blank">Colarusso</a> | <a href="https://github.com/colarusso/findmycite" target="_blank">GitHub</a> | <a href="https://suffolklitlab.org/" target="_blank">You may also like</a>
+      </p>
 
     </div>
   </form></body>
@@ -158,6 +129,5 @@
     if (localStorage.api_key) {
       document.getElementById('api_key').value = localStorage.api_key;
     }
-
   </script>
 </html>
