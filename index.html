@@ -75,100 +75,7 @@
 
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
-    <script src="js/text2label.js"></script>
-    <script>
-
-      function display_cites(answer,group) {
-        var sentNo = parseInt(answer[0].match(/(\d+)$/)[0]);
-        var itemNo = answer[0].replace(/\-(\d+)$/, (""));
-
-        var minus3 = sentNo-3;
-        var minus2 = sentNo-2;
-        var minus1 = sentNo-1;
-        var plus1 = sentNo+1;
-        var plus2 = sentNo+2;
-        var plus3 = sentNo+3;
-
-        if (SentTexts[itemNo+"-"+minus3]) {
-          var last3 = SentTexts[itemNo+"-"+minus3] + " ";
-        } else {
-          var last3 = "";
-        }
-        if (SentTexts[itemNo+"-"+minus2]) {
-          var last2 = SentTexts[itemNo+"-"+minus2] + " ";
-        } else {
-          var last2 = "";
-        }
-        if (SentTexts[itemNo+"-"+minus1]) {
-          var last1 = SentTexts[itemNo+"-"+minus1] + " ";
-        } else {
-          var last1 = "";
-        }
-
-        var thisSent = SentTexts[itemNo+"-"+sentNo] + " ";
-        //console.log(SentTexts[itemNo+plus1],itemNo,plus1);
-
-        if (SentTexts[itemNo+plus1]) {
-          var next1 = SentTexts[itemNo+"-"+plus1] + " ";
-        } else {
-          var next1 = "";
-        }
-        if (SentTexts[itemNo+"-"+plus2]) {
-          var next2 = SentTexts[itemNo+"-"+plus2] + " ";
-        } else {
-          var next2 = "";
-        }
-        if (SentTexts[itemNo+"-"+plus3]) {
-          var next3 = SentTexts[itemNo+"-"+plus3] + " ";
-        } else {
-          var next3 = "";
-        }
-
-        return "<hr style='height:1px;border:none;color:#333;background-color:#333;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"%</font></p><blockquote style='border-left; solid 4px #eee;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
-
-      }
-
-      function test_understanding(string) {
-        $('#missing_words').hide();
-        $('#missing_words').html("");
-        $('#answer').hide();
-        $('#loading').show();
-
-
-        // getNClosestAnswer allows for the return of multiple labels
-        // here we've limited it to one. Additionally, we're filtering by
-        // QLabels to apply consistent labels. To allow for multiple instances
-        // of the same labels we append a #n to the label. This removes that.
-
-        var group = document.getElementById('group').value
-
-        setTimeout(function (){
-
-          answers = run_search(string);
-
-          var html = "<h3>Results</h3>";
-
-          if (answers.length>0) {
-            for (var i = 0; i < answers.length; i++) {
-              if (i<20) {
-                html = html + display_cites(answers[i],group);
-              } else {
-                html = html + "<p style='padding:15px;background:orange;'><i>Additional matches found but not displayed. Consider refining your query.</i></p>"
-              }
-            }
-          } else {
-            html = html + "<p style='padding:15px;background:orange;'><i>No matches found</i></p>";
-          }
-
-          $('#answer').html(html);
-          $('#loading').hide();
-          $('#answer').show();
-          $('#missing_words').show();
-        }, 50);
-
-      }
-
-    </script>
+    <script src="js/text2label.js?v=1"></script>
   </head>
   <body><form autocomplete="off">
     <div id="msg" style="position:absolute;top:0;z-index:100;width:100%;margin:0;">
@@ -181,15 +88,15 @@
     <div id="content" style="display:none;margin:50px auto 0 auto;max-width:900px;">
       <h1 style="text-align:center;">Find My Cite</h1>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
-      <p>Are you a <a href="https://www.zotero.org/" target="_blank">Zotero</a> user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.</p>
+      <p>Are you a <a href="https://www.zotero.org/" target="_blank">Zotero</a> user? Do you ever wish you could search your libraries by ideas—not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.</p>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
       <h3>API Key</h3>
-      <p>In order to use this tool, you will need to generate a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these directions</a> and paste the API key in the field below. Be sire to write down this key and to provide the key with at least READ access to your group or groups.</p>
+      <p>In order to use this tool, you will need to generate a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these directions</a> and paste the API key in the field below. Be sure to write down this key and to provide the key with at least READ access to your group or groups.</p>
       <p>
         API-Key: <input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
       </p>
       <h3>Group ID</h3>
-      <p>This tool works by accessing the contents of a group library. If you don't have one already, you will need to <a href="https://www.zotero.org/groups" target="_blank">create a group</a> and fill it with content. We perform our search on the full text content of your group's library. So, if it isn't part of your library we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>https://www.zotero.org/groups/<span style="background:yellow;">2305186</span>/library_name/</i>.</p>
+      <p>This tool works by accessing the contents of a group library. If you don't have one already, you will need to <a href="https://www.zotero.org/groups" target="_blank">create a group</a> and fill it with content. We perform our search on the full text content of your group's library. If it isn't part of your library we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>2305186</i> is the ID found in the following url: <i>https://www.zotero.org/groups/<span style="background:yellow;">2305186</span>/library_name/</i>.</p>
       <p>
           Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
       </p>
@@ -214,7 +121,7 @@
         <p>This search will do its best to match the semantic content of the text you input with a sentence in your library. Because the work is being done by your browser, it only knows 25,000 words. So, it's not great, but it is better than a simple "find this phrase" or "find these words" search, and it's fee. ;)</p>
         <p>
           <input type="checkbox" id="suggest" name="suggest" value="1" CHECKED>
-          <label for="suggest"> Auto suggest (type to see matching text from your library)</label>
+          <label for="suggest"> Auto suggest (shows up to 3 matching texts from your library as you type)</label>
         </p>
         <div style="margin-bottom:50px;">
           <table><tr><td width="100%">
@@ -251,115 +158,4 @@
     }
 
   </script>
-  <script>
-
-  // adapted from https://www.w3schools.com/howto/howto_js_autocomplete.asp
-
-  function autocomplete(inp, arr) {
-    /*the autocomplete function takes two arguments,
-    the text field element and an array of possible autocompleted values:*/
-    var currentFocus;
-    /*execute a function when someone writes in the text field:*/
-    inp.addEventListener("input", function(e) {
-        var a, b, i, val = this.value;
-        /*close any already open lists of autocompleted values*/
-        closeAllLists();
-        if ($('#suggest').is(":checked")) {
-          if (!val) { return false;}
-          currentFocus = -1;
-          /*create a DIV element that will contain the items (values):*/
-          a = document.createElement("DIV");
-          a.setAttribute("id", this.id + "autocomplete-list");
-          a.setAttribute("class", "autocomplete-items");
-          /*append the DIV element as a child of the autocomplete container:*/
-          this.parentNode.appendChild(a);
-
-          var nresults = 0;
-          /*for each item in the array...*/
-          for (i = 0; i < arr.length; i++) {
-            /*check if the item starts with the same letters as the text field value:*/
-            if (arr[i].toUpperCase().match(val.toUpperCase())) {
-              /*create a DIV element for each matching element:*/
-              b = document.createElement("DIV");
-              /*make the matching letters bold:*/
-              var pos = arr[i].toUpperCase().match(val.toUpperCase()).index
-              b.innerHTML = arr[i].substr(0,pos);
-              b.innerHTML += "<strong>" + arr[i].substr(pos, val.length) + "</strong>";
-              b.innerHTML += arr[i].substr(pos + val.length);
-              /*insert a input field that will hold the current array item's value:*/
-              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-              /*execute a function when someone clicks on the item value (DIV element):*/
-              b.addEventListener("click", function(e) {
-                  /*insert the value for the autocomplete text field:*/
-                  inp.value = this.getElementsByTagName("input")[0].value;
-                  /*close the list of autocompleted values,
-                  (or any other open lists of autocompleted values:*/
-                  closeAllLists();
-              });
-              a.appendChild(b);
-              nresults++;
-            }
-            if (nresults > 2){
-              break;
-            }
-          }
-        }
-    });
-    /*execute a function presses a key on the keyboard:*/
-    inp.addEventListener("keydown", function(e) {
-        var x = document.getElementById(this.id + "autocomplete-list");
-        if (x) x = x.getElementsByTagName("div");
-        if (e.keyCode == 40) {
-          /*If the arrow DOWN key is pressed,
-          increase the currentFocus variable:*/
-          currentFocus++;
-          /*and and make the current item more visible:*/
-          addActive(x);
-        } else if (e.keyCode == 38) { //up
-          /*If the arrow UP key is pressed,
-          decrease the currentFocus variable:*/
-          currentFocus--;
-          /*and and make the current item more visible:*/
-          addActive(x);
-        } else if (e.keyCode == 13) {
-          /*If the ENTER key is pressed, prevent the form from being submitted,*/
-          e.preventDefault();
-          if (currentFocus > -1) {
-            /*and simulate a click on the "active" item:*/
-            if (x) x[currentFocus].click();
-          }
-        }
-    });
-    function addActive(x) {
-      /*a function to classify an item as "active":*/
-      if (!x) return false;
-      /*start by removing the "active" class on all items:*/
-      removeActive(x);
-      if (currentFocus >= x.length) currentFocus = 0;
-      if (currentFocus < 0) currentFocus = (x.length - 1);
-      /*add class "autocomplete-active":*/
-      x[currentFocus].classList.add("autocomplete-active");
-    }
-    function removeActive(x) {
-      /*a function to remove the "active" class from all autocomplete items:*/
-      for (var i = 0; i < x.length; i++) {
-        x[i].classList.remove("autocomplete-active");
-      }
-    }
-    function closeAllLists(elmnt) {
-      /*close all autocomplete lists in the document,
-      except the one passed as an argument:*/
-      var x = document.getElementsByClassName("autocomplete-items");
-      for (var i = 0; i < x.length; i++) {
-        if (elmnt != x[i] && elmnt != inp) {
-          x[i].parentNode.removeChild(x[i]);
-        }
-      }
-    }
-    /*execute a function when someone clicks in the document:*/
-    document.addEventListener("click", function (e) {
-        closeAllLists(e.target);
-    });
-  }
-</script>
 </html>
