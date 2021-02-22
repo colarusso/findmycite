@@ -255,24 +255,36 @@
       <key variable="issued"/>
       <key variable="title"/>
     </sort>
-    <layout suffix=".">
-      <group delimiter=". ">
-        <text macro="contributors"/>
-        <text macro="date"/>
-        <text macro="title"/>
-      </group>
-      <text macro="description"/>
-      <text macro="secondary-contributors" prefix=". "/>
-      <text macro="container-title" prefix=". "/>
-      <text macro="container-contributors"/>
-      <text macro="edition"/>
-      <text macro="locators-chapter"/>
-      <text macro="collection-title-journal" prefix=", " suffix=", "/>
-      <text macro="locators"/>
-      <text macro="collection-title" prefix=". "/>
-      <text macro="issue"/>
-      <text macro="locators-article"/>
-      <text macro="access" prefix=". "/>
+    <layout suffix="." delimiter="; ">
+      <choose>
+        <if position="ibid">
+          <text value="id." text-case="capitalize-first" font-style="italic"/>
+          <text macro="at_page" suffix="."/>
+          <!-- period will not show up - this is for find-and-replace later. -->
+        </if>
+        <else-if position="subsequent">
+          <choose>
+            <if type="book" match="any">
+              <text variable="volume" suffix=" "/>
+            </if>
+          </choose>
+          <text macro="author-short"/>
+          <text value="supra" font-style="italic" prefix=", "/>
+          <text value="note" prefix=" "/>
+          <text variable="first-reference-note-number" prefix=" "/>
+          <text macro="at_page"/>
+        </else-if>
+        <else>
+          <choose>
+            <if type="book" match="any">
+              <text variable="volume" suffix=" "/>
+            </if>
+          </choose>
+          <text macro="author" suffix=", "/>
+          <text macro="source"/>
+          <text macro="access" prefix=", "/>
+        </else>
+      </choose>
     </layout>
   </bibliography>
 </style>
