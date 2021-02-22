@@ -3,6 +3,7 @@
       xmlns:og="http://ogp.me/ns#"
       xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
+    <title>Find My Cite</title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 	  <meta name="apple-mobile-web-app-capable" content="no" />
@@ -62,7 +63,15 @@
     }
     </style>
 
-    <!-- INSERT ANAYLITICS -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G1R2NYXS7D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G1R2NYXS7D');
+    </script>
 
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
@@ -141,7 +150,7 @@
 
           if (answers.length>0) {
             for (var i = 0; i < answers.length; i++) {
-              if (i<21) {
+              if (i<20) {
                 html = html + display_cites(answers[i],group);
               } else {
                 html = html + "<p style='padding:15px;background:orange;'><i>Additional matches found but not displayed. Consider refining your query.</i></p>"

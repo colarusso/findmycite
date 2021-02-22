@@ -123,8 +123,8 @@
     text = text.replace(/([a-z])([A-Z])/g, "$1 $2");
     text = text.replace(/([a-zA-Z])(\d)/g, "$1 $2");
     text = text.replace(/(\d)([a-zA-Z])/g, "$1 $2");
-    text = text.replace(/([.?!]"?)\s+(?=[A-Z0-9])/g, "$1<break>");
-    text = text.replace(/([;])\s+(?=[a-zA-Z0-9])/g, "$1<break>").split("<break>");
+    text = text.replace(/([.?!]"?)\s+(?=[A-Z0-9])/g, "$1<break>").split("<break>");
+    //text = text.replace(/([;])\s+(?=[a-zA-Z0-9])/g, "$1<break>").split("<break>");
     return text
   }
 
