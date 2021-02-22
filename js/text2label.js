@@ -88,8 +88,9 @@
       var vectorized_text = vectorize(val);
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().match(val.toUpperCase())) {
+          var ans = keys[i];
           if (!existing.includes(ans) & !existing.includes(ans.replace(/\|\d+/, (""))) & !existing.includes(ans.replace(/-(\d+)\|/, ("-")))) {
-            answers.push([keys[i],1]);
+            answers.push([ans,1]);
             nresults++;
           }
         }
@@ -228,7 +229,7 @@
 
   function display_cites(answer,group) {
     var sentNo = parseInt(answer[0].match(/(\d+)($|\|)/)[1]);
-    var itemNo = answer[0].replace(/\-(\d+\|?\d+)$/, (""));
+    var itemNo = answer[0].replace(/\-(\d+\|?\d*)$/, (""));
 
     var double = answer[0].includes("|")
 
