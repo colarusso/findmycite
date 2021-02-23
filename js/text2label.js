@@ -145,6 +145,36 @@
   var SentVecs = {};
   var SentTexts = {};
 
+  jQuery.cachedScript = function( url, options ) {
+
+    // Allow user to set any option except for dataType, cache, and url
+    options = $.extend( options || {}, {
+      dataType: "script",
+      cache: true,
+      url: url
+    });
+
+    // Use $.ajax() since it is more flexible than $.getScript
+    // Return the jqXHR object so we can chain callbacks
+    return jQuery.ajax( options );
+  };
+
+  function load_w2v () {
+    $('#msg').show();
+    $('#content').hide();
+    $('#output').html("Loading 25,000 word vectors...");
+
+    // Usage
+    $.cachedScript( "https://findmycite.org/js/word2vec.js" ).done(function( script, textStatus ) {
+      console.log( textStatus );
+
+      $('#content').show();
+      $('#zotero').show();
+      $('#msg').hide();
+      $('#output').html("Thinking...")
+    });
+  }
+
   function extractContent(s) {
     var span = document.createElement('span');
     span.innerHTML = s;
@@ -212,7 +242,7 @@
       var sim = getCosSim(vec, SentVecs[ans]);
       if (sim>=0.7 & !existing.includes(ans) & !existing.includes(ans.replace(/\|\d+/, (""))) & !existing.includes(ans.replace(/-(\d+)\|/, ("-")))) {
         sims.push([ans, sim]);
-      } 
+      }
     }
     sims.sort(function(a, b) {
       return b[1] - a[1];

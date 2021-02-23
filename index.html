@@ -32,18 +32,18 @@
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css?build=1">
-    <script src="js/text2label.js?build=12"></script>
+    <script src="js/text2label.js?build=13"></script>
 
   </head>
   <body><form autocomplete="off">
-    <div id="msg" style="position:absolute;top:0;z-index:100;width:100%;margin:0;">
+    <div id="msg" style="display:none;position:absolute;top:0;z-index:100;width:100%;margin:0;">
       <div style="margin:15px auto 0 auto;max-width:900px;text-align:center;background:#fff;padding:0px 15px 0 15px;">
       <p><img src="images/patience.gif" style="width:100%"/></p>
       <b> This may take some time. I am currently:</b>
-      <p id="output">Loading 25,000 word vectors...</p>
+      <p id="output">Thinking...</p>
       </div>
     </div>
-    <div id="content" style="display:none;margin:50px auto 0 auto;max-width:900px;">
+    <div id="content" style="margin:50px auto 0 auto;max-width:900px;">
 
       <h1 style="text-align:center;">Find My Cite</h1>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
@@ -56,41 +56,53 @@
       </p>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
 
-      <h3>API Key</h3>
+      <h3>Word2Vec Library</h3>
       <p>
-        In order to use this tool, you will need to generate a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these directions</a> and paste the API key in the field below. Be sure to write down the key and to provide it with  READ access to your group or groups.
-      </p>
-      <p>
-        API-Key: <input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
-      </p>
-      <h3>Group ID</h3>
-      <p>
-        This tool works by accessing the contents of a group library. If you don't have one already, you will need to create <a href="https://www.zotero.org/groups" target="_blank">a group</a> and fill it with content. We perform our search on the full text content of your group's library. If it isn't part of your library, we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>2305186</i> is the ID found in the following url: <i>https://www.zotero.org/groups/<b>2305186</b>/library_name/</i>.
-      </p>
-      <p>
-          Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
-      </p>
-      <h3>Citation Style</h3>
-      <p>
-        Set the format of cites displayed alongside results.
-      </p>
-      <p>
-        <select id="bib" style="padding:5px;font-size:15px;">
-          <option value="apa">American Psychological Association 7th edition</option>
-          <option value="bluebook-law-review" SELECTED>Bluebook Law Review</option>
-          <option value="chicago-note-bibliography">Chicago Manual of Style 17th edition (note)</option>
-          <option value="modern-language-association">Modern Language Association 8th edition</option>
-        </select>
+        To search across semantic content, we transform words into numbers using a tool called Word2Vec. This lets us use math to compare how similar text in your library is to your query below. To learn more, check out <a href="https://www.codingthelaw.org/Fall_2020/level/7/#intro_vid" target="_blank">this video lesson on Word2Vec</a>. Either way, load Word2Vec to proceed.
       </p>
       <p style="margin-bottom:25px;">
-        <input id="build_button" type="button" value='Build Library' style="width:100%;background:#eee;padding:5px;" onclick="zotero(document.getElementById('group').value,0,document.getElementById('bib').value,document.getElementById('api_key').value)"/>
+        <input id="w2v_button" type="button" value='Load Word2Vec' style="width:100%;background:#eee;padding:5px;" onclick="load_w2v();"/>
       </p>
+
+      <div id="zotero" style="display:none;">
+        <hr style="height:1px;border:none;color:#333;background-color:#333;">
+
+        <h3>API Key</h3>
+        <p>
+          In order to use this tool, you will need to create a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these prompts</a> and paste the API key in the field below. Be sure to write down the key and to provide it with  READ access to your group or groups.
+        </p>
+        <p>
+          API-Key: <input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
+        </p>
+        <h3>Group ID</h3>
+        <p>
+          This tool works by accessing the contents of a group library. If you don't have one, you will need to create <a href="https://www.zotero.org/groups" target="_blank">a group</a> and fill it with content. We perform our search on the full text content of your group's library. If it isn't part of your library, we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>2305186</i> is the ID found in the following url: <i>https://www.zotero.org/groups/<b>2305186</b>/library_name/</i>.
+        </p>
+        <p>
+            Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
+        </p>
+        <h3>Citation Style</h3>
+        <p>
+          Set the format of cites displayed alongside results.
+        </p>
+        <p>
+          <select id="bib" style="padding:5px;font-size:15px;">
+            <option value="apa">American Psychological Association 7th edition</option>
+            <option value="bluebook-law-review" SELECTED>Bluebook Law Review</option>
+            <option value="chicago-note-bibliography">Chicago Manual of Style 17th edition (note)</option>
+            <option value="modern-language-association">Modern Language Association 8th edition</option>
+          </select>
+        </p>
+        <p style="margin-bottom:25px;">
+          <input id="build_button" type="button" value='Build Library' style="width:100%;background:#eee;padding:5px;" onclick="zotero(document.getElementById('group').value,0,document.getElementById('bib').value,document.getElementById('api_key').value)"/>
+        </p>
+      </div>
 
       <div id="search" style="display:none;">
         <a name="search"><hr style="height:1px;border:none;color:#333;background-color:#333;"></a>
         <h2>Your Search</h2>
         <p>
-          This search will do its best to match the semantic content of the text you input with a sentence in your library. For best results, write your query/proposition as a full sentence. Because the work is being done by your browser, and I didn't want to overload it, this tool only knows 25,000 words. So, the search can be slow for big libraries, and matches aren't perfect. That being said, this search beats a simple "find this phrase" or "find these words" search, and it's a free tool. ;)
+          This search will do its best to match the semantic content of the text you input with text in your library. For best results, write your query/proposition as a full sentence. Because the work is being done by your browser, and I didn't want to overload it, this tool only knows 25,000 words. So, the search can be slow for big libraries, and matches aren't perfect. That being said, this search beats a simple "find this phrase" or "find these words" search, and it's a free tool. ;)
         </p>
         <p>
           <input type="checkbox" id="suggest" name="suggest" value="1" CHECKED>
@@ -119,12 +131,7 @@
 
     </div>
   </form></body>
-  <script src="js/word2vec.js"></script>
   <script>
-    $('#content').show();
-    $('#msg').hide();
-    $('#output').html("Thinking...")
-
     if (localStorage.group) {
       document.getElementById('group').value = localStorage.group;
     }
