@@ -274,8 +274,8 @@
 
       $('#msg').show();
       $('#content').hide();
-  		//apicall = "https://api.zotero.org/groups/"+group+"/items/?include=citation&style="+bibstyle+"&start="+start;
-      apicall = "https://api.zotero.org/groups/"+group+"/items/?include=bib&style="+bibstyle+"&start="+start;
+  		apicall = "https://api.zotero.org/groups/"+group+"/items/?include=citation&style="+bibstyle+"&start="+start;
+      //apicall = "https://api.zotero.org/groups/"+group+"/items/?include=bib&style="+bibstyle+"&start="+start;
       //console.log("API Call:"+apicall)
   		axios.get(
   		 	apicall,
@@ -286,16 +286,27 @@
         //console.log("Connected to Zotero.")
         //x = response.data
         //console.log(response.data);
+
         if (response.data.length > 0) {
           for (var key in response.data) {
+
             var key_tmp = response.data[key].key;
+
+            if (response.data[key]["links"]["attachment"]) {
+              bib[response.data[key]["links"]["attachment"]["href"].match(/\/([^\/]+)$/i)[1]] = response.data[key].citation;
+              bib[key_tmp] = response.data[key].citation;
+            } else if (!Object.keys(bib).includes(key_tmp)) {
+              bib[key_tmp] = response.data[key].citation;
+            }
+            //bib[key_tmp] = response.data[key].citation;
+
             //var obj_tmp = {};
             //fulltext = zotero_fulltext(group,key_tmp,api_key)
             //docs[0]["ZIBXXK2T"]["fulltext"] = await zotero_fulltext("2765496","RD6TX2AY","qs1mJr6QpCe3DZDHBkaBnfLK")
             //obj_tmp[key_tmp+"-"+i] = {fulltext: "" ,sentences:[]};
             docs[key_tmp] = [];
-            //bib[key_tmp] = response.data[key].citation;
-            bib[key_tmp] = response.data[key].bib;
+
+            //bib[key_tmp] = response.data[key].bib;
             //var obj_tmp = {id:key_tmp, fulltext: "" ,sentences:[]};
            	//docs.push(obj_tmp);
           }
@@ -367,7 +378,7 @@
       var next3 = "";
     }
 
-    return "<hr style='height:1px;border:none;color:#333;background-color:#333;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"% "+"</font></p><blockquote style='border-left; solid 4px #eee;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
+    return "<hr style='height:1px;border:none;color:#333;background-color:#333;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"% <span style='float:right;'>Item No. "+itemNo+"</span></font></p><blockquote style='border-left; solid 4px #eee;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
 
   }
 
