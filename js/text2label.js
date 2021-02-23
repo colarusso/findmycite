@@ -383,8 +383,16 @@
       if (docs[key].length>0) {
         text = docs[key].replace(/\n/g, " ");
         text = text.replace(/\s{2,}/g,' ');
-        var citation_list = text.match(/(([A-Z]{1}[A-Za-z]+\s)*[A-Z]{1}[A-Za-z]+\s?,\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s\d+\.?)+/ig);
-        var citation_list_2 = text.match(/(([A-Z]{1}[A-Za-z]+\s)*[A-Z]{1}[A-Za-z]+\s?(,|\.)\s)+\((19|20)\d{2}\)\.?\s([A-Za-z]+,?\.?\s)+\d+/ig);
+        try {
+          var citation_list = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]+\s)*([A-Z]{1}|\d+)-?[A-Za-z]+\s?,\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s\d+\.?)+/ig);
+        } catch (error) {
+          var citation_list;
+        }
+        try {
+          var citation_list_2 = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]+\s)*([A-Z]{1}|\d+)-?[A-Za-z]+\s?(,|\.)\s)+\((19|20)\d{2}\)\.?\s([A-Za-z]+,?\.?\s)+\d+/ig);
+        } catch (error) {
+          var citation_list_2;
+        }
         if (citation_list && citation_list_2) {
           citation_list = citation_list.concat(citation_list_2);
         } else if (citation_list_2) {
@@ -406,6 +414,7 @@
       html = html + "</ul>";
     }
 
+    console.log("Done Parsing cites.");
     $('#cite_list').html(html);
 
   }
