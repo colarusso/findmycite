@@ -298,13 +298,23 @@
 
       try {
         if (bib[key].includes("placeholder")) {
-          apicall_2 = "https://api.zotero.org/groups/"+group+"/items/"+bib[key].match(/-(.*)$/i)[1]+"?include=citation&style="+bibstyle;
-          bib[key] = await axios.get(apicall_2,{headers: { Authorization: "Bearer "+ api_key} }).then(function(response){ return response.data["citation"] });
+          if (bibstyle=="bluebook-law-review") {
+            apicall_2 = "https://api.zotero.org/groups/"+group+"/items/"+bib[key].match(/-(.*)$/i)[1]+"?include=citation&style="+bibstyle;
+            bib[key] = await axios.get(apicall_2,{headers: { Authorization: "Bearer "+ api_key} }).then(function(response){ return response.data["citation"] });
+          } else {
+            apicall_2 = "https://api.zotero.org/groups/"+group+"/items/"+bib[key].match(/-(.*)$/i)[1]+"?include=bib&style="+bibstyle;
+            bib[key] = await axios.get(apicall_2,{headers: { Authorization: "Bearer "+ api_key} }).then(function(response){ return response.data["bib"] });
+          }
         }
       } catch (error) {
         try {
-          apicall_2 = "https://api.zotero.org/groups/"+group+"/items/"+key+"?include=citation&style="+bibstyle;
-          bib[key] = await axios.get(apicall_2,{headers: { Authorization: "Bearer "+ api_key} }).then(function(response){ return response.data["citation"] });
+          if (bibstyle=="bluebook-law-review") {
+            apicall_2 = "https://api.zotero.org/groups/"+group+"/items/"+key+"?include=citation&style="+bibstyle;
+            bib[key] = await axios.get(apicall_2,{headers: { Authorization: "Bearer "+ api_key} }).then(function(response){ return response.data["citation"] });
+          } else {
+            apicall_2 = "https://api.zotero.org/groups/"+group+"/items/"+key+"?include=bib&style="+bibstyle;
+            bib[key] = await axios.get(apicall_2,{headers: { Authorization: "Bearer "+ api_key} }).then(function(response){ return response.data["bib"] });
+          }
         } catch (error) {
           bib[key] = "null";
         }
@@ -348,7 +358,12 @@
 
       $('#msg').show();
       $('#content').hide();
-  		apicall = "https://api.zotero.org/groups/"+group+"/items/?include=citation&style="+bibstyle+"&start="+start;
+
+      if (bibstyle=="bluebook-law-review") {
+  		  apicall = "https://api.zotero.org/groups/"+group+"/items/?include=citation&style="+bibstyle+"&start="+start;
+      } else {
+        apicall = "https://api.zotero.org/groups/"+group+"/items/?include=bib&style="+bibstyle+"&start="+start;
+      }
       //apicall = "https://api.zotero.org/groups/"+group+"/items/?include=bib&style="+bibstyle+"&start="+start;
       //console.log("API Call:"+apicall)
   		axios.get(
@@ -368,7 +383,11 @@
 
             if (!response.data[key]["links"]["up"]) {
               //bib[response.data[key]["links"]["attachment"]["href"].match(/\/([^\/]+)$/i)[1]] = response.data[key].citation;
-              bib[key_tmp] = response.data[key].citation;
+              if (bibstyle=="bluebook-law-review") {
+                bib[key_tmp] = response.data[key].citation;
+              } else {
+                bib[key_tmp] = response.data[key].bib;
+              }
             } else {
               bib[key_tmp] = "placeholder-"+response.data[key]["links"]["up"]["href"].match(/\/([^\/]+)$/i)[1];
             }
