@@ -369,6 +369,49 @@
       })
   }
 
+  function load_cites() {
+
+    //$('#simple_cite').show();
+
+    $('#cite_list').html("Searching...");
+    console.log("Parsing cites...");
+
+    html = "<p>Note: each of the searches below are apended with a <i>#42</i>. Thats is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a>.</p><ul style='margin-bottom:35px'>";
+    k = 0;
+    for (var key in docs) {
+      //console.log(key);
+      if (docs[key].length>0) {
+        text = docs[key].replace(/\n/g, " ");
+        text = text.replace(/\s{2,}/g,' ');
+        var citation_list = text.match(/(([A-Z]{1}[A-Za-z]+\s)*[A-Z]{1}[A-Za-z]+\s?,\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s\d+\.?)+/ig);
+        var citation_list_2 = text.match(/(([A-Z]{1}[A-Za-z]+\s)*[A-Z]{1}[A-Za-z]+\s?(,|\.)\s)+\((19|20)\d{2}\)\.?\s([A-Za-z]+,?\.?\s)+\d+/ig);
+        if (citation_list && citation_list_2) {
+          citation_list = citation_list.concat(citation_list_2);
+        } else if (citation_list_2) {
+          citation_list = citation_list_2;
+        }
+        if (citation_list) {
+          for (var i = 0; i < citation_list.length; i++) {
+            html = html + "<li><a href=\"https://scholar.google.com/scholar?q="+encodeURIComponent(citation_list[i])+"#42\" target=\"_blank\">"+citation_list[i]+"</a></li>"
+          	//console.log(citation_list[i]);
+            k = k + 1;
+          }
+        }
+      }
+    }
+
+    if (k==0) {
+      html = "<p style='background:orange;padding:15px;'>No citations found.</p>";
+    } else {
+      html = html + "</ul>";
+    }
+
+    $('#cite_list').html(html);
+
+  }
+
+
+
   function display_cites(answer,group) {
     var sentNo = parseInt(answer[0].match(/(\d+)($|\|)/)[1]);
     var itemNo = answer[0].replace(/\-(\d+\|?\d*)$/, (""));
