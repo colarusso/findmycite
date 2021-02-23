@@ -147,11 +147,10 @@
 
   function preload(arrayOfImages) {
       $(arrayOfImages).each(function () {
+          console.log("Loading: "+this)
           $('<img />').attr('src',this).appendTo('body').css('display','none');
       });
   }
-
-  preload(['images/alice.webp','images/bean.gif','images/jimmy.gif','images/little_r.webp','images/patience.gif','images/pbride.webp','images/seinfeld.gif','images/ted.gif','images/twinpeaks.gif']);
 
   function pick_image() {
     var i = Math.floor(Math.random() * 9) + 1;
