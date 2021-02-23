@@ -229,13 +229,28 @@
         {headers: { Authorization: "Bearer "+ api_key} }).then(response => response.data.content)
   }
 
-  async function add_text(group,api_key) {
+  async function add_text(group,bibstyle,api_key) {
     console.log("Adding texts.");
     var nitems = Object.keys(docs).length;
     var j = 1;
     for (var key in docs) {
       $('#output').html("Retrieveing &amp; vectorizing text for item "+key+" ("+j+" of "+nitems+")...")
       j = j + 1;
+
+      try {
+        if (bib[key].includes("placeholder")) {
+          apicall_2 = "https://api.zotero.org/groups/"+group+"/items/"+bib[key].match(/-(.*)$/i)[1]+"?include=citation&style="+bibstyle;
+          bib[key] = await axios.get(apicall_2,{headers: { Authorization: "Bearer "+ api_key} }).then(function(response){ return response.data["citation"] });
+        }
+      } catch (error) {
+        try {
+          apicall_2 = "https://api.zotero.org/groups/"+group+"/items/"+key+"?include=citation&style="+bibstyle;
+          bib[key] = await axios.get(apicall_2,{headers: { Authorization: "Bearer "+ api_key} }).then(function(response){ return response.data["citation"] });
+        } catch (error) {
+          bib[key] = "null";
+        }
+      }
+
       //console.log(key);
       try {
         docs[key] = await zotero_fulltext(group,key,api_key);
@@ -292,11 +307,11 @@
 
             var key_tmp = response.data[key].key;
 
-            if (response.data[key]["links"]["attachment"]) {
-              bib[response.data[key]["links"]["attachment"]["href"].match(/\/([^\/]+)$/i)[1]] = response.data[key].citation;
+            if (!response.data[key]["links"]["up"]) {
+              //bib[response.data[key]["links"]["attachment"]["href"].match(/\/([^\/]+)$/i)[1]] = response.data[key].citation;
               bib[key_tmp] = response.data[key].citation;
-            } else if (!Object.keys(bib).includes(key_tmp)) {
-              bib[key_tmp] = response.data[key].citation;
+            } else {
+              bib[key_tmp] = "placeholder-"+response.data[key]["links"]["up"]["href"].match(/\/([^\/]+)$/i)[1];
             }
             //bib[key_tmp] = response.data[key].citation;
 
@@ -314,7 +329,7 @@
         } else {
           $('#output').html("No more items found.")
           console.log("No more items found.");
-          add_text(group,api_key);
+          add_text(group,bibstyle,api_key);
         }
         //return docs;
       }).catch(function(error){
