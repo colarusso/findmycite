@@ -145,8 +145,16 @@
   var SentVecs = {};
   var SentTexts = {};
 
+  function preload(arrayOfImages) {
+      $(arrayOfImages).each(function () {
+          $('<img />').attr('src',this).appendTo('body').css('display','none');
+      });
+  }
+
+  preload(['images/alice.webp','images/bean.gif','images/jimmy.gif','images/little_r.webp','images/patience.gif','images/pbride.webp','images/seinfeld.gif','images/ted.gif','images/twinpeaks.gif']);
+
   function pick_image() {
-    var i = Math.floor(Math.random() * 10) + 1;
+    var i = Math.floor(Math.random() * 9) + 1;
     if (i==1) {
       $("#patience").attr("src","images/alice.webp");
     } else if (i==2) {
@@ -160,12 +168,10 @@
     } else if (i==6) {
       $("#patience").attr("src","images/pbride.webp");
     } else if (i==7) {
-      $("#patience").attr("src","images/patience.gif");
-    } else if (i==8) {
       $("#patience").attr("src","images/seinfeld.gif");
-    } else if (i==9) {
+    } else if (i==8) {
       $("#patience").attr("src","images/ted.gif");
-    } else if (i==10) {
+    } else if (i==9) {
       $("#patience").attr("src","images/twinpeaks.gif");
     }
   }
