@@ -428,7 +428,7 @@
     console.log("Parsing cites...");
 
     setTimeout(function (){
-      html = "<p>Note: Each of the searches below are apended with a <i>#42</i>. This is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a>.</p><ul style='margin-bottom:35px'>";
+      html = "<p>Note: Each of the searches below are apended with a <i>#42</i>. This is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a> by watching the url.</p><ul style='margin-bottom:35px'>";
       k = 0;
       for (var key in docs) {
         //console.log(key);
@@ -587,7 +587,7 @@
 
       if (answers.length>0) {
         for (var i = 0; i < answers.length; i++) {
-          if (i<21) {
+          if (i<20) {
             html = html + display_cites(answers[i],group);
           } else {
             html = html + "<p style='padding:15px;background:orange;'><i>Additional matches found but not displayed. Consider refining your query.</i></p>"
