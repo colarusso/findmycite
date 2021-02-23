@@ -212,9 +212,7 @@
       var sim = getCosSim(vec, SentVecs[ans]);
       if (sim>=0.7 & !existing.includes(ans) & !existing.includes(ans.replace(/\|\d+/, (""))) & !existing.includes(ans.replace(/-(\d+)\|/, ("-")))) {
         sims.push([ans, sim]);
-      } else if (sim>=0.7) {
-        console.log("didn't add "+ans+" ("+sim+")")
-      }
+      } 
     }
     sims.sort(function(a, b) {
       return b[1] - a[1];
