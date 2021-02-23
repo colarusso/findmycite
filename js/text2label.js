@@ -145,6 +145,31 @@
   var SentVecs = {};
   var SentTexts = {};
 
+  function pick_image() {
+    var i = Math.floor(Math.random() * 10) + 1;
+    if (i==1) {
+      $("#patience").attr("src","images/alice.webp");
+    } else if (i==2) {
+      $("#patience").attr("src","images/bean.gif");
+    } else if (i==3) {
+      $("#patience").attr("src","images/jimmy.gif");
+    } else if (i==4) {
+      $("#patience").attr("src","images/little_r.webp");
+    } else if (i==5) {
+      $("#patience").attr("src","images/patience.gif");
+    } else if (i==6) {
+      $("#patience").attr("src","images/pbride.webp");
+    } else if (i==7) {
+      $("#patience").attr("src","images/patience.gif");
+    } else if (i==8) {
+      $("#patience").attr("src","images/seinfeld.gif");
+    } else if (i==9) {
+      $("#patience").attr("src","images/ted.gif");
+    } else if (i==10) {
+      $("#patience").attr("src","images/twinpeaks.gif");
+    }
+  }
+
   jQuery.cachedScript = function( url, options ) {
 
     // Allow user to set any option except for dataType, cache, and url
@@ -171,6 +196,7 @@
       $('#content').show();
       $('#zotero').show();
       $('#msg').hide();
+      pick_image();
       $('#output').html("Thinking...")
     });
   }
@@ -262,7 +288,7 @@
     var nitems = Object.keys(docs).length;
     var j = 1;
     for (var key in docs) {
-      $('#output').html("Retrieveing &amp; vectorizing text for item "+key+" ("+j+" of "+nitems+")...")
+      $('#output').html("Retrieveing &amp; vectorizing text for item "+key+"</br>("+j+" of "+nitems+")...")
       j = j + 1;
 
       try {
@@ -304,7 +330,7 @@
     $('#build_button').val("Rebuild Library")
     $('#missing_words').html("");
     $('#content').show();
-    $('#search').show();
+    $('#search_box').show();
     $('#msg').hide();
   }
 
@@ -366,56 +392,61 @@
       	alert("There was a problem connecting to Zotero ("+error+"). Check your credenials et al.");
         $('#content').show();
         $('#msg').hide();
+        pick_image();
       })
   }
 
   function load_cites() {
 
     //$('#simple_cite').show();
-
-    $('#cite_list').html("Searching...");
+    $('#loading_cites').show();
+    $('#cite_list').html("");
     console.log("Parsing cites...");
 
-    html = "<p>Note: each of the searches below are apended with a <i>#42</i>. Thats is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a>.</p><ul style='margin-bottom:35px'>";
-    k = 0;
-    for (var key in docs) {
-      //console.log(key);
-      if (docs[key].length>0) {
-        text = docs[key].replace(/\n/g, " ");
-        text = text.replace(/\s{2,}/g,' ');
-        try {
-          var citation_list = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]+\s)*([A-Z]{1}|\d+)-?[A-Za-z]+\s?,\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s\d+\.?)+/ig);
-        } catch (error) {
-          var citation_list;
-        }
-        try {
-          var citation_list_2 = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]+\s)*([A-Z]{1}|\d+)-?[A-Za-z]+\s?(,|\.)\s)+\((19|20)\d{2}\)\.?\s([A-Za-z]+,?\.?\s)+\d+/ig);
-        } catch (error) {
-          var citation_list_2;
-        }
-        if (citation_list && citation_list_2) {
-          citation_list = citation_list.concat(citation_list_2);
-        } else if (citation_list_2) {
-          citation_list = citation_list_2;
-        }
-        if (citation_list) {
-          for (var i = 0; i < citation_list.length; i++) {
-            html = html + "<li><a href=\"https://scholar.google.com/scholar?q="+encodeURIComponent(citation_list[i])+"#42\" target=\"_blank\">"+citation_list[i]+"</a></li>"
-          	//console.log(citation_list[i]);
-            k = k + 1;
+    setTimeout(function (){
+      html = "<p>Note: Each of the searches below are apended with a <i>#42</i>. This is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a>.</p><ul style='margin-bottom:35px'>";
+      k = 0;
+      for (var key in docs) {
+        //console.log(key);
+        if (docs[key].length>0) {
+          text = docs[key].replace(/\n/g, " ");
+          text = text.replace(/\s{2,}/g,' ');
+          try {
+            var citation_list = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]*(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+\s?(,)\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s\d+\.?)+/ig);
+          } catch (error) {
+            var citation_list;
+          }
+          try {
+            var citation_list_2 = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]*(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+\s?(,|\.)\s)+\((19|20)\d{2}\)\.?\s([A-Za-z]+,?\.?\s)+\d+/ig);
+          } catch (error) {
+            var citation_list_2;
+          }
+          if (citation_list && citation_list_2) {
+            citation_list = citation_list.concat(citation_list_2);
+          } else if (citation_list_2) {
+            citation_list = citation_list_2;
+          }
+          if (citation_list) {
+            for (var i = 0; i < citation_list.length; i++) {
+              html = html + "<li><a href=\"https://scholar.google.com/scholar?q="+encodeURIComponent(citation_list[i])+"#42\" target=\"_blank\">"+citation_list[i]+"</a></li>"
+            	//console.log(citation_list[i]);
+              k = k + 1;
+            }
           }
         }
       }
-    }
 
-    if (k==0) {
-      html = "<p style='background:orange;padding:15px;'>No citations found.</p>";
-    } else {
-      html = html + "</ul>";
-    }
+      if (k==0) {
+        html = "<p style='background:orange;padding:15px;'>No citations found.</p>";
+      } else {
+        html = html + "</ul>";
+      }
 
-    console.log("Done Parsing cites.");
-    $('#cite_list').html(html);
+      console.log("Done Parsing cites.");
+      $('#loading_cites').hide();
+      $('#cite_list').html(html);
+
+    }, 50);
 
   }
 

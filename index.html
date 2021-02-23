@@ -32,18 +32,18 @@
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css?build=1">
-    <script src="js/text2label.js?build=15"></script>
+    <script src="js/text2label.js?build=16"></script>
 
   </head>
   <body><form autocomplete="off">
     <div id="msg" style="display:none;position:absolute;top:0;z-index:100;width:100%;margin:0;">
-      <div style="margin:15px auto 0 auto;max-width:900px;text-align:center;background:#fff;padding:0px 15px 0 15px;">
-      <p><img src="images/patience.gif" style="width:100%"/></p>
+      <div style="margin:15px auto 0 auto;max-width:400px;text-align:center;background:#fff;padding:0px 15px 0 15px;">
+      <p><img id="patience" src="images/patience.gif" style="width:100%"/></p>
       <b> This may take some time. I am currently:</b>
       <p id="output">Thinking...</p>
       </div>
     </div>
-    <div id="content" style="margin:50px auto 0 auto;max-width:900px;">
+    <div id="content" style="margin:30px auto 0 auto;max-width:900px;">
 
       <h1 style="text-align:center;">Find My Cite</h1>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
@@ -98,7 +98,7 @@
         </p>
       </div>
 
-      <div id="search" style="display:none;">
+      <div id="search_box" style="display:none;">
 
         <div id="simple_cite" style="display:show;">
           <hr style="height:1px;border:none;color:#333;background-color:#333;">
@@ -109,11 +109,14 @@
           <p style="margin-bottom:25px;">
             <input id="cite_button" type="button" value='Compile Possible Cites' style="width:100%;background:#eee;padding:5px;" onclick="load_cites();"/>
           </p>
+          <div id="loading_cites" style="display:none;width:100%;margin:35px auto;text-align:center;">
+                  <img src="images/Ajax-loader.gif" width="35px;" height="35px;"/>
+          </div>
           <p id="cite_list"></p>
         </div>
 
-        <a name="search"><hr style="height:1px;border:none;color:#333;background-color:#333;"></a>
-        <h2>Search</h2>
+        <hr style="height:1px;border:none;color:#333;background-color:#333;">
+        <a name="search"><h2>Search</h2></a>
         <p>
           This search will do its best to match the semantic content of the text you input with text in your library. For best results, write your query/proposition as a full sentence. Because the work is being done by your browser, and I didn't want to overload it, this tool only knows 25,000 words. So, the search can be slow for big libraries, and matches aren't perfect. That being said, this search beats a simple "find this phrase" or "find these words" search, and it's a free tool. ;)
         </p>
@@ -147,6 +150,8 @@
     </div>
   </form></body>
   <script>
+    pick_image();
+
     if (localStorage.group) {
       document.getElementById('group').value = localStorage.group;
     }
