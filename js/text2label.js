@@ -279,7 +279,7 @@
         var dupcheck_2 = true;
       }
 
-      if (sim>=0.7 && !existing.includes(ans.replace(/\|\d+/, (""))) && !existing.includes(ans.replace(/-(\d+)\|\d+$/, ("-"+(ans.match(/\d+$/)[0]-2)+"|"+"$1"))) && !existing.includes(ans.replace(/-(\d+)\|\d+$/, ("-"+"$1|"+(parseInt(ans.match(/-(\d+)/)[1])+1)))) && dupcheck) {
+      if (sim>=$('#cutoff').val()/100 && !existing.includes(ans.replace(/\|\d+/, (""))) && !existing.includes(ans.replace(/-(\d+)\|\d+$/, ("-"+(ans.match(/\d+$/)[0]-2)+"|"+"$1"))) && !existing.includes(ans.replace(/-(\d+)\|\d+$/, ("-"+"$1|"+(parseInt(ans.match(/-(\d+)/)[1])+1)))) && dupcheck) {
         if (sims.length>0) {
           if (!sims.map(x => x[0]).includes(ans.replace(/\|\d+/, (""))) && !sims.map(x => x[0]).includes( ans.replace(/-(\d+)\|\d+$/, ("-"+(ans.match(/\d+$/)[0]-2)+"|"+"$1")) ) && !sims.map(x => x[0]).includes(ans.replace(/-(\d+)\|\d+$/, ("-"+"$1|"+(parseInt(ans.match(/-(\d+)/)[1])+1)))) && dupcheck_2) {
             sims.push([ans, sim]);
@@ -443,7 +443,7 @@
     console.log("Parsing cites...");
 
     setTimeout(function (){
-      html = "<p>Note: Each of the searches below are apended with a <i>#42</i>. This is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a> by watching the url.</p><ul style='margin-bottom:35px'>";
+      html = "<p>Note: Each of the searches below are apended with a <i>#42</i>. This is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a> by watching the url.<span style='float:right;font-size:10px;padding:25px 10px 0 0;text-transform: uppercase;'><a href=\"javascript:void('')\" onClick=\"$('#cite_list').html('');\">Clear Results</a></span></p><ul style='margin-bottom:35px'>";
       k = 0;
       for (var key in docs) {
         //console.log(key);
@@ -548,6 +548,9 @@
   }
 
   function run_search(val) {
+
+    localStorage.cutoff = $('#cutoff').val();
+
     answers = [];
     if (val.trim().length> 0) {
   		var nresults = 0;
@@ -562,11 +565,11 @@
             nresults++;
           }
         }
-        if (nresults > 21){
+        if (nresults > 20){
           break;
         }
       }
-      if ((answers.length < 21) && (vectorized_text.length > 0) && (val.replace(/\s{2,}/g,' ').trim().split(" ").length > 2)) {
+      if ((answers.length <= 20) && (vectorized_text.length > 0) && (val.replace(/\s{2,}/g,' ').trim().split(" ").length > 2)) {
         answers = answers.concat(getNClosest(21-answers.length, vectorized_text,answers.map(x => x[0])));
       }
     }
@@ -579,7 +582,6 @@
     $('#answer').hide();
     $('#output').html("Thinking...");
     $('#loading').show();
-
 
     // getNClosestAnswer allows for the return of multiple labels
     // here we've limited it to one. Additionally, we're filtering by
@@ -598,7 +600,7 @@
         result_count = answers.length
       }
 
-      var html = "<h3>"+result_count+" Results</h3>";
+      var html = "<span style='float:right;font-size:10px;padding:5px 0px 0 0;text-transform: uppercase;'><a href=\"javascript:void('')\" onClick=\"$('#answer').html('');\">Clear Results</a></span><h3>"+result_count+" Results</h3>";
 
       if (answers.length>0) {
         for (var i = 0; i < answers.length; i++) {
