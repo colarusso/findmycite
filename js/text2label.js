@@ -271,8 +271,22 @@
     var sims = [];
     for (var ans in SentVecs) {
       var sim = getCosSim(vec, SentVecs[ans]);
-      if (sim>=0.7 & !existing.includes(ans) & !existing.includes(ans.replace(/\|\d+/, (""))) & !existing.includes(ans.replace(/-(\d+)\|/, ("-")))) {
-        sims.push([ans, sim]);
+      if (ans.includes("|")) {
+        var dupcheck = !existing.includes(ans.replace(/-(\d+)\|\d+$/, ("-"+(ans.match(/\d+$/)[0]-2))))
+        var dupcheck_2 = !sims.map(x => x[0]).includes(ans.replace(/-(\d+)\|\d+$/, ("-"+(ans.match(/\d+$/)[0]-2))))
+      } else {
+        var dupcheck = true;
+        var dupcheck_2 = true;
+      }
+
+      if (sim>=0.7 && !existing.includes(ans.replace(/\|\d+/, (""))) && !existing.includes(ans.replace(/-(\d+)\|\d+$/, ("-"+(ans.match(/\d+$/)[0]-2)+"|"+"$1"))) && !existing.includes(ans.replace(/-(\d+)\|\d+$/, ("-"+"$1|"+(parseInt(ans.match(/-(\d+)/)[1])+1)))) && dupcheck) {
+        if (sims.length>0) {
+          if (!sims.map(x => x[0]).includes(ans.replace(/\|\d+/, (""))) && !sims.map(x => x[0]).includes( ans.replace(/-(\d+)\|\d+$/, ("-"+(ans.match(/\d+$/)[0]-2)+"|"+"$1")) ) && !sims.map(x => x[0]).includes(ans.replace(/-(\d+)\|\d+$/, ("-"+"$1|"+(parseInt(ans.match(/-(\d+)/)[1])+1)))) && dupcheck_2) {
+            sims.push([ans, sim]);
+          }
+        } else {
+          sims.push([ans, sim]);
+        }
       }
     }
     sims.sort(function(a, b) {
@@ -280,6 +294,7 @@
     });
     return sims.slice(0, n);
   }
+
 
 
   function zotero_fulltext(group,key,api_key) {
@@ -528,7 +543,7 @@
       var next3 = "";
     }
 
-    return "<hr style='height:1px;border:none;color:#333;background-color:#333;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"% <span style='float:right;'>Item No. "+itemNo+"</span></font></p><blockquote style='border-left; solid 4px #eee;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
+    return "<hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"% <span style='float:right;'>Item No. "+itemNo+"</span></font></p><blockquote style='border-left: 4px solid #ccc;padding-left:15px;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
 
   }
 
@@ -542,7 +557,7 @@
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().match(val.toUpperCase())) {
           var ans = keys[i];
-          if (!answers.map(x => x[0]).includes(ans) & !answers.map(x => x[0]).includes(ans.replace(/\|\d+/, (""))) & !answers.map(x => x[0]).includes(ans.replace(/-(\d+)\|/, ("-")))) {
+          if (!answers.map(x => x[0]).includes(ans) && !answers.map(x => x[0]).includes(ans.replace(/\|\d+/, (""))) && !answers.map(x => x[0]).includes(ans.replace(/-(\d+)\|/, ("-")))) {
             answers.push([ans,1]);
             nresults++;
           }
@@ -551,7 +566,7 @@
           break;
         }
       }
-      if ((answers.length < 21) && (vectorized_text.length > 0)) {
+      if ((answers.length < 21) && (vectorized_text.length > 0) && (val.replace(/\s{2,}/g,' ').trim().split(" ").length > 2)) {
         answers = answers.concat(getNClosest(21-answers.length, vectorized_text,answers.map(x => x[0])));
       }
     }
