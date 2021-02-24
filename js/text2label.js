@@ -600,7 +600,7 @@
         result_count = answers.length
       }
 
-      var html = "<span style='float:right;font-size:10px;padding:5px 0px 0 0;text-transform: uppercase;'><a href=\"javascript:void('')\" onClick=\"$('#answer').html('');\">Clear Results</a></span><h3>"+result_count+" Results</h3>";
+      var html = "<span style='float:right;font-size:10px;padding:5px 0px 0 0;text-transform: uppercase;'><a href=\"javascript:void('')\" onClick=\"$('#answer').html('');$('#missing_words').html('');\">Clear Results</a></span><h3>"+result_count+" Results</h3>";
 
       if (answers.length>0) {
         for (var i = 0; i < answers.length; i++) {
