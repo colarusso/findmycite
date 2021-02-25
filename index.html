@@ -31,6 +31,10 @@
     </script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/spin.css">
+    <script type="module" src="spin.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/style.css?build=1">
     <script src="js/text2label.js?build=25"></script>
 
@@ -56,7 +60,7 @@
       </p>
       <hr style="height:1px;border:none;color:#333;background-color:#333;">
 
-      <h3>Word2Vec Library</h3>
+      <h3>Word2Vec</h3>
       <p>
         To search across semantic content, we transform words into numbers using a tool called Word2Vec. This lets us use math to compare how similar text in your library is to your query. To learn more, check out <a href="https://www.codingthelaw.org/Fall_2020/level/7/#intro_vid" target="_blank">this video lesson on Word2Vec</a>. Load Word2Vec to proceed.
       </p>
@@ -83,7 +87,7 @@
         </p>
         <h3>Citation Style</h3>
         <p>
-          Set the format for citations in your search results.
+          Set the format for citations in your search results. Note: If you want to change this later, you will have to rebuild your library.
         </p>
         <p>
           <select id="bib" style="padding:5px;font-size:15px;">
@@ -166,5 +170,28 @@
       document.getElementById('cutoff').value = localStorage.cutoff;
       $('#cutoffv').html(localStorage.cutoff);
     }
+
+
+    var opts = {
+      lines: 13, // The number of lines to draw
+      length: 7, // The length of each line
+      width: 4, // The line thickness
+      radius: 10, // The radius of the inner circle
+      corners: 1, // Corner roundness (0..1)
+      rotate: 0, // The rotation offset
+      color: '#000', // #rgb or #rrggbb
+      speed: 1, // Rounds per second
+      trail: 60, // Afterglow percentage
+      shadow: false, // Whether to render a shadow
+      hwaccel: false, // Whether to use hardware acceleration
+      className: 'spinner', // The CSS class to assign to the spinner
+      zIndex: 2e9, // The z-index (defaults to 2000000000)
+      top: 'auto', // Top position relative to parent in px
+      left: 'auto' // Left position relative to parent in px
+    };
+    //var target = document.getElementById('contents');
+    //var spinner = new Spinner(opts).spin(target);
+
+
   </script>
 </html>
