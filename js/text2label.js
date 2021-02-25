@@ -452,26 +452,31 @@
         //if (docs[key].length>0 && l < (start+(Object.keys(docs).length/2)) && l >= start) {
         if (docs[key].length>0) {
           text = docs[key].replace(/\n/g, " ");
+          text = text.replace(/“/g, '"');
+          text = text.replace(/”/g, '"');
+          text = text.replace(/’/g, "'");
           text = text.replace(/\s{2,}/g,' ');
           try {
             //var citation_list = text.match(/(?:(\.|;)\s[^(\.|;)]*)([A-Z]{1}[A-Za-z]*('s)?(\s|,(\s(and)\s)?)){2,4}((([A-Z]{1}|\d+)-?[A-Za-z]*('s)?(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+('s)?(,)\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s)+\d+\.?,?\s\d+-?\d+?\s?\(\d{4}\)/ig);
-            var citation_list = text.match(/(?:(\.|;)\s)([^(\.|;)]*\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s)+\d+\.?,?\s\d+-?\d+?\s?\(\d{4}\))/ig);
+            var citation_list = text.match(/(?:(\.|;)\s)([^\.;]*\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s)+\d+\.?,?\s\d+-?\d+?\s?\(\d{4}\))/ig);
           } catch (error) {
             var citation_list;
           }
-          //try {
-          //  var citation_list_2 = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]*(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+\s?(,|\.)\s)+\((19|20)\d{2}\)\.?\s([A-Za-z]+,?\.?\s)+\d+/ig);
-          //} catch (error) {
-          //  var citation_list_2;
-          //}
-          //if (citation_list && citation_list_2) {
-          //  citation_list = citation_list.concat(citation_list_2);
-          //} else if (citation_list_2) {
-          //  citation_list = citation_list_2;
-          //}
+          //citation_list = []
+          try {
+            var citation_list_2 = text.match(/[^\.;]*\(\d{4}(,\s[A-Za-z]{4,9})?(\s\d{1,2})?\)\.\s([A-Z]{1}[A-Za-z]*\.?\,?\s)+\d+\(\d+\)(,\s?[A-Za-z]?\s?\d+(–|-)?\d*)?\.?/ig);
+          } catch (error) {
+            var citation_list_2;
+          }
+          if (citation_list && citation_list_2) {
+            citation_list = citation_list.concat(citation_list_2);
+          } else if (citation_list_2) {
+            citation_list = citation_list_2;
+          }
           if (citation_list) {
             for (var i = 0; i < citation_list.length; i++) {
               var cite = citation_list[i].replace(/^(\.|;)\s/,"");
+              cite = cite.replace(/^See\s/,"")
               html = html + "<li><a href=\"https://scholar.google.com/scholar?q="+encodeURIComponent(cite)+"#42\" target=\"_blank\">"+cite+"</a></li>"
             	//console.log(citation_list[i]);
               k = k + 1;
