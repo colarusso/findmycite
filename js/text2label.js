@@ -435,7 +435,7 @@
       })
   }
 
-  function load_cites() {
+  function load_cites(start=0) {
 
     $('#loading_cites').html("");
     $('#loading_cites').show();
@@ -444,15 +444,17 @@
     console.log("Parsing cites...");
 
     setTimeout(function (){
-      html = "<p>Note: Each of the searches below are apended with a <i>#42</i>. This is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a> by watching the url.<span style='float:right;font-size:10px;padding:25px 10px 0 0;text-transform: uppercase;'><a href=\"javascript:void('')\" onClick=\"$('#cite_list').html('');\">Clear Results</a></span></p><ul style='margin-bottom:35px'>";
+      html = "<p>Note: Each of the searches below are apended with a <i>#42</i>. This is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a> by watching the url.<span style='float:right;font-size:10px;padding:15px 10px 0 0;text-transform: uppercase;'><a href=\"javascript:void('')\" onClick=\"$('#cite_list').html('');\">Clear Results</a></span></p><ul style='margin-bottom:35px'>";
       k = 0;
+      l = 0;
       for (var key in docs) {
         //console.log(key);
+        //if (docs[key].length>0 && l < (start+(Object.keys(docs).length/2)) && l >= start) {
         if (docs[key].length>0) {
           text = docs[key].replace(/\n/g, " ");
           text = text.replace(/\s{2,}/g,' ');
           try {
-            var citation_list = text.match(/([A-Z]{1}[A-Za-z]*('s)?(\s|,(\s(and))?)){1,2}((([A-Z]{1}|\d+)-?[A-Za-z]*('s)?(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+('s)?\s?(,|\.)\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s)+\d+\.?,?\s\d+-?\d+?\s?\(\d{4}\)/ig);
+            var citation_list = text.match(/([A-Z]{1}[A-Za-z]*('s)?(\s|,(\s(and)\s)?)){1,2}((([A-Z]{1}|\d+)-?[A-Za-z]*('s)?(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+('s)?(,)\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s)+\d+\.?,?\s\d+-?\d+?\s?\(\d{4}\)/ig);
           } catch (error) {
             var citation_list;
           }
@@ -474,6 +476,7 @@
             }
           }
         }
+        l = l + 1;
       }
 
       if (k==0) {
