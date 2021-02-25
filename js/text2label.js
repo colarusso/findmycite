@@ -437,8 +437,9 @@
 
   function load_cites() {
 
-    //$('#simple_cite').show();
+    $('#loading_cites').html("");
     $('#loading_cites').show();
+    start_spinner('loading_cites');
     $('#cite_list').html("");
     console.log("Parsing cites...");
 
@@ -581,7 +582,9 @@
     $('#missing_words').html("");
     $('#answer').hide();
     $('#output').html("Thinking...");
+    $('#loading').html("");
     $('#loading').show();
+    start_spinner('loading');
 
     // getNClosestAnswer allows for the return of multiple labels
     // here we've limited it to one. Additionally, we're filtering by
@@ -620,4 +623,26 @@
       $('#missing_words').show();
     }, 50);
 
+  }
+
+  function start_spinner(target_id) {
+    var opts = {
+      lines: 13, // The number of lines to draw
+      length: 7, // The length of each line
+      width: 4, // The line thickness
+      radius: 10, // The radius of the inner circle
+      corners: 1, // Corner roundness (0..1)
+      rotate: 0, // The rotation offset
+      color: '#000', // #rgb or #rrggbb
+      speed: 1, // Rounds per second
+      trail: 60, // Afterglow percentage
+      shadow: false, // Whether to render a shadow
+      hwaccel: false, // Whether to use hardware acceleration
+      className: 'spinner', // The CSS class to assign to the spinner
+      zIndex: 2e9, // The z-index (defaults to 2000000000)
+      top: 'auto', // Top position relative to parent in px
+      left: 'auto' // Left position relative to parent in px
+    };
+    var target = document.getElementById(target_id);
+    var spinner = new Spinner(opts).spin(target);
   }
