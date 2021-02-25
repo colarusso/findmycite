@@ -452,20 +452,20 @@
           text = docs[key].replace(/\n/g, " ");
           text = text.replace(/\s{2,}/g,' ');
           try {
-            var citation_list = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]*(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+\s?(,)\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s\d+\.?)+/ig);
+            var citation_list = text.match(/([A-Z]{1}[A-Za-z]*('s)?(\s|,(\s(and))?)){1,2}((([A-Z]{1}|\d+)-?[A-Za-z]*('s)?(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+('s)?\s?(,|\.)\s)+\d+\.?\s([A-Z]{1}[A-Za-z]*\.?\s)+\d+\.?,?\s\d+-?\d+?\s?\(\d{4}\)/ig);
           } catch (error) {
             var citation_list;
           }
-          try {
-            var citation_list_2 = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]*(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+\s?(,|\.)\s)+\((19|20)\d{2}\)\.?\s([A-Za-z]+,?\.?\s)+\d+/ig);
-          } catch (error) {
-            var citation_list_2;
-          }
-          if (citation_list && citation_list_2) {
-            citation_list = citation_list.concat(citation_list_2);
-          } else if (citation_list_2) {
-            citation_list = citation_list_2;
-          }
+          //try {
+          //  var citation_list_2 = text.match(/((([A-Z]{1}|\d+)-?[A-Za-z]*(\s|-))*([A-Z]{1}|\d+)-?[A-Za-z]+\s?(,|\.)\s)+\((19|20)\d{2}\)\.?\s([A-Za-z]+,?\.?\s)+\d+/ig);
+          //} catch (error) {
+          //  var citation_list_2;
+          //}
+          //if (citation_list && citation_list_2) {
+          //  citation_list = citation_list.concat(citation_list_2);
+          //} else if (citation_list_2) {
+          //  citation_list = citation_list_2;
+          //}
           if (citation_list) {
             for (var i = 0; i < citation_list.length; i++) {
               html = html + "<li><a href=\"https://scholar.google.com/scholar?q="+encodeURIComponent(citation_list[i])+"#42\" target=\"_blank\">"+citation_list[i]+"</a></li>"
