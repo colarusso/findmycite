@@ -443,14 +443,18 @@
     $('#cite_list').html("");
     console.log("Parsing cites...");
 
+    html = "";
+
     setTimeout(function (){
-      html = "<p>Note: Each of the searches below are apended with a <i>#42</i>. This is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' atrget='_blank'>Greasmonkey script</a> by watching the url.<span style='float:right;font-size:10px;padding:15px 10px 0 0;text-transform: uppercase;'><a href=\"javascript:void('')\" onClick=\"$('#cite_list').html('');\">Clear Results</a></span></p><ul style='margin-bottom:35px;margin-top:25px;'>";
+      html0 = "<p style='margin-bottom:35px;'>Note: Each of the searches below are apended with <i>#42</i>. This is so you can have them trigger something like a <a href='https://en.wikipedia.org/wiki/Greasemonkey' target='_blank'>Greasmonkey script</a> by watching the url.</p>";
       k = 0;
       l = 0;
       for (var key in docs) {
         //console.log(key);
         //if (docs[key].length>0 && l < (start+(Object.keys(docs).length/2)) && l >= start) {
+        m = 0;
         if (docs[key].length>0) {
+          html2 = "<p>From: "+bib[key]+" <a href='https://www.zotero.org/groups/"+$('#group').val()+"/items/"+key+"/file' target='_blank'>View Document</a></p><ul>";
           text = docs[key].replace(/\n/g, " ");
           text = text.replace(/“/g, '"');
           text = text.replace(/”/g, '"');
@@ -477,10 +481,15 @@
             for (var i = 0; i < citation_list.length; i++) {
               var cite = citation_list[i].replace(/^(\.|;)\s/,"");
               cite = cite.replace(/^See\s/,"")
-              html = html + "<li><a href=\"https://scholar.google.com/scholar?q="+encodeURIComponent(cite)+"#42\" target=\"_blank\">"+cite+"</a></li>"
+              html2 = html2 + "<li><a href=\"https://scholar.google.com/scholar?q="+encodeURIComponent(cite)+"#42\" target=\"_blank\">"+cite+"</a></li>"
             	//console.log(citation_list[i]);
               k = k + 1;
+              m = m + 1;
             }
+          }
+          html2 = html2 + "</ul>";
+          if (m > 0){
+            html = html + html2;
           }
         }
         l = l + 1;
@@ -489,7 +498,8 @@
       if (k==0) {
         html = "<p style='background:orange;padding:15px;'>No citations found.</p>";
       } else {
-        html = html + "</ul>";
+        html = html + "</br>"
+        html = html0 + "<h3>"+k+" Results<span style='float:right;font-size:10px;padding:5px 0px 0 0;text-transform: uppercase;font-weight: normal;'><a href=\"javascript:void('')\" onClick=\"$('#cite_list').html('');\">Clear Results</a></span></h3><hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:15px;'>"+ html;
       }
 
       console.log("Done Parsing cites.");
@@ -613,7 +623,7 @@
         result_count = answers.length
       }
 
-      var html = "<span style='float:right;font-size:10px;padding:5px 0px 0 0;text-transform: uppercase;'><a href=\"javascript:void('')\" onClick=\"$('#answer').html('');$('#missing_words').html('');\">Clear Results</a></span><h3>"+result_count+" Results</h3>";
+      var html = "<h3>"+result_count+" Results<span style='float:right;font-size:10px;padding:5px 0px 0 0;text-transform: uppercase;font-weight: normal;'><a href=\"javascript:void('')\" onClick=\"$('#answer').html('');$('#missing_words').html('');\">Clear Results</a></span></h3>";
 
       if (answers.length>0) {
         for (var i = 0; i < answers.length; i++) {
