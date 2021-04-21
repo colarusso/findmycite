@@ -454,7 +454,7 @@
         //if (docs[key].length>0 && l < (start+(Object.keys(docs).length/2)) && l >= start) {
         m = 0;
         if (docs[key].length>0) {
-          html2 = "<p>From: "+bib[key]+" <a href='https://www.zotero.org/groups/"+$('#group').val()+"/items/"+key+"/file' target='_blank'>View Document</a></p><ul>";
+          html2 = "<p>Cite(s) From: "+bib[key]+" <a href='https://www.zotero.org/groups/"+$('#group').val()+"/items/"+key+"/file' target='_blank'>View Document</a></p><ul>";
           text = docs[key].replace(/\n/g, " ");
           text = text.replace(/“/g, '"');
           text = text.replace(/”/g, '"');
@@ -564,7 +564,7 @@
       var next3 = "";
     }
 
-    return "<hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"% <span style='float:right;'>Item No. "+itemNo+"</span></font></p><blockquote style='border-left: 4px solid #ccc;padding-left:15px;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
+    return "<hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:35px;'><p><font size=\"-1\">Similarity: "+Math.round(10000*answer[1])/100+"% <span style='float:right;'>Item No. "+itemNo+"</span></font></p><blockquote style='border-left: 4px solid #ccc;padding-left:15px;'>" + last3+last2+last1 + "<span style='background:yellow;'>" + thisSent + "</span>" + next1+next2+next3 + "</blockquote><p style='text-align:right;'><a href='https://www.zotero.org/groups/"+group+"/items/"+itemNo+"/file#search="+thisSent.split(" ").slice(0,10).toString().replace(/,/ig," ")+"' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+extractContent(bib[itemNo])+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
 
   }
 
