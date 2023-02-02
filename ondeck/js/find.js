@@ -1,5 +1,5 @@
-//var server = "https://tools.suffolklitlab.org";
-var server = "http://127.0.0.1:10100";
+var server = "https://tools.suffolklitlab.org";
+//var server = "http://127.0.0.1:10100";
 
   /*-----------------------------------------------------------------
 
