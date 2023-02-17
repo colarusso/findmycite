@@ -84,7 +84,7 @@
 
         <div id="find" style="float:left;width:100%;display:none;">
 
-          <a name="search"><h2>Find a proposition in your <a href="#" onClick="tab('settings');">library</a></h2></a>
+          <a name="search"><h2>Find a proposition in your <a href="javascript:void('');" onClick="tab('settings');">library</a></h2></a>
 
           <div style="float:left;margin-right:45px;margin-bottom:20px;">
             <input type="checkbox" id="suggest" name="suggest" value="1" CHECKED>
@@ -117,7 +117,7 @@
         <!---   START ASK   -->
         <div id="ask" style="display:none;float:left;width:100%">
 
-          <a name="ask"><h2>Ask a question of your <a href="#" onClick="tab('settings');">library</a></h2></a>
+          <a name="ask"><h2>Ask a question of your <a href="javascript:void('');" onClick="tab('settings');">library</a></h2></a>
 
           <textarea name='question' id="question" style="width:100%;height:80px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="500" placeholder="Ask your question here"></textarea>
 
@@ -142,7 +142,7 @@
       <!---   START COMPLET   -->
       <div id="complete" style="display:none;float:left;width:100%;">
 
-        <a name="suggest"><h2>Suggest text supported by your <a href="#" onClick="tab('settings');">library</a></h2></a>
+        <a name="suggest"><h2>Suggest text supported by your <a href="javascript:void('');" onClick="tab('settings');">library</a></h2></a>
 
         <textarea name='seed' id="seed" style="width:100%;height:250px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="500" placeholder="Start a paragraph here"></textarea>
 
@@ -194,7 +194,7 @@
       <b>Synchronizing a Group.</b> To synchronize a group, you will need: (1) a Zotero API Key with access to said group; and (2) a Find My Cite Key. These are random strings of letters and numbers that act like passwords. You can make a Zotero API Key by following <a href="https://www.zotero.org/settings/keys/new" target="_blank">these instructions</a>. And you can ask for a Find My Cite Key by emailing the LIT Lab at <a href="mailto:litlab@suffolk.edu">litlab@suffolk.edu</a>. However, we're only giving out a very very limited number at this time. 
     </p>
     <p>
-      After you synchronize a group anyone with the group's number can interact with its texts via the tools here (i.e., find, ask, &amp; suggest). <span style="background:#faef8e">They will not be able to see the original documents unless you also make them a member of the group and have <a href="https://www.zotero.org/storage" target="_blank">document storage</a> turned on in Zotero.</span> The group number is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>8675309</i> is the ID found in the following url: <i>https://www.zotero.org/groups/8675309/library_name/</i>.
+      After you synchronize a group anyone with the group's number can interact with its texts via the tools here (i.e., <a href="javascript:void('');" onClick="tab('find');">find</a>, <a href="javascript:void('');" onClick="tab('ask');">ask</a>, &amp; <a href="javascript:void('');" onClick="tab('suggest');">suggest</a>). <span style="background:#faef8e">They will not be able to see the original documents unless you also make them a member of the group and have <a href="https://www.zotero.org/storage" target="_blank">document storage</a> turned on in Zotero.</span> The group number is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>8675309</i> is the ID found in the following url: <i>https://www.zotero.org/groups/8675309/library_name/</i>.
     </p>
     <p>
       Zotero API-Key: &nbsp;<input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;width:150px;" type="password" onchange="localStorage.api_key = $('#api_key').val();"/>
