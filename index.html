@@ -41,7 +41,6 @@
   <body onLoad="tab('none');"><form autocomplete="off">
     <div id="msg" style="display:none;top:0;z-index:100;width:100%;margin:0;">
       <div style="margin:15px auto 0 auto;max-width:400px;text-align:center;background:#fff;padding:0px 15px 0 15px;">
-      <p><img id="patience" src="images/patience.gif" style="width:100%"/></p>
       <b> This may take some time. I am currently:</b>
       <p id="output">Thinking...</p>
       </div>
@@ -92,8 +91,8 @@
             <label for="suggest"> Auto suggest (shows up to 5 matching texts from your library)</label>
           </div>
           <div style="float:left;margin-bottom:20px;">
-            Cosine Similarity Cutoff: <span id="cutoffv">0.9</span></br>
-            <input type="range" min="0.5" max="1" step="0.01" value="0.9" id="cutoff" oninput="$('#cutoffv').html(this.value);" style="width:200px;">
+            Cosine Similarity Cutoff: <span id="cutoffv">0.7</span></br>
+            <input type="range" min="0.5" max="1" step="0.01" value="0.7" id="cutoff" oninput="$('#cutoffv').html(this.value);" style="width:200px;">
           </div>
           <div style="float:left;width:100%;margin:0px 0 0px 0;">
             <table><tr><td width="100%">
@@ -203,7 +202,7 @@
       <select id="bib" style="padding:5px;font-size:15px;">
         <option value="apa">American Psychological Association 7th edition</option>
         <option value="bluebook-law-review" SELECTED>Bluebook Law Review</option>
-        <option value="https://our.law.nagoya-u.ac.jp/updater/styles/jm-indigobook-law-review.csl">IndigoBook (Law Review)</option>
+        <!--<option value="https://our.law.nagoya-u.ac.jp/updater/styles/jm-indigobook-law-review.csl">IndigoBook (Law Review)</option>-->
         <option value="chicago-note-bibliography">Chicago Manual of Style 17th edition (note)</option>
         <option value="modern-language-association">Modern Language Association 8th edition</option>
       </select>

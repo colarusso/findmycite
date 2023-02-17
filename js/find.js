@@ -362,7 +362,16 @@ function update_texts(wait=0) {
   $('#lib_links').html("");
   setTimeout(function(){
     for (item in lib) {
-      var linkto = "<a href='https://www.zotero.org/groups/"+lib[item]["library"]["id"]+"/items/"+lib[item]["key"]+"/' target='_blank'>"+lib[item]["citation"]+"</a>";
+      console.log(lib["item"])
+      if (lib[item]["citation"]) {
+        var linkto = "<a href='https://www.zotero.org/groups/"+lib[item]["library"]["id"]+"/items/"+lib[item]["key"]+"/' target='_blank'>"+lib[item]["citation"]+"</a>";
+      } else {
+        var linkto = "<a href='https://www.zotero.org/groups/"+lib[item]["library"]["id"]+"/items/"+lib[item]["key"]+"/' target='_blank'>"+lib[item]["bib"]+"</a>";
+      }
+
+      var regEx = new RegExp(`</?div[^>]*>`, "ig");
+      linkto = linkto.replace(regEx,"")
+
       if (lib[item]["hash_id"]) {
         linkto = "<span style='background:#aef7a6'>"+linkto+"</span>";
       }
