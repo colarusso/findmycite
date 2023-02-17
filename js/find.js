@@ -362,7 +362,6 @@ function update_texts(wait=0) {
   $('#lib_links').html("");
   setTimeout(function(){
     for (item in lib) {
-      console.log(lib["item"])
       if (lib[item]["citation"]) {
         var linkto = "<a href='https://www.zotero.org/groups/"+lib[item]["library"]["id"]+"/items/"+lib[item]["key"]+"/' target='_blank'>"+lib[item]["citation"]+"</a>";
       } else {
