@@ -195,7 +195,7 @@
     $('#output').html("Loading 25,000 word vectors...");
 
     // Usage
-    $.cachedScript( "https://findmycite.org/js/word2vec.js" ).done(function( script, textStatus ) {
+    $.cachedScript( "https://findmycite.org/original/js/word2vec.js" ).done(function( script, textStatus ) {
       console.log( textStatus );
 
       $('#content').show();
