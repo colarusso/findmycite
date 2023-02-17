@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <HTML xmlns="http://www.w3.org/1999/xhtml"
       xmlns:og="http://ogp.me/ns#"
       xmlns:fb="http://www.facebook.com/2008/fbml">
@@ -20,25 +20,25 @@
   	<meta name="twitter:description" content="Are you a Zotero user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.">
   	<meta name="twitter:image" content="http://www.davidcolarusso.com/images/thefuture.png"/>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G1R2NYXS7D"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-G1R2NYXS7D');
-    </script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
 
     <script type="module" src="https://findmycite.org/js/spin.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/style.css?build=1">
-    <script src="js/text2label.js?build=31"></script>
+    <script>
+      //var server = "http://127.0.0.1:10069"; // Local Testing Server
+      var server = "https://tools.suffolklitlab.org"; // Production Server
+      var default_group = "4848934";
+      var building_lib = 0;
+      var last_update;
+    </script>
+    <script src="js/find.js"></script>
+    <script src="js/ask.js"></script>
+    <script src="js/suggest.js"></script>
 
   </head>
-  <body onLoad="preload(['images/Ajax-loader.gif','images/alice.webp','images/bean.gif','images/jimmy.gif','images/little_r.webp','images/patience.gif','images/pbride.webp','images/seinfeld.gif','images/ted.gif','images/twinpeaks.gif']);"><form autocomplete="off">
+  <body onLoad="tab('none');"><form autocomplete="off">
     <div id="msg" style="display:none;top:0;z-index:100;width:100%;margin:0;">
       <div style="margin:15px auto 0 auto;max-width:400px;text-align:center;background:#fff;padding:0px 15px 0 15px;">
       <p><img id="patience" src="images/patience.gif" style="width:100%"/></p>
@@ -46,119 +46,367 @@
       <p id="output">Thinking...</p>
       </div>
     </div>
-    <div id="content" style="margin:30px auto 0 auto;max-width:900px;">
+    <div id="content" style="margin:15px auto 0 auto;max-width:900px;">
 
-    <div id="foo"></div>
-
-      <h1 style="text-align:center;">Find My Cite <sup>Beta</sup></h1>
-      <hr style="height:1px;border:none;color:#333;background-color:#333;">
-
-      <p>
-        Are you a <a href="https://www.zotero.org/" target="_blank">Zotero</a> user? Do you ever wish you could search your libraries by ideas—not keywords? Then this page is for you. Follow the steps below to download information from one of your group libraries and search it using an "idea" search. That is, it will match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.
-      </p>
-      <p>
-        To make this site widely available (i.e., let me run it from a free web server), the work is offloaded to your browser. This means you'll have to reload a bunch of stuff every time you load this page. So you might consider leaving this tab open. ;)
-      </p>
-      <hr style="height:1px;border:none;color:#333;background-color:#333;">
-
-      <h3>Word2Vec</h3>
-      <p>
-        To search across semantic content, we transform words into numbers using a tool called Word2Vec. This lets us use math to compare how similar text in your library is to your query. To learn more, check out <a href="https://www.codingthelaw.org/Fall_2020/level/7/#intro_vid" target="_blank">this video lesson on Word2Vec</a>. Load Word2Vec to proceed.
-      </p>
-      <p style="margin-bottom:25px;">
-        <input id="w2v_button" type="button" value='Load Word2Vec' style="width:100%;background:#eee;padding:5px;" onclick="load_w2v();"/>
-      </p>
-
-      <div id="zotero" style="display:none;">
-        <hr style="height:1px;border:none;color:#333;background-color:#333;">
-
-        <h3>API Key</h3>
-        <p>
-          In order to use this tool, you will need to create a Zotero API key and provide that key with read access to a group library. Just follow <a href="https://www.zotero.org/settings/keys/new" target="_blank">these prompts</a> and paste the API key in the field below. Be sure to write down the key and to provide it with  READ access to your group or groups.
-        </p>
-        <p>
-          API-Key: <input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
-        </p>
-        <h3>Group ID</h3>
-        <p>
-          This tool works by accessing the contents of a group library. If you don't have one, you will need to create <a href="https://www.zotero.org/groups" target="_blank">a group</a> and fill it with content. We perform our search on the full text content of your group's library. If it isn't part of your library, we can't search it. Once you have a group, cut and paste its ID into the field below. The ID is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>2305186</i> is the ID found in the following url: <i>https://www.zotero.org/groups/<b>2305186</b>/library_name/</i>.
-        </p>
-        <p>
-            Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;"/>
-        </p>
-        <h3>Citation Style</h3>
-        <p>
-          Set the format for citations in your search results. Note: If you want to change this later, you will have to rebuild your library.
-        </p>
-        <p>
-          <select id="bib" style="padding:5px;font-size:15px;">
-            <option value="apa">American Psychological Association 7th edition</option>
-            <option value="bluebook-law-review" SELECTED>Bluebook Law Review</option>
-            <option value="https://our.law.nagoya-u.ac.jp/updater/styles/jm-indigobook-law-review.csl">IndigoBook (Law Review)</option>
-            <option value="chicago-note-bibliography">Chicago Manual of Style 17th edition (note)</option>
-            <option value="modern-language-association">Modern Language Association 8th edition</option>
-          </select>
-        </p>
-        <p style="margin-bottom:25px;">
-          <input id="build_button" type="button" value='Build Library' style="width:100%;background:#eee;padding:5px;" onclick="zotero(document.getElementById('group').value,0,document.getElementById('bib').value,document.getElementById('api_key').value)"/>
-        </p>
+      <div style="float:left;text-align:left"><b>Find My Cite</b> <sup><font color="gray" size=-2>BETA</font></div>
+      <div id="menu" style="float:right;display:none;">
+        <a id="menu_bs" href="javascript:void('');" onClick="tab('bs');">🤖 BS</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a id="menu_find" href="javascript:void('');" onClick="tab('find');">Find</a>&nbsp;&nbsp;&nbsp;
+        <a id="menu_ask" href="javascript:void('');" onClick="tab('ask');">Ask</a>&nbsp;&nbsp;&nbsp;
+        <a id="menu_suggest" href="javascript:void('');" onClick="tab('suggest');">Suggest</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a id="menu_settings" href="javascript:void('');" onClick="tab('settings');">Settings</a>
       </div>
 
-      <div id="search_box" style="float:left;display:none;">
+      <div id="search_box" style="float:left;width:100%;">
 
-        <div id="simple_cite">
-          <hr style="height:1px;border:none;color:#333;background-color:#333;">
-          <h2>Simple Citation Search <sup>Alpha</sup></h2>
-          <p>
-            This tool is not as refined as the search below, but since we have your library loaded we can do a quick scan for things that resemble citations and use them to seed a list of custom search links. <i>This method is sure to miss the majority of citations. Once you see the results, I don't think you'll make this mistake, but do <b>NOT</b> rely on this as a comprehensive list.</i> You may skip this section and go right to <a href="#search">Search</a>. That's the real power tool here. This section is more aspirational placeholder.
-          </p>
-          <p style="margin-bottom:25px;">
-            <input id="cite_button" type="button" value='Compile Possible Cites' style="width:100%;background:#eee;padding:5px;" onclick="load_cites();"/>
-          </p>
-          <div id="loading_cites" style="display:none;height:40px;width:100%;margin-bottom:35px;text-align:center;"></div>
-          <p id="cite_list"></p>
-        </div>
+        <hr style="height:1px;border:none;color:#999;background-color:#999;margin:15px 0 0 0;">
 
-        <hr style="height:1px;border:none;color:#333;background-color:#333;">
-        <a name="search"><h2>Search</h2></a>
-        <p>
-          This search will do its best to match the semantic content of the text you input with text in your library. <b>For the best results, write your query/proposition as a full sentence.</b> Because the work is being done by your browser, and I didn't want to overload it, this tool only knows 25,000 words. So, the search can be slow for big libraries, and matches aren't perfect. That being said, this search beats a simple "find this phrase" or "find these words" search, and it's free. So there's that.
-        </p>
-        <div style="float:left;margin-right:45px;margin-bottom:20px;">
-          <input type="checkbox" id="suggest" name="suggest" value="1" CHECKED>
-          <label for="suggest"> Auto suggest (shows up to 3 matching texts from your library)</label>
-        </div>
-        <div style="float:left;margin-bottom:20px;">
-          Similarity Cutoff: <span id="cutoffv">70</span>%</br>
-          <input type="range" min="50" max="100" value="70" id="cutoff" oninput="$('#cutoffv').html(this.value);" style="width:200px;">
-        </div>
-        <div style="float:left;width:100%;margin:0px 0 20px 0;">
-          <table><tr><td width="100%">
-            <div class="autocomplete" style="width:100%;">
-              <input id="q" type="text" name="q" placeholder="the proposition you wish to cite" style="width:100%;border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;">
+
+        <!---   START BS   -->
+        <div id="bs" style="display:none;float:left;width:100%">
+
+          <a name="alogbs"><h2>Algorithmic BS: Exploring the Limitations of Large Langue Models</h2></a>
+
+          <p>Coming soon...</p>
+
+          </div>
+      </div>
+      <!---   END BS   -->
+
+      <!---   START TERMS   -->
+      <div id="tos" style="display:none;float:left;width:100%">
+
+        <a name="terms"><h2>Terms</h2></a>
+
+        <p>Coming soon...</p>
+
+      </div>
+      <!---   END TERMS   -->
+
+        <div id="find" style="float:left;width:100%;display:none;">
+
+          <a name="search"><h2>Find a proposition in your <a href="#" onClick="tab('settings');">library</a></h2></a>
+
+          <div style="float:left;margin-right:45px;margin-bottom:20px;">
+            <input type="checkbox" id="suggest" name="suggest" value="1" CHECKED>
+            <label for="suggest"> Auto suggest (shows up to 5 matching texts from your library)</label>
+          </div>
+          <div style="float:left;margin-bottom:20px;">
+            Cosine Similarity Cutoff: <span id="cutoffv">0.9</span></br>
+            <input type="range" min="0.5" max="1" step="0.01" value="0.9" id="cutoff" oninput="$('#cutoffv').html(this.value);" style="width:200px;">
+          </div>
+          <div style="float:left;width:100%;margin:0px 0 0px 0;">
+            <table><tr><td width="100%">
+              <div class="autocomplete" style="width:100%;">
+                <input id="q" type="text" name="q" placeholder="The proposition you wish to cite" style="width:100%;height:43px;font-size:15px;padding:10px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;">
+              </div>
+            </td><td width="50px">
+              <input type="button" class="ai_button" style="width:100px;" value='Find' onclick="test_understanding(document.getElementById('q').value,localStorage.group)"/>
+            </td></tr></table>
+            <div id="output" style="float:left;width:100%;">
+            <div id="loading" style="display:none;float:left;width:100%;height: 60px; margin: 25px 0;text-align:center;"></div>
+            <p id="answer" style="margin:0px;float:left;width:100%;"></p>
             </div>
-          </td><td width="50px">
-            <input type="button" value='Find Cite' style="width:100px;background:#eee;padding:5px;margin-left:5px;" onclick="test_understanding(document.getElementById('q').value)"/>
-          </td></tr></table>
-          <span id="missing_words"></span>
+          </div>
         </div>
-        <div id="loading" style="display:none;float:left;width:100%;height: 60px; margin-bottom: 25px;text-align:center;"> </div>
-        <p id="answer" style="margin:0px;float:left;width:100%;"></p>
+
+        <div id="startup" style="float:left;width:100%;text-align:center;background:yellow;padding:10px 0;margin:15px 0;">
+          Loading...
+        </div>
+
+
+        <!---   START ASK   -->
+        <div id="ask" style="display:none;float:left;width:100%">
+
+          <a name="ask"><h2>Ask a question of your <a href="#" onClick="tab('settings');">library</a></h2></a>
+
+          <textarea name='question' id="question" style="width:100%;height:80px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="500" placeholder="Ask your question here"></textarea>
+
+          <div style="padding:5px 0 8px 0;"><span class="subtitle"></span></div>
+
+          <p style="margin:0px 0px 5px 0px;">
+            <input type="button" class="ai_button" value="Ask" onCLick="ask($('#question').val(),localStorage.group);"/>
+          </p>
+
+          <div id="output_ask" style="float:left;width:100%;">
+
+            <div id="loading_ask" style="display:none;width:100%;margin:50px auto;text-align:center;">
+              <img src="images/Ajax-loader.gif" width="35px;" height="35px;"/>
+            </div>
+            <div id="response_ask" style="float:left;display:none;width:100%;margin:0px auto 0px 0px;"></div>
+
+          </div>
       </div>
+      <!---   END ASK   -->
 
-      <div style="width:100%;float:left;">
-        <hr style="height:1px;border:none;color:#333;background-color:#333;">
 
-        <p style='text-align:center;margin-bottom:400px;'>
-          Site by <a href="https://twitter.com/Colarusso" target="_blank">Colarusso</a> | <a href="https://github.com/colarusso/findmycite" target="_blank">GitHub</a> | <a href="https://suffolklitlab.org/" target="_blank">You may also like</a>
+      <!---   START COMPLET   -->
+      <div id="complete" style="display:none;float:left;width:100%;">
+
+        <a name="suggest"><h2>Suggest text supported by your <a href="#" onClick="tab('settings');">library</a></h2></a>
+
+        <textarea name='seed' id="seed" style="width:100%;height:250px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="500" placeholder="Start a paragraph here"></textarea>
+
+        <div style="padding:5px 0 8px 0;"><span class="subtitle"></span></div>
+
+        <p style="margin:0px 0px 5px 0px;">
+          <input type="button" class="ai_button" value="Suggest" onCLick="com_par($('#seed').val(),localStorage.group);"/>
         </p>
+
+        <div id="output_complete" style="float:left;width:100%;">
+
+          <div id="loading_complete" style="display:none;width:100%;margin:50px auto;text-align:center;">
+            <img src="images/Ajax-loader.gif" width="35px;" height="35px;"/>
+          </div>
+          <div id="response_complete" style="float:left;display:none;width:100%;margin:0px auto 0px 0px;"></div>
+
+        </div>
+    </div>
+    <!---   END COMPLETE   -->
+
+
+    <!---   START LIBRARY   -->
+    <div id="library" style="display:none;float:left;width:100%">
+
+    <!--
+      <a name="library"><h2>Performance</h2></a>
+    <p>
+      asdjahsl daskl dhlaskhdl
+    </p>
+    <input type="checkbox" id="boost" name="boost" value="1" CHECKED>
+    <label for="boost"> Boost performance for the <i>Ask</i> and <i>Suggest</i> features (nearly doubles runtime)</label>
+    -->
+
+    <a name="library"><h2>My Zotero Library</h2></a>
+    <p>
+      <b>Loading a Group.</b> Find My Cite helps you interact with existing <a href="https://www.zotero.org/support/groups" target="_blank">Zotero groups</a>. If someone (like a teacher or colleauge) directed you here with a group number, enter it below and click the "Update Group" button. For you to interact with a group's texts it must first be synced with Find My Cite. See below. Additionally, you can only view the fulltext of documents in a group if you are a member of the group. If you aren't a member, you may be able to view the citation information depending on the group's type (e.g., if it is <i>Public, Closed Membership</i>, non-members can see citation information).
+    </p>
+    <p>
+      Zotero Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;width:100px;" value="4935168" onkeyup="update_preview()">
+      &nbsp;
+      <input id="update" type="button" value="Update Group" style="padding:5px;font-size:15px;" onClick="localStorage.group = $('#group').val();location.reload();"/>
+      &nbsp;
+      <input id="deafult" type="button" value="Restore Default" style="padding:5px;font-size:15px;" onClick="localStorage.group = '';location.reload();"/>
+    </p>
+    <p style="font-size:14px;">
+      Visit Group: <a id="preview" href="https://www.zotero.org/groups/" target="_blank">https://www.zotero.org/groups/</a>
+    </p>
+    <p>
+      <b>Synchronizing a Group.</b> To synchronize a group, you will need: (1) a Zotero API Key with access to said group; and (2) a Find My Cite Key. These are random strings of letters and numbers that act like passwords. You can make a Zotero API Key by following <a href="https://www.zotero.org/settings/keys/new" target="_blank">these instructions</a>. And you can ask for a Find My Cite Key by emailing the LIT Lab at <a href="mailto:litlab@suffolk.edu">litlab@suffolk.edu</a>. However, we're only giving out a very very limited number at this time. 
+    </p>
+    <p>
+      After you synchronize a group anyone with the group's number can interact with its texts via the tools here (i.e., find, ask, &amp; suggest). <span style="background:#faef8e">They will not be able to see the original documents unless you also make them a member of the group and have <a href="https://www.zotero.org/storage" target="_blank">document storage</a> turned on in Zotero.</span> The group number is the string of numbers in the URL between <i>/groups/</i> and your group's name. For example, <i>8675309</i> is the ID found in the following url: <i>https://www.zotero.org/groups/8675309/library_name/</i>.
+    </p>
+    <p>
+      Zotero API-Key: &nbsp;<input id="api_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;width:150px;" type="password" onchange="localStorage.api_key = $('#api_key').val();"/>
+      &nbsp;
+      <select id="bib" style="padding:5px;font-size:15px;">
+        <option value="apa">American Psychological Association 7th edition</option>
+        <option value="bluebook-law-review" SELECTED>Bluebook Law Review</option>
+        <option value="https://our.law.nagoya-u.ac.jp/updater/styles/jm-indigobook-law-review.csl">IndigoBook (Law Review)</option>
+        <option value="chicago-note-bibliography">Chicago Manual of Style 17th edition (note)</option>
+        <option value="modern-language-association">Modern Language Association 8th edition</option>
+      </select>
+    </p>
+    <p>
+      FindMyCite Key: <input id="cite_key" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;width:150px;" type="password" onchange="localStorage.cite_key = $('#cite_key').val();"/>
+      &nbsp;
+      <input id="build_button" type="button" value="Sync Library" style="padding:5px;font-size:15px;" onClick="localStorage.group = $('#group').val();build($('#group').val(),$('#api_key').val(),$('#cite_key').val(),$('#bib').val())"/>
+      &nbsp;&nbsp;<span id="last_synced">Last Synced: </span>
+    </p>
+    </p>
+      <div id="show_when_building" style="display:none;">
+        <h3>This could take a while...</h3>
+        <p>This can take a while, like go get and drink a whole cup of coffee-a-while. ☕ <i>Note: The larger your library, the longer it will take. The first sync will likely take the longest as susequent syncs will try to focus only on changes.</i></p>
+        <div id="loading_lib" style="float:left;width:100%;height: 60px; margin: 25px 0;text-align:center;"></div>
+      </div>
+      <div id="texts_in_lib">
+        <h3>Texts in your library:</h3>
+        <p>
+          We can only provide information from those texts highlighted in <span style='background:#aef7a6'>light green</span>. You may be able to turn more of them green by doing one of two things: (1) if you don't have a copy of the document in your Zotero library, add it and sync above; (2) re-building your Zotero library index and syncing above once it is complete. See <a href="https://www.zotero.org/support/preferences/search">Zotero Search</a> (including discussion of how to rebuild your Full-Text Cache). Find My Cite leverages your fulltext index, which only includes text files, pdfs, and webpage snapshots at this time.  
+        </p>
+        <ol id="lib_links">
+        </ol>
       </div>
     </div>
+    <!---   END LIBRARY   -->
+
+
+
+    <div style="width:100%;float:left;margin-top:20px;">
+      <hr style="height:1px;border:none;color:#999;background-color:#999;">
+      <p style='text-align:center;margin-bottom:400px;text-align:right;font-size:14px;padding:5px 10px;'>
+        <a href="https://suffolklitlab.org/" alt="LIT Lab" target="_blank"><img src="https://suffolklitlab.org/images/blue_logo.png" width="50px" align="left" border="0" alt="LIT Logo"/></a>
+        <a id="tos" href="javascript:void('');" onClick="tab('tos');" style="text-transform: uppercase;font-size:12px;">Terms &amp; Privacy</a> | <a id="og" href="original/" style="text-transform: uppercase;font-size:12px;">Original Site</a>
+      </p>
+    </div>
+
+
   </form></body>
   <script>
-    pick_image();
+    function tab(choice){
 
+      if ((choice=="none") && (localStorage.tab)) {
+        choice = localStorage.tab;
+      } else if (choice=="none") {
+        choice = "bs";
+      }
+
+      localStorage.tab = choice;
+
+      $('#startup').hide();
+      $('#menu').show();
+
+      if (choice=="bs") {
+        $('#bs').show();
+        $('#library').hide();
+        $('#find').hide();
+        $('#ask').hide();
+        $('#complete').hide();
+        $('#tos').hide();
+        $('#menu_bs').css('text-decoration', 'none');
+        $('#menu_bs').css('font-weight', '600');
+        $('#menu_bs').css('color', 'black');
+        $('#menu_find').css('text-decoration', 'underline');
+        $('#menu_find').css('font-weight', '100');
+        $('#menu_find').css('color', 'blue');
+        $('#menu_ask').css('text-decoration', 'underline');
+        $('#menu_ask').css('font-weight', '100');
+        $('#menu_ask').css('color', 'blue');
+        $('#menu_suggest').css('text-decoration', 'underline');
+        $('#menu_suggest').css('font-weight', '100');
+        $('#menu_suggest').css('color', 'blue');
+        $('#menu_settings').css('text-decoration', 'underline');
+        $('#menu_settings').css('font-weight', '100');
+        $('#menu_settings').css('color', 'blue');
+        $('#q').focus();
+      } else if ((choice=="find") && (building_lib==0)) {
+        $('#bs').hide();
+        $('#library').hide();
+        $('#find').show();
+        $('#ask').hide();
+        $('#complete').hide();
+        $('#tos').hide();
+        $('#menu_bs').css('text-decoration', 'underline');
+        $('#menu_bs').css('font-weight', '100');
+        $('#menu_bs').css('color', 'blue');
+        $('#menu_find').css('text-decoration', 'none');
+        $('#menu_find').css('font-weight', '600');
+        $('#menu_find').css('color', 'black');
+        $('#menu_ask').css('text-decoration', 'underline');
+        $('#menu_ask').css('font-weight', '100');
+        $('#menu_ask').css('color', 'blue');
+        $('#menu_suggest').css('text-decoration', 'underline');
+        $('#menu_suggest').css('font-weight', '100');
+        $('#menu_suggest').css('color', 'blue');
+        $('#menu_settings').css('text-decoration', 'underline');
+        $('#menu_settings').css('font-weight', '100');
+        $('#menu_settings').css('color', 'blue');
+        $('#q').focus();
+      } else if ((choice=="ask") && (building_lib==0)) {
+        $('#bs').hide();
+        $('#library').hide();
+        $('#find').hide();
+        $('#ask').show();
+        $('#complete').hide();
+        $('#tos').hide();
+        $('#menu_bs').css('text-decoration', 'underline');
+        $('#menu_bs').css('font-weight', '100');
+        $('#menu_bs').css('color', 'blue');
+        $('#menu_find').css('text-decoration', 'underline');
+        $('#menu_find').css('font-weight', '100');
+        $('#menu_find').css('color', 'blue');
+        $('#menu_ask').css('text-decoration', 'none');
+        $('#menu_ask').css('font-weight', '600');
+        $('#menu_ask').css('color', 'black');
+        $('#menu_suggest').css('text-decoration', 'underline');
+        $('#menu_suggest').css('font-weight', '100');
+        $('#menu_suggest').css('color', 'blue');
+        $('#menu_settings').css('text-decoration', 'underline');
+        $('#menu_settings').css('font-weight', '100');
+        $('#menu_settings').css('color', 'blue');
+        $('#question').focus();
+      } else if ((choice=="suggest") && (building_lib==0)) {
+        $('#bs').hide();
+        $('#library').hide();
+        $('#find').hide();
+        $('#ask').hide();
+        $('#complete').show();
+        $('#tos').hide();
+        $('#menu_bs').css('text-decoration', 'underline');
+        $('#menu_bs').css('font-weight', '100');
+        $('#menu_bs').css('color', 'blue');
+        $('#menu_find').css('text-decoration', 'underline');
+        $('#menu_find').css('font-weight', '100');
+        $('#menu_find').css('color', 'blue');
+        $('#menu_ask').css('text-decoration', 'underline');
+        $('#menu_ask').css('font-weight', '100');
+        $('#menu_ask').css('color', 'blue');
+        $('#menu_suggest').css('text-decoration', 'none');
+        $('#menu_suggest').css('font-weight', '600');
+        $('#menu_suggest').css('color', 'black');
+        $('#menu_settings').css('text-decoration', 'underline');
+        $('#menu_settings').css('font-weight', '100');
+        $('#menu_settings').css('color', 'blue');
+        $('#seed').focus();
+      } else if (choice=="settings") {
+        $('#bs').hide();
+        $('#library').show();
+        $('#find').hide();
+        $('#ask').hide();
+        $('#complete').hide();
+        $('#tos').hide();
+        $('#menu_bs').css('text-decoration', 'underline');
+        $('#menu_bs').css('font-weight', '100');
+        $('#menu_bs').css('color', 'blue');
+        $('#menu_find').css('text-decoration', 'underline');
+        $('#menu_find').css('font-weight', '100');
+        $('#menu_find').css('color', 'blue');
+        $('#menu_ask').css('text-decoration', 'underline');
+        $('#menu_ask').css('font-weight', '100');
+        $('#menu_ask').css('color', 'blue');
+        $('#menu_suggest').css('text-decoration', 'underline');
+        $('#menu_suggest').css('font-weight', '100');
+        $('#menu_suggest').css('color', 'blue');
+        $('#menu_settings').css('text-decoration', 'none');
+        $('#menu_settings').css('font-weight', '600');
+        $('#menu_settings').css('color', 'black');
+      } else if (choice=="tos") {
+        $('#bs').hide();
+        $('#library').hide();
+        $('#find').hide();
+        $('#ask').hide();
+        $('#complete').hide();
+        $('#tos').show();
+        $('#menu_bs').css('text-decoration', 'underline');
+        $('#menu_bs').css('font-weight', '100');
+        $('#menu_bs').css('color', 'blue');
+        $('#menu_find').css('text-decoration', 'underline');
+        $('#menu_find').css('font-weight', '100');
+        $('#menu_find').css('color', 'blue');
+        $('#menu_ask').css('text-decoration', 'underline');
+        $('#menu_ask').css('font-weight', '100');
+        $('#menu_ask').css('color', 'blue');
+        $('#menu_suggest').css('text-decoration', 'underline');
+        $('#menu_suggest').css('font-weight', '100');
+        $('#menu_suggest').css('color', 'blue');
+        $('#menu_settings').css('text-decoration', 'underline');
+        $('#menu_settings').css('font-weight', '100');
+        $('#menu_settings').css('color', 'blue');
+      } else if (building_lib==1) {
+        alert("This feature is unavailable as we are still syncronizing your library. ");
+      } else if (building_lib==-1) {
+        alert("We can't find a Zotero group associated with the number you have provided. To use this tool, please 'Sync Library' to link the group, or enter another value. ");
+      }
+    }
+
+    if (localStorage.cite_key) {
+      document.getElementById('cite_key').value = localStorage.cite_key;
+    }
     if (localStorage.group) {
+      document.getElementById('group').value = localStorage.group;
+    } else {
+      localStorage.group = default_group
       document.getElementById('group').value = localStorage.group;
     }
     if (localStorage.api_key) {
@@ -169,5 +417,51 @@
       $('#cutoffv').html(localStorage.cutoff);
     }
 
+    $('#q').keypress(function(e){
+    if(e.keyCode == 13 && !e.shiftKey && Boolean($('#qautocomplete-list').html()=="" | !$('#qautocomplete-list').html()) ) {
+      e.preventDefault();
+      test_understanding(document.getElementById('q').value,localStorage.group);
+     }
+    });
+
+    $('#question').keypress(function(e){
+    if(e.keyCode == 13 && !e.shiftKey) {
+      e.preventDefault();
+      ask($('#question').val(),localStorage.group);
+     }
+    });
+
+    $('#seed').keypress(function(e){
+    if(e.keyCode == 13 && !e.shiftKey) {
+      e.preventDefault();
+      com_par($('#seed').val(),localStorage.group);
+     }
+    });
+
+  </script>
+  <script type="text/javascript"> 
+    //var JSLink = "js/data_lib.js?version=" + localStorage.group;
+    var JSLink = server+"/lib_js/?g=" +localStorage.group + "&version=" + Math.random();
+
+    get_build(localStorage.group);
+    
+    var JSElement = document.createElement('script');
+    JSElement.id = "lib_et_al"; 
+    JSElement.src = JSLink;
+    JSElement.onload = OnceLoaded;
+    document.getElementsByTagName('head')[0].appendChild(JSElement);
+
+    function OnceLoaded() {
+      if (lib.length>0) {
+        //SentVecs = Object.assign({}, SentVecs_01,SentVecs_02,SentVecs_03,SentVecs_04,SentVecs_05);
+        autocomplete(document.getElementById("q"), Object.values(SentTexts));
+        update_texts();
+      } else {
+        building_lib = -1;
+        $('#lib_links').html("<p style='background:yellow;padding:15px;'>We can't find a Zotero group associated with the number you have provided. To use this tool, please 'Sync Library' to link the group, or enter another value. FWIW, you can reload the default library by inputing "+ default_group +".</p>");
+        $("#group").css("background-color","red"); 
+      }
+      update_preview();
+    }
   </script>
 </html>

@@ -37,3 +37,39 @@
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
+
+.ai_button {
+    font-family: 'Inter', 'Arial';
+    background: #0072E8;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 15px;
+    line-height: 19px;
+    text-align:center;
+    color:white;
+    font-weight:600;
+    border-radius:10px;
+    margin:0px 0px 0 0px;
+    box-sizing: border-box;
+    border: solid 1px #eee;
+    padding:12px;
+    white-space: normal;
+}
+.ai_question {
+  padding:20px;
+  background:#a6eaff;
+  border: solid 1px #5e5e5e;
+  font-size:20px;
+  line-height:23px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+.ai_answer {
+  padding:20px;
+  background:#ffecb8;
+  border: solid 1px #5e5e5e;
+  font-size:20px;
+  line-height:23px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
