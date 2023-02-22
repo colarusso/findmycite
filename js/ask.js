@@ -62,7 +62,9 @@ function ask(query=null,group=null) {
             for (n in data["sources"]){
               if (!used_sources.includes(data["sources"][n][1])) {
                 used_sources += data["sources"][n][1];
-                sources += `<li><a href="`+data["sources"][n][1]+`" target="_blank">`+data["sources"][n][0]+`</a></li>`;
+                var regEx = new RegExp(`</?div[^>]*>`, "ig");
+                link_to_source = data["sources"][n][0].replace(regEx,"")
+                sources += `<li><a href="`+data["sources"][n][1]+`" target="_blank">`+link_to_source+`</a></li>`;
               }
             }
 

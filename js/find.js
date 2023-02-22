@@ -135,7 +135,9 @@
       matchtext = "Text Match Found";
     }
 
-    return "<hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:35px;'><p><font size=\"-1\">"+matchtext+"</font></p><blockquote style='border-left: 4px solid #ccc;padding-left:15px;'>"  + thisSent  + "</blockquote><p style='text-align:right;'><a href='"+answer[1][3]+"' target='_blank'>View Full Document</a></p> Cite: </br><textarea style='width:100%;' onclick='this.select()'>"+answer[1][2]+"</textarea><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
+    var regEx = new RegExp(`</?div[^>]*>`, "ig");
+    cite_to_source = answer[1][2].replace(regEx,"")
+    return "<hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:35px;'><p><font size=\"-1\">"+matchtext+"</font></p><blockquote style='border-left: 4px solid #ccc;padding-left:15px;'>"  + thisSent  + "</blockquote><p style='text-align:left;'><a href='"+answer[1][3]+"' target='_blank'>"+cite_to_source+"</a></p><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
 
     //#search="+thisSent.split(" ").slice(0,10).join('|').replace(/\|/ig," ")
 
