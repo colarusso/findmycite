@@ -10,14 +10,14 @@
 
     <meta property="og:type" content="website"/>
   	<meta property="og:title" content="Find My Cite"/>
-  	<meta property="og:description" content="Are you a Zotero user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite."/>
+  	<meta property="og:description" content="Are you a Zotero user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Download information from one of your group libraries and search it using an \"idea\" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite."/>
   	<meta property="og:image" content="images/thefuture.png"/>
 
   	<meta name="twitter:card" content="summary_large_image">
   	<meta name="twitter:site" content="@Colarusso">
   	<meta name="twitter:creator" content="@Colarusso">
   	<meta name="twitter:title" content="Find My Cite">
-  	<meta name="twitter:description" content="Are you a Zotero user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Follow the steps below to download a information from one of your group libraries and search it using an "idea" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.">
+  	<meta name="twitter:description" content="Are you a Zotero user? Do you ever wish you could search your libraries by idea not keywords? Then this page is for you. Download information from one of your group libraries and search it using an \"idea\" search. That is, we'll match your search with the semantic content of text from your library. That means you don't have to use the exact language found in a text to find a cite.">
   	<meta name="twitter:image" content="http://www.davidcolarusso.com/images/thefuture.png"/>
 
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -47,7 +47,6 @@
     </div>
     <div id="content" style="margin:15px auto 0 auto;max-width:900px;">
 
-      <div style="float:left;text-align:left"><b>Find My Cite</b> <sup><font color="gray" size=-2>BETA</font></div>
       <div id="menu" style="float:right;display:none;">
         <a id="menu_bs" href="javascript:void('');" onClick="tab('bs');">🤖 BS</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="menu_find" href="javascript:void('');" onClick="tab('find');">Find</a>&nbsp;&nbsp;&nbsp;
@@ -55,128 +54,106 @@
         <a id="menu_suggest" href="javascript:void('');" onClick="tab('suggest');">Suggest</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="menu_settings" href="javascript:void('');" onClick="tab('settings');">Settings</a>
       </div>
+      <div class="findmycite"><b>Find My Cite</b> <sup><font color="gray" size=-2>BETA</font></div>
 
       <div id="search_box" style="float:left;width:100%;">
 
         <hr style="height:1px;border:none;color:#999;background-color:#999;margin:15px 0 0 0;">
 
-        <p style="text-align:center;background:#faef8e;padding:15px;border: 1px solid #888;">FWIW, the builders of this site will discuss it at this year's <a href="https://suffolklitlab.org/LITCon/2023/" target="_blank">Legal Innovation &amp; Technology Conference</a> (April 3, 2023).</p>
+        <p style="text-align:center;background:#faef8e;padding:15px;border: 1px solid #888;">FWIW, the builders of this site will discuss their work at this year's <a href="https://suffolklitlab.org/LITCon/2023/" target="_blank">Legal Innovation &amp; Technology Conference</a> (April 3, 2023).</p>
 
 
         <!---   START BS   -->
         <div id="bs" style="display:none;float:left;width:100%">
 
-          <a name="alogbs"><h2>Algorithmic BS: Exploring Uses of Large Langue Models</h2></a>
+          <a name="alogbs"><h2>Algorithmic BS: Exploring Uses of Large Language Models</h2></a>
 
           <div class="r_img_embed" style="max-width:350px;">
             <img src="images/robot-bs.png" alt="image of the following emoji: 🤖 🐂💩" width="100%"/>
             <div class="caption">Algorithmic BS?</div>
           </div>
+
         <p>
-          The modern authoritarian practice of “flood[ing] the zone with shit” clearly illustrates the dangers posed by <a href="https://en.wikipedia.org/wiki/Bullshit#Harry_Frankfurt's_concept" target="_blank">bullshitters</a>—i.e., those who produce plausible sounding speech with no regard for accuracy. Consequently, the broad-based concern expressed over the rise of algorithmic bullshit is both understandable and warranted. Large <a href="https://en.wikipedia.org/wiki/Language_model" target="_blank">language models</a> (LLMs), like those powering <a href="https://en.wikipedia.org/wiki/ChatGPT" target="_blank">ChatGPT</a>, complete text by predicting subsequent words based on patterns present in their training data are, if not the embodiment of such bullshitters, tools ripe for use by such actors. They are by design fixated on producing plausible sounding text, and since they lack understanding of their output, they cannot help but be unconcerned with accuracy. Couple this with the fact that their training texts encode the biases of their authors, and one can find themselves with what some have called <a href="https://octodon.social/@cwebber/109462369670144568" target="_blank">mansplaining as a service</a>.
+          <i>Use the tools here to interact with a <a href="https://www.zotero.org/support/groups" target="_blank">Zotero group</a> of <a href="javascript:void('');" onClick="tab('settings');">your choice</a>. You can <a href="javascript:void('');" onClick="tab('find');">find propositions</a>, <a href="javascript:void('');" onClick="tab('ask');">ask questions</a>, or <a href="javascript:void('');" onClick="tab('suggest');">get supporting text</a>.</i>
+        </p>
+
+        <p>
+          The modern authoritarian practice of “flood[ing] the zone with shit” clearly illustrates the dangers posed by <a href="https://en.wikipedia.org/wiki/Bullshit#Harry_Frankfurt's_concept" target="_blank">bullshitters</a>—i.e., those who produce plausible sounding speech with no regard for accuracy. Consequently, the broad-based concern expressed over the rise of algorithmic bullshit is both understandable and warranted. <a href="https://en.wikipedia.org/wiki/Wikipedia:Large_language_models" target="_blank">Large language models</a> (LLMs), like those powering <a href="https://en.wikipedia.org/wiki/ChatGPT" target="_blank">ChatGPT</a>, which complete text by predicting subsequent words based on patterns present in their training data are, if not the embodiment of such bullshitters, tools ripe for use by such actors. They are by design fixated on producing plausible sounding text, and since they lack understanding of their output, they cannot help but be unconcerned with accuracy. Couple this with the fact that their training texts encode the biases of their authors, and one can find themselves with what some have called <a href="https://octodon.social/@cwebber/109462369670144568" target="_blank">mansplaining as a service</a>.
         </p>
         <p>
           So why did the <a href="https://suffolklitlab.org/" target="_blank">LIT Lab</a> use an LLM to build these tool, and why bother working with a known bullshitter?
         </p>
         <p>
-          For one, "algorithmic BS artists" lack agency. They do not understand their input or output. Their "dishonesty" is a consequence of their use case, not their character. Context matters, and tools are not moral actors. Any agency, moral or otherwise, lies with the developers and users of such tools. By stepping into these roles we are exploring the questions that arise when using these tools. Additionally, as educators, it is part of our duty to prepare our students for the realities of a world where such tools exist. To do that we think it's important to understandnot just how they work now but to explore new use cases. The tools presented here are, in part, an attempt to imagine pro-social uses for such technology, ones that don't end in the death of scholarship or truth. In fact, they are attempts to use them for the service of both. Of course, any assement of a tool's use must include the broader context of its use, including its creation. This context raises <a href="https://link.springer.com/article/10.1007/s13347-020-00405-8" target="_blank">just as many questions</a>. Readers can find more discussion of these larger implications at <a href="https://www.codingthelaw.org" target="_blank">Coding The Law.org</a> and see an example of how we've responded to some of them in <a href="https://spot.suffolklitlab.org/trusts/" target="_blank">our prior AI work</a>. Below, however, we will focus on the tools found here on Find My Cite, which largely ask, "can we work with this particular 'bullshitter' (i.e., LLMs)?" 
+          For one, "algorithmic BS artists" lack agency. They do not understand their input or output. Their "dishonesty" is a consequence of their use case, not their character. Context matters, and tools are not moral actors. Any agency, moral or otherwise, lies with the developers and users of such tools. By stepping into these roles we can better explore the questions presented by their use. Additionally, as educators, it is part of our duty to prepare our students for the realities of <a href="https://stratechery.com/2022/ai-homework/" target="_blank">a world where such tools exist</a>. To do that we think it's important to understandnot just how they work now but to explore new use cases. The tools presented here are, in part, an attempt to imagine pro-social uses for such technology, ones that don't result in the death of scholarship or truth. In fact, they are attempts to use them in service of both. Of course, any assessment of a tool's use must consider the broader context of its use, including its creation. <a href="https://link.springer.com/article/10.1007/s13347-020-00405-8" target="_blank"></a>This context</a> raises a good many questions. Readers can find more discussion of these larger implications at <a href="https://www.codingthelaw.org" target="_blank">Coding The Law.org</a> and see an example of how we've responded to some of them in <a href="https://spot.suffolklitlab.org/trusts/" target="_blank">our prior AI work</a>. Below, however, we will focus on the tools found here on Find My Cite, which largely ask, "can we work with this particular 'bullshitter' (i.e., LLMs)?" 
         </p>
         <p>
-          When asked to complete a text prompt, LLMs default to constructing sentences that resemble their training data. This can lead to "confabulations." These models, however, need not operate in isolation. One can work to mitigate the problem of BS by providing context, e.g., by sourcing reliable texts and asking for output based on these. Such is <a href="https://github.com/openai/openai-cookbook/blob/main/examples/Question_answering_using_embeddings.ipynb" target="_blank">the trick</a> used here. We have created a set of tools that asks an LLM (GPT-3) to reorder the contents of an existing Zotero Library. This does not limit the danger posed by such tools <a href="https://www.nytimes.com/2023/01/06/podcasts/transcript-ezra-klein-interviews-gary-marcus.html" target="_blank">driving the cost of BS production to nearly zero</a>, and it does not guarantee accuracy. It does, however, offer an interesting explortion of how LLMs can be used to seach through and texts and provided answers to question and supporting examples. It also couples its output to real cites (from its library) allowing the user to check its work. To help understand more what this means, here's some...
+          When asked to complete a text prompt, LLMs default to constructing sentences that resemble their training data. This can lead to "confabulations." These models, however, need not operate in isolation. One can work to mitigate the problem of BS by providing context, e.g., by sourcing reliable texts and asking for output based on these. Such is <a href="https://github.com/openai/openai-cookbook/blob/main/examples/Question_answering_using_embeddings.ipynb" target="_blank">the trick</a> used here. We have created a set of tools that asks an LLM (GPT-3) to reorder the contents of an existing Zotero Library. This does not limit the danger posed by such tools <a href="https://www.nytimes.com/2023/01/06/podcasts/transcript-ezra-klein-interviews-gary-marcus.html" target="_blank">driving the cost of BS production to nearly zero</a>, and it does not guarantee accuracy. It does, however, offer an interesting exploration of how LLMs can be used to search through texts and provided answers to questions, supporting examples, and the like. It also couples its output to real citations (from its library) allowing the user to check its work. 
+        </p>
+        <p>
+          After playing with these tools some, we hope to produce some exercises aimed at orienting students and help them navigate their use. Which brings is to the real reason one might consider working with this particular BS artist—because practicle experience working with a tool leads to understanding, and understanding is power. That power is something our students can leverage both for the benefit of their future clients and practice. <b>We don't expect our students to become production coders, but we'd like them to learn enough to call BS.</b> 
+        </p>
+         <p>
+          To help understand more what's going on under the hood, here's some...
         </p>
         
         <h3><a name="background" href="#background" class="anchor" alt="deep link to this section"></a>Background</h3>
         
-        <p>Coming soon...</p>
-        <!--
-        <p>
-          The problem of BS, however, is not the only issue faced by such models. When they allow end-users to provide their own prompts, they are subject to <a href="https://simonwillison.net/2022/Sep/12/prompt-injection/" target="_blank">prompt injection</a>, the careful crafting of inputs to override a tool's original instructions. What could go wrong? <i>Oh no . . . you're going to try this below aren't you?</i>
-        </p>
-        <p>
-          Mostly, we hope you will find this a novel way to engage with the information packet. And, if you would like to get your hands dirty creating, evaluating, and understand the legal implications of such tools, we suggest you consider enrolling in <a href="https://www.codingthelaw.org/" target="_blank">Coding the Law</a> (offered in the fall) or the Legal Innovation & Technology (LIT) Clinic (open to 2Ls and 3Ls). Which brings is to the real reason one might consider working with this particular BS artist—because practice experience working with a tool leads to understanding, and understanding is power. That power is something you can leverage both for the benefit of your clients and practice. We don't expect our students to become production coders, but we'd like them to learn enough to call BS. And yes, this is largely a gimmick to get you interested in the Lab, but we also think it can answer a few of your questions. ;)
-        </p>
-
         <div class="l_img_embed" style="max-width:400px;">
           <img src="images/projection.png" alt="a 2-d projection of embeddings for different new articles which shows clustering by topic" width="100%"/>
-          <div class="caption"><a href="https://cloud.google.com/blog/products/ai-machine-learning/problem-solving-with-ml-automatic-document-classification" class="caption">classification</a></div>
+          <div class="caption">A 2-D projection of document embeddings from <a href="https://cloud.google.com/blog/products/ai-machine-learning/problem-solving-with-ml-automatic-document-classification">a blog post on document classification</a></div>
         </div>        
 
-          First, this piece on AI + homework has something worth saying: https://stratechery.com/2022/ai-homework/ (namely, we should expect that folks are going to use AI ⇒ plan accordingly. Also it's kind of crap right now)
+        <p>
+          One of the big insights of Natural Language Processing (NLP) is the text embedding (a set of numbers produced from a string of text). It turns out that we can turn strings of words into numbers. For example, we can turn any arbitrary set of words into an array of 300 numbers. It's hard to visualize, but a list of these numbers correspond to a point in some n-dimensional space (e.g., 300-D). And here's the BFD! We can do this such that <a href="https://www.codingthelaw.org/Fall_2022/level/7/#intro_vid" target="_blank">strings with similar meanings are close to each other in this n-D space</a>. If we collect a bunch of texts we can start to create constellations based on these points. In the figure here we see a 2-D shadow (projection) of some higher dimensional space with dots for a bunch of news articles colored by topic.
+        </p>
 
-          Second, it's important to look not just at what this tech can do but also how it was built. See e.g., https://link.springer.com/article/10.1007/s13347-020-00405-8 (providing an exploration of AI practices through a decolonial lens)
+        <p>
+          If we got some new text, computed its embedding, and plotted that here, we could make a pretty good guess as to what topic it belonged to based on nothing but where it was located. 
+        </p>
+        <p>
+          Enter ChatGPT and LLMs. Imagine the point in this space occupied by some text you are typing. As you add words, the location of the dot corresponding to your text moves. Since no one word is likely to change its meaning much, it won't move around a lot, but you can envision how with each new word it moves towards or away from one of the constellations defined by other texts. The position changes as your text grows. When you let a tool like an LLM complete text for you it's adding words to a string such that its embedding is drawn towards the texts (dots) it already knows about, as if by gravity. The truth of this new text is not a consideration, only the pull of known texts.
+        </p>
+        <p>
+          Armed with the gravity metaphor we can now ask questions like, "How do we get an LLM to answer accurately?" A few ideas come immediately to mind.
+        </p>
+        <ol>
+          <li>Only fill the space with texts (dots)  that are true (i.e., retrain the model).</li>
+          <li>Add in/identify some texts that we know are true and have them exert a greater pull (i.e., tune the model)</li>
+          <li>Craft the start of your prompt such that it anchors and/or directs the dot's subsequent motion towards parts of space associated with trusted texts.</li>
+        </ol>
+        <p>
+          The idea of only using trusted texts in the original training runs into the limitation that you need a LOT of texts. That's because what LLMs are really "learning" is what sentences look like from a statistical standpoint. Of course, you can, and should, think carefully about how you source texts. See e.g., <a href="https://pile.eleuther.ai/" target="_blank">The Pile: An 800GB Dataset of Diverse Text for Language Modeling</a>. And as with training/retraining, tuning a model can be computationally expensive. So the approch we used here was the option behind door number three.
+        </p>
 
-          That being said, we have to understand something before we can intelligently talk about it. So, for the moment my goal is explaining #LLMs to #LawProfs
+   
+        <h3><a name="tools" href="#tools" class="anchor" alt="deep link to this section"></a>The Tools Found Here</h3>
 
-          So, here we go...
+        <p>
+          In case it wasn't clear, when you ask an LLM a question, all it is doing is suggesting the next set of words in a string of text. It seems like an answer, but it's just an exercise in adding new words (drifting towards the pull of known texts). Because LLMs care about the whole (or most) of the string, you can anchor them in particular places.
+        </p>
+        <p>
+          Consider: Instead of having an LLM add to the sentence "What is the best sports town in the US?" what if you provided the prompt "Boston is the home of Red Sox Nation, the best sports city in the US. What is the best sports town in the US?" As you might guess, if you seed the prompt with the "right" answer, you drastically up the chance of it answering correctly. So how do we seed the answer to a question? Presumably, we're asking the question because we don't know the answer. Well...
+        </p>
+        <ul>
+          <h4><a name="ask_descript" href="#ask_descript" class="anchor" alt="deep link to this section"></a>Ask</h4>
+          <p>
+            What if you use the original query (e.g., "What is...?") to perform a traditional search then use the results of that search to seed the prompt to an LLM. You then ask it not to answer if the answer isn't in the seed, and you show citaions to the texts returned by the original search. This is what we do with the <a href="javascript:void('');" onClick="tab('ask');">ask</a> tool. By default we're using <a href="https://www.zotero.org/groups/4961358" target="_blank">this Zotero Group</a>, but you can add your own. Just click over to <a href="javascript:void('');" onClick="tab('settings');"></a>Settings</a>.
+          </p>
+          <h4><a name="suggest_descript" href="#suggest_descript" class="anchor" alt="deep link to this section"></a>Suggest</h4>
+          <p>
+            There's no reason we have to limit this approach to questioning texts. We could just as easily create an anchor for more traditional text completion. E.g., "Complete the following paragraph using only information found in 'the seed.'"  This is what we do with the <a href="javascript:void('');" onClick="tab('suggest');">suggest</a> tool. Again, by default we're using <a href="https://www.zotero.org/groups/4961358" target="_blank">this Zotero Group</a>, but you can add your own. Just click over to <a href="javascript:void('');" onClick="tab('settings');"></a>Settings</a>.
+          </p>
+          <h4><a name="find_descript" href="#find_descript" class="anchor" alt="deep link to this section"></a>Find</h4>
+          <p>As for the <a href="javascript:void('');" onClick="tab('find');">find</a> tool, there we compare your proposition's embedding to that of sentences in your library, returning the most similar. Again, by default we're using <a href="https://www.zotero.org/groups/4961358" target="_blank">this Zotero Group</a>, but you can add your own. Just click over to <a href="javascript:void('');" onClick="tab('settings');"></a>Settings</a>.
+          </p>
+        </ul>
 
-          One of the big discoveries of #NLP is the text embedding (a set of numbers produced from text). It turns out that we can turn strings of words into numbers. For example, we can turn any arbitrary set of words into an array of 300 numbers. 
-
-It's hard to visualize, but a list of these numbers correspond to a point in some n-dimensional space (300-D in the case above).
-
-And here's the BFD! We can do this such that strings with similar meanings are close to each other in this n-D space.
-
-If we collect a bunch of texts we can start to create constellations based on these points. Here we see a 2-D shadow (projection) of some higher dimensional space with dots for a bunch of news articles colored by topic.¹
-
-If we got some new text, computed it's embedding, and plotted that here, we could make a pretty good guess as to what topic it belonged to based on nothing but where it was located. 
-
-----
-¹ https://cloud.google.com/blog/products
-
-
-Enter #ChatGPT. Imagine the point in this space occupied by some text you are typing. 
-
-As you add words, the location of the dot corresponding to your text moves. Since no one word is likely to change its meaning much, it won't move around too much, but you can see how with each new word it moves towards or away from one of the constellations defined by other texts.
-
-When you let a tool like an #LLM complete text for you it's like that point is drawn towards the texts (dots) it already knows about, as if by gravity. These are the texts it was trained on. The position changes as the text grows. The truth of this new text is not a consideration, only that it looks like (gets close to) texts it knows.
-
-This is why folks like @cwebber have called these tools "mansplaining as a service."¹
-
--------
-¹ See https://octodon.social/@cwebber/109462
-
-Armed with the gravity metaphor we can now ask questions like, "How do we get an #LLM to answer accurately?" A few ideas come immediately to mind.
-
-1. Only fill the space with texts (dots)  that are true (i.e., retrain the model).
-
-2. Add in/identify some texts that we know are true and have them exert a greater pull (i.e., tune the model)
-
-3. Craft the start of your prompt such that it anchors and/or directs the dot's subsequent motion towards parts of space associated with trusted texts.
-
-The idea of only using trusted texts in the original training runs into the problem that you need a LOT of texts. That's because what #LLMs are really "learning" is what sentences look like from a statistical standpoint. Of course, you can think carefully about how you source texts. See e.g., https://pile.eleuther.ai/
-
-As with training/retraining, tuning a model can be computationally expensive... 
-
-Can you tell that I really want to talk about what's behind door number three?
-
-In case it wasn't clear, when you ask an #LLM a question, all it is doing is suggesting the next set of words in a string of text. It seems like an answer, but it's just an exercise in adding new words (drifting towards the pull of known texts). Because LLMs care about the whole (or most) of the string, you can anchor them in particular places.
-
-Consider:
-
-Instead of having an #LLM add to the sentence "What is the best sports town in the US?" what if you provided the prompt "Boston is the home of Red Sox Nation, the best sports city in the US. "What is the best sports town in the US?" As you might guess if you seed the prompt with the "right" answer, you drastically up the chance of it answering correctly. So how do we seed the A to a Q? Presumably, we're asking the Q because we don't know the A. Well...
-
-What if you use the query (e.g., "What is...?") to perform a traditional search then use the results of that search to seed the prompt to an #LLM & ask it not to answer if the ans isn't in the seed? It turns out this works pretty well & you can show your sources. 
-
-Here's a bot I built that uses a single document to source trusted texts (chunks of the doc) for the construction of a seeded prompt. Basically, it lets you talk with an information packet. 
-
-https://suffolklitlab.org/bs
-
-And there's no reason we have to limit this approach to questioning a text. We could just as easily create an anchor for more traditional text completion. E.g., Complete the following paragraph using only information found in "the seed."
-
-Anywho, I think I have what I need for the faculty meeting. Mostly, I've realized I have too much to fit into my allotted time.
-
-I saw @design_law fave an earlier post. Maybe I can just direct folks to this thread. ;)
-
-h/t @simon for the seed idea.
-
-
-          <h3><a name="tools" href="#tools" class="anchor" alt="deep link to this section"></a>The Tools Found Here</h3>
-
-          <h3><a name="find_descript" href="#find_descript" class="anchor" alt="deep link to this section"></a>Find</h3>
-
-          <h3><a name="ask_descript" href="#ask_descript" class="anchor" alt="deep link to this section"></a>Ask</h3>
-
-          <h3><a name="suggest_descript" href="#suggest_descript" class="anchor" alt="deep link to this section"></a>Suggest</h3>
---->
+<p>
+  The problem of BS, however, is not the only issue faced by such models. When they allow end-users to provide their own prompts, they are subject to <a href="https://simonwillison.net/2022/Sep/12/prompt-injection/" target="_blank">prompt injection</a>, the careful crafting of inputs to override a tool's original instructions. What could go wrong? <i>Oh no . . . you're going to try this aren't you?</i>.
+</p>
+<p>
+  Anywho, we hope you find the tool useful, and if you're an instructor, we look forward to hearing how you use it in your classes. Also, thank you to <a href="https://fedi.simonwillison.net/@simon" target="_blank">Simon Willison</a> for the seed idea.
+</p>
 
           </div>
       </div>
@@ -286,9 +263,9 @@ h/t @simon for the seed idea.
     <label for="boost"> Boost performance for the <i>Ask</i> and <i>Suggest</i> features (nearly doubles runtime)</label>
     -->
 
-    <a name="library"><h2>My Zotero Library</h2></a>
+    <a name="library"><h2>Your Zotero Library</h2></a>
     <p>
-      <b>Loading a Group.</b> Find My Cite helps you interact with existing <a href="https://www.zotero.org/support/groups" target="_blank">Zotero groups</a>. If someone (like a teacher or colleauge) directed you here with a group number, enter it below and click the "Update Group" button. For you to interact with a group's texts it must first be synced with Find My Cite. See below. Additionally, you can only view the fulltext of documents in a group if you are a member of the group. If you aren't a member, you may be able to view the citation information depending on the group's type (e.g., if it is <i>Public, Closed Membership</i>, non-members can see citation information).
+      <b>Loading a Group/Library.</b> Find My Cite helps you interact with existing <a href="https://www.zotero.org/support/groups" target="_blank">Zotero groups</a>. If someone (like a teacher or colleague) directed you here with a group number, enter it below and click the "Update Group" button. For you to interact with a group's texts it must first be synced with Find My Cite. See below. Additionally, you can only view the fulltext of documents in a group if you are a member of the group. If you aren't a member, you may be able to view the citation information depending on the group's type (e.g., if it is <i>Public, Closed Membership</i>, non-members can see citation information).
     </p>
     <p>
       Zotero Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;width:100px;" value="4935168" onkeyup="update_preview()">
@@ -332,7 +309,7 @@ h/t @simon for the seed idea.
       <div id="texts_in_lib">
         <h3>Texts in your library:</h3>
         <p>
-          We can only provide information from those texts highlighted in <span style='background:#aef7a6'>light green</span>. You may be able to turn more of them green by doing one of two things: (1) if you don't have a copy of the document in your Zotero library, add it and sync above; (2) re-building your Zotero library index and syncing above once it is complete. See <a href="https://www.zotero.org/support/preferences/search">Zotero Search</a> (including discussion of how to rebuild your Full-Text Cache). Find My Cite leverages your fulltext index, which only includes text files, pdfs, and webpage snapshots at this time.  
+          We can only provide information from those texts highlighted in <span style='background:#aef7a6'>light green</span>. You may be able to turn more of them green by doing one of two things: (1) if you don't have a copy of the document in your Zotero library, add it and sync above; (2) re-build your Zotero library index and syncing above once it is complete. See <a href="https://www.zotero.org/support/preferences/search">Zotero Search</a> (including discussion of how to rebuild your Full-Text Cache). Find My Cite leverages your fulltext index, which only includes text files, pdfs, and webpage snapshots at this time.  
         </p>
         <ol id="lib_links">
         </ol>
@@ -346,7 +323,9 @@ h/t @simon for the seed idea.
       <hr style="height:1px;border:none;color:#999;background-color:#999;">
       <p style='text-align:center;margin-bottom:400px;text-align:right;font-size:14px;padding:5px 10px;'>
         <a href="https://suffolklitlab.org/" alt="LIT Lab" target="_blank"><img src="https://suffolklitlab.org/images/blue_logo.png" width="50px" align="left" border="0" alt="LIT Logo"/></a>
-        <a id="tos" href="javascript:void('');" onClick="tab('tos');" style="text-transform: uppercase;font-size:12px;">Terms &amp; Privacy</a> | <a id="og" href="original/" style="text-transform: uppercase;font-size:12px;">Original Site</a>
+        <a id="tos" href="javascript:void('');" onClick="tab('tos');" style="text-transform: uppercase;font-size:12px;">Terms &amp; Privacy</a> | 
+        <a href="mailto:litlab@suffolk.edu" style="text-transform: uppercase;font-size:12px;">Contact</a> | 
+        <a id="og" href="original/" style="text-transform: uppercase;font-size:12px;">Original Site</a>
       </p>
     </div>
 

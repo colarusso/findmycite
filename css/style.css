@@ -86,6 +86,13 @@
 	box-sizing: border-box;
 }
 
+
+.findmycite {
+  float:left;
+  text-align:left;
+}
+
+
 @media only screen and (max-width: 750px) {
 	.r_img_embed {
 		float:none;
@@ -99,6 +106,14 @@
 		margin:15px auto;
 	}
 }
+
+@media only screen and (max-width: 450px) {
+	.findmycite {
+    width:100%;
+		padding:15px 0 0 0;
+	}
+}
+
 
 .caption {
 	padding:8px 5px 8px 5px;
