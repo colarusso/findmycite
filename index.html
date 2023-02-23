@@ -135,15 +135,15 @@
           Consider: Instead of having an LLM add to the sentence "What is the best sports town in the US?" what if you provided the prompt "Boston is the home of Red Sox Nation, the best sports city in the US. What is the best sports town in the US?" As you might guess, if you seed the prompt with the "right" answer, you drastically up the chance of it answering correctly. So how do we seed the answer to a question? Presumably, we're asking the question because we don't know the answer. Well...
         </p>
         <ul>
-          <h4><a name="ask_descript" href="#ask_descript" class="anchor" alt="deep link to this section"></a>Ask</h4>
+          <h4><a name="ask_descript" href="#ask_descript" class="anchor" alt="deep link to this section"></a>Ask a question of your library</h4>
           <p>
-            What if you use the original query (e.g., "What is...?") to perform a traditional search then use the results of that search to seed the prompt to an LLM. You then ask it not to answer if the answer isn't in the seed, and you show citaions to the texts returned by the original search. This is what we do with the <a href="javascript:void('');" onClick="tab('ask');">ask</a> tool. By default we're using <a href="https://www.zotero.org/groups/4961358" target="_blank">this Zotero Group</a>, but you can add your own. Just click over to <a href="javascript:void('');" onClick="tab('settings');"></a>Settings</a>.
+            What if you use the original query (e.g., "What is...?") to perform a traditional search then use the results of that search to seed the prompt to an LLM. You then ask it not to answer if the answer isn't in the seed, and you show citations to the texts returned by the original search. This is what we do with the <a href="javascript:void('');" onClick="tab('ask');">ask</a> tool. By default we're using <a href="https://www.zotero.org/groups/4961358" target="_blank">this Zotero Group</a>, but you can add your own. Just click over to <a href="javascript:void('');" onClick="tab('settings');"></a>Settings</a>.
           </p>
-          <h4><a name="suggest_descript" href="#suggest_descript" class="anchor" alt="deep link to this section"></a>Suggest</h4>
+          <h4><a name="suggest_descript" href="#suggest_descript" class="anchor" alt="deep link to this section"></a>Suggest text supported by your library</h4>
           <p>
             There's no reason we have to limit this approach to questioning texts. We could just as easily create an anchor for more traditional text completion. E.g., "Complete the following paragraph using only information found in 'the seed.'"  This is what we do with the <a href="javascript:void('');" onClick="tab('suggest');">suggest</a> tool. Again, by default we're using <a href="https://www.zotero.org/groups/4961358" target="_blank">this Zotero Group</a>, but you can add your own. Just click over to <a href="javascript:void('');" onClick="tab('settings');"></a>Settings</a>.
           </p>
-          <h4><a name="find_descript" href="#find_descript" class="anchor" alt="deep link to this section"></a>Find</h4>
+          <h4><a name="find_descript" href="#find_descript" class="anchor" alt="deep link to this section"></a>Find a proposition in your library</h4>
           <p>As for the <a href="javascript:void('');" onClick="tab('find');">find</a> tool, there we compare your proposition's embedding to that of sentences in your library, returning the most similar. Again, by default we're using <a href="https://www.zotero.org/groups/4961358" target="_blank">this Zotero Group</a>, but you can add your own. Just click over to <a href="javascript:void('');" onClick="tab('settings');"></a>Settings</a>.
           </p>
         </ul>
