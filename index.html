@@ -27,8 +27,11 @@
 
     <link rel="stylesheet" type="text/css" href="css/style.css?build=1">
     <script>
-      //var server = "http://127.0.0.1:10100"; // Local Testing Server
-      var server = "https://tools.suffolklitlab.org"; // Production Server
+      if ((window.location.protocol == "https:") | (window.location.protocol == "http:")) {
+        var server = "https://tools.suffolklitlab.org"; // Production Server
+      } else {
+        var server = "http://127.0.0.1:10100"; // Local Testing Server
+      }
       var default_group = "4961358";
       var building_lib = 0;
       var last_update;
@@ -329,7 +332,8 @@
     <div style="width:100%;float:left;margin-top:20px;">
       <hr style="height:1px;border:none;color:#999;background-color:#999;">
       <p style='text-align:center;margin-bottom:400px;text-align:right;font-size:14px;padding:5px 10px;'>
-        <a href="https://suffolklitlab.org/" alt="LIT Lab" target="_blank"><img src="https://suffolklitlab.org/images/blue_logo.png" width="50px" align="left" border="0" alt="LIT Logo"/></a>
+        <a href="https://suffolklitlab.org/" alt="LIT Lab" target="_blank"><img src="images/lit_suffolk.png" class="footer_logo" border="0" alt="LIT and Suffolk University Law School Logos"/></a>
+        
         <a id="tos" href="javascript:void('');" onClick="tab('tos');" style="text-transform: uppercase;font-size:12px;">Terms &amp; Privacy</a> | 
         <a href="mailto:litlab@suffolk.edu" style="text-transform: uppercase;font-size:12px;">Contact</a> | 
         <a id="og" href="original/" style="text-transform: uppercase;font-size:12px;">Original Site</a>

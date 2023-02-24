@@ -114,6 +114,21 @@
 	}
 }
 
+.footer_logo {
+  box-sizing: border-box;
+  float:left;
+  max-width:370px;
+}
+
+@media only screen and (max-width: 550px) {
+	.footer_logo {
+    float:none;
+    width:100%;
+    margin: 0 auto;
+		padding: 0 0 35px 0;
+	}
+}
+
 
 .caption {
 	padding:8px 5px 8px 5px;
