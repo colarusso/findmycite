@@ -304,7 +304,9 @@
         //}
       },
       error: function (jqXHR, exception) {
-        return false
+        alert("There was a problem. Please try again. If it perists, let litlab@suffolk.edu know.")
+        location.reload();        
+        //return false
       }
     });
 
