@@ -297,8 +297,8 @@
       success: function(data) {
         if (data["status"]==500) {
           alert("There was a problem with at least one of your keys. After you click OK, the page will reload. Please check your keys and try again.")
+          location.reload();
         }
-        location.reload();
         // else {
         //  return true
         //}
