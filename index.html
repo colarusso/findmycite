@@ -30,7 +30,7 @@
       if ((window.location.protocol == "https:") | (window.location.protocol == "http:")) {
         var server = "https://tools.suffolklitlab.org"; // Production Server
       } else {
-        var server = "http://127.0.0.1:10101"; // Local Testing Server
+        var server = "http://127.0.0.1:10102"; // Local Testing Server
       }
       var default_group = "4961358";
       var building_lib = 0;
@@ -385,6 +385,7 @@
       if ((lib.length==0) & (choice!="settings") & (choice!="tos") & (choice!="bs")) {
         alert("We can't find a Zotero group associated with the number provided. Please check your settings.");
         choice = "settings";
+        localStorage.tab = choice;
       }
 
       $('#startup').hide();
