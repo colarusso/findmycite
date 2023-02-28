@@ -533,6 +533,11 @@
         alert("We can't find a Zotero group associated with the number provided. To use this tool, please 'Sync Library' to link to the provided group, or enter another value. ");
         tab("settings");
       }
+
+      if (window.location.hash!="") {
+        window.location.href = "#"+window.location.hash; 
+      }
+
     }
 
     if (localStorage.cite_key) {
