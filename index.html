@@ -278,16 +278,16 @@
       <b>Loading a Group/Library.</b> Find My Cite helps you interact with existing <a href="https://www.zotero.org/support/groups" target="_blank">Zotero groups</a>. If someone (like a teacher or colleague) directed you here with a group number, enter it below and click the "Update Group" button. For you to interact with a group's texts it must first be synced with Find My Cite. See below. Additionally, you can only view the fulltext of documents in a group if you are a member of the group. If you aren't a member, you may be able to view the citation information depending on the group's type (e.g., if it is <i>Public, Closed Membership</i>, non-members can see citation information).
     </p>
     <p>
-      Zotero Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;width:100px;" value="4935168" onkeyup="update_preview()">
+      Zotero Group: <input id="group" style="border:1px solid #aaa;padding:5px;box-sizing: border-box; font-size:15px;width:100px;" onkeyup="update_preview()">
       &nbsp;
-      <input id="update" type="button" value="Update Group" style="padding:5px;font-size:15px;" onClick="update_group($('#group').val());"/>
+      <input id="update" type="button" value="Update &amp; Check Group" style="padding:5px;font-size:15px;" onClick="update_group($('#group').val());"/>
       &nbsp;
       <input id="deafult" type="button" value="Restore Default" style="padding:5px;font-size:15px;" onClick="update_group('');"/>
     </p>
     <p style="font-size:14px;">
       Visit Zotero Group: <a id="preview" href="https://www.zotero.org/groups/" target="_blank">https://www.zotero.org/groups/</a>
       <br>
-      Use this link to share <i>Find My Site</i> preloaded with the above group: <a id="share" href="https://findmycite.org/?group=" target="_blank">https://findmycite.org/?group=</a>
+      Use this link to share <i>Find My Site</i> preloaded with the above group: <a id="share" href="https://findmycite.org/?group=">https://findmycite.org/?group=</a>
     </p>
     <p>
       <b>Synchronizing a Group.</b> To synchronize a group, you will need: (1) a Zotero API Key with access to said group; and (2) a Find My Cite Key. These are random strings of letters and numbers that act like passwords. You can make a Zotero API Key by following <a href="https://www.zotero.org/settings/keys/new" target="_blank">these instructions</a>. And you can ask for a Find My Cite Key by emailing the LIT Lab at <a href="mailto:litlab@suffolk.edu">litlab@suffolk.edu</a>. However, we're only giving out a very very limited number at this time. Also, for now, we're only synchronizing up to 100 items per group (including attachments). Why 100 items? Because we're running things on our existing server provision, and big = computationally expensive. 
@@ -383,7 +383,7 @@
       localStorage.tab = choice;
 
       if ((lib.length==0) & (choice!="settings") & (choice!="tos") & (choice!="bs")) {
-        alert("We can't find a Zotero group associated with the number you have provided. Please check your settings.");
+        alert("We can't find a Zotero group associated with the number provided. Please check your settings.");
         choice = "settings";
       }
 
@@ -529,7 +529,7 @@
       } else if (building_lib==1) {
         alert("This feature is unavailable as we are still syncronizing your library. ");
       } else if (building_lib==-1) {
-        alert("We can't find a Zotero group associated with the number you have provided. To use this tool, please 'Sync Library' to link the group, or enter another value. ");
+        alert("We can't find a Zotero group associated with the number provided. To use this tool, please 'Sync Library' to link to the provided group, or enter another value. ");
         tab("settings");
       }
     }

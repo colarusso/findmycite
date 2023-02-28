@@ -402,6 +402,9 @@ function update_texts(wait=0) {
 }
 
 function update_preview(){
+  
+  $('#group').val( $('#group').val().trim())
+
   base = 'https://www.zotero.org/groups/'
   $('#preview').html(base+$('#group').val());
   $('#preview').attr('href',base+$('#group').val());
