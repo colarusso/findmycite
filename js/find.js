@@ -380,6 +380,14 @@ function update_texts(wait=0) {
       }
       $('#lib_links').append("<li>"+linkto+"</li>")
     }
+
+    lib_name_w_link = " (<a href='https://www.zotero.org/groups/"+lib[0]["library"]["id"]+"' target='_blank'>"+lib[0]["library"]["name"]+"</a>)";
+    lib_name_wo_link = ": "+lib[0]["library"]["name"]+"";
+    $('#lib_name_find').html(lib_name_wo_link);
+    $('#lib_name_ask').html(lib_name_wo_link);
+    $('#lib_name_suggest').html(lib_name_wo_link);
+    $('#lib_name_settings').html(lib_name_w_link);
+
     $("#update").prop("disabled",false);
     $("#api_key").prop("disabled",false);
     $("#bib").prop("disabled",false);
@@ -397,4 +405,8 @@ function update_preview(){
   base = 'https://www.zotero.org/groups/'
   $('#preview').html(base+$('#group').val());
   $('#preview').attr('href',base+$('#group').val());
+
+  base_too = 'https://findmycite.org/?group='
+  $('#share').html(base_too+$('#group').val());
+  $('#share').attr('href',base_too+$('#group').val());
 }
