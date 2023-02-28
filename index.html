@@ -41,7 +41,18 @@
     <script src="js/suggest.js"></script>
 
   </head>
-  <body onLoad="tab('none');"><form autocomplete="off">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-41WF20BW7V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-41WF20BW7V');
+  </script>
+
+<body onLoad="tab('none');"><form autocomplete="off">
     <div id="msg" style="display:none;top:0;z-index:100;width:100%;margin:0;">
       <div style="margin:15px auto 0 auto;max-width:400px;text-align:center;background:#fff;padding:0px 15px 0 15px;">
       <b> This may take some time. I am currently:</b>
