@@ -64,7 +64,8 @@ function ask(query=null,group=null) {
                 used_sources += data["sources"][n][1];
                 var regEx = new RegExp(`</?div[^>]*>`, "ig");
                 link_to_source = data["sources"][n][0].replace(regEx,"")
-                sources += `<li><a href="`+data["sources"][n][1]+`" target="_blank">`+link_to_source+`</a></li>`;
+                lookuptext = encodeURI(extractContent(link_to_source)).replace("&","%26");
+                sources += `<li>`+link_to_source+` [<a href="`+data["sources"][n][1]+`" target="_blank">Zotero</a> | <a href="https://www.google.com/search?q=`+lookuptext+`" target="_blank">Try Google</a>]</li>`;
               }
             }
 

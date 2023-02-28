@@ -121,6 +121,12 @@
   //var SentTexts = {};
 
 
+  function extractContent(s) {
+    var span = document.createElement('span');
+    span.innerHTML = s;
+    return span.textContent || span.innerText;
+  };
+
   function display_cites(query,answer,group) {
 
     //console.log(answer,group)
@@ -137,7 +143,8 @@
 
     var regEx = new RegExp(`</?div[^>]*>`, "ig");
     cite_to_source = answer[1][2].replace(regEx,"")
-    return "<hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:35px;'><p><font size=\"-1\">"+matchtext+"</font></p><blockquote style='border-left: 4px solid #ccc;padding-left:15px;'>"  + thisSent  + "</blockquote><p style='text-align:left;'><a href='"+answer[1][3]+"' target='_blank'>"+cite_to_source+"</a></p><p style='text-align:center;margin-bottom:50px;'><a href='#search'>back to search</a></p>";
+    lookuptext = encodeURI(extractContent(cite_to_source)).replace("&","%26");
+    return "<hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:35px;'><p><font size=\"-1\">"+matchtext+"</font></p><blockquote style='border-left: 4px solid #ccc;padding-left:15px;'>"  + thisSent  + "</blockquote><p id='"+answer[1][1]+"' style='text-align:left;'>"+cite_to_source+" <p style='text-align:center;margin-bottom:50px;'> <a href='"+answer[1][3]+"' target='_blank'>Open Zotero Copy</a> | <a href='#search'>Back to Top</a> | <a href='https://www.google.com/search?q="+lookuptext+"' target='_blank'>Try Google Search</a></p>";
 
     //#search="+thisSent.split(" ").slice(0,10).join('|').replace(/\|/ig," ")
 
@@ -402,7 +409,7 @@ function update_texts(wait=0) {
 }
 
 function update_preview(){
-  
+
   $('#group').val( $('#group').val().trim())
 
   base = 'https://www.zotero.org/groups/'
