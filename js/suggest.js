@@ -93,7 +93,8 @@ function com_par(query=null,group=null) {
           //} else {
             $('#loading_complete').hide();
             $('#response_complete').show();
-          //}
+            beep();
+            //}
         },
         error: function (jqXHR, exception) {
           err = JSON.parse(jqXHR.responseText)
@@ -105,6 +106,7 @@ function com_par(query=null,group=null) {
             $('#response_complete').html(clearR+"<h2>There was an error...</h2>")
           }
           $('#response_complete').show()
+          beep();
         }
       });
     }

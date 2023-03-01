@@ -81,6 +81,7 @@ function ask(query=null,group=null) {
             localStorage.clear();
             $('#response_ask').html(clearR+"<h2>We're sorry, but you didn't pass the human / community test or your pass has expired.</h2><p>Please submit your question again.</p>");
             $('#response_ask').show();
+            beep();
           } else {
             $('#response_ask').html(clearR+"<h2>We encountered a problem answering your question.</h2><p>It's probably due to heavy traffic. Please try again later. </p>");
           }
@@ -88,9 +89,11 @@ function ask(query=null,group=null) {
 
           if (data["reused"]==1){
             setTimeout(() => { $('#loading_ask').hide();$('#response_ask').show(); }, 1500);
+            beep();
           } else {
             $('#loading_ask').hide();
             $('#response_ask').show();
+            beep();
           }
         },
         error: function (jqXHR, exception) {
@@ -102,7 +105,8 @@ function ask(query=null,group=null) {
           } else {
             $('#response_ask').html(clearR+"<h2>There was an error...</h2>")
           }
-          $('#response_ask').show()
+          $('#response_ask').show();
+          beep();
         }
       });
     }
