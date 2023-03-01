@@ -441,6 +441,7 @@ function possible_cites() {
   html = "";
   try {
     for (key in citations) {
+      console.log(key)
       if (citations[key].length>0) {
         html += "<li><a href='https://www.zotero.org/groups/"+lib[0]["library"]["id"]+"/items/"+key+"/' target='_blank'>"+get_title(key)+"</a><ol><br>"
         for (cite in citations[key]) {
@@ -453,7 +454,7 @@ function possible_cites() {
       }
     }
   }
-  catch(err) {}
+  catch(err) { }
   $('#possible_cites').append(html);
   if (html=="") {
     $('#possible_cites').append("<i>No citations found</i>")
@@ -461,15 +462,19 @@ function possible_cites() {
 }
 
 function get_title(key) {
-  var title;
+  var cite_title = "";
+
   for (item in lib){
     if (key==lib[item]["key"]){
-      try { title = lib[item]["bib"] }
-      catch(err) { title = lib[item]["citation"] }
+      if (typeof lib[item]["bib"] !== 'undefined') {
+        cite_title = lib[item]["bib"];
+      } else { 
+        cite_title = lib[item]["citation"] 
+      }
     }
   }
 
   var regEx = new RegExp(`</?div[^>]*>`, "ig");
-  title = title.replace(regEx,"")
-  return title
+  cite_title = cite_title.replace(regEx,"")
+  return cite_title
 }
