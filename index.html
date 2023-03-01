@@ -30,7 +30,7 @@
       if ((window.location.protocol == "https:") | (window.location.protocol == "http:")) {
         var server = "https://tools.suffolklitlab.org"; // Production Server
       } else {
-        var server = "http://127.0.0.1:10102"; // Local Testing Server
+        var server = "http://127.0.0.1:10104"; // Local Testing Server
       }
       var default_group = "4961358";
       var building_lib = 0;
@@ -230,7 +230,7 @@
 
           <a name="ask"><h2>Ask a question of <a href="javascript:void('');" onClick="tab('settings');">your library</a><span id="lib_name_ask"></span></h2></a>
 
-          <textarea name='question' id="question" style="width:100%;height:80px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="500" placeholder="Ask your question here"></textarea>
+          <textarea name='question' id="question" style="width:100%;height:80px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="500" placeholder="Ask a question here"></textarea>
 
           <div style="padding:5px 0 8px 0;"><span class="subtitle"></span></div>
 
@@ -339,6 +339,16 @@
         </p>
         <ol id="lib_links">
         </ol>
+
+        <div id="cites_in_lib" style="margin-top:45px;">
+          <h3>Possible Citations (Lit Review Lite):</h3>
+          <p>
+            FWIW, the following bits of text from your library look like they might be citations. <i style="background:rgb(255, 181, 165);">Note: for the moment, we only detect Law Review Articles and stuff that vaguely looks like a statute. <b>We miss a LOT!!! For most folks, this is a very small subset of cites.</b></i>
+          </p>
+          <ol id="possible_cites">
+          </ol>
+        </div>
+
       </div>
     </div>
     <!---   END LIBRARY   -->
