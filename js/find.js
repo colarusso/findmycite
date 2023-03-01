@@ -441,7 +441,6 @@ function possible_cites() {
   html = "";
   try {
     for (key in citations) {
-      console.log(key)
       if (citations[key].length>0) {
         html += "<li><a href='https://www.zotero.org/groups/"+lib[0]["library"]["id"]+"/items/"+key+"/' target='_blank'>"+get_title(key)+"</a><ol><br>"
         for (cite in citations[key]) {
