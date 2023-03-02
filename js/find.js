@@ -377,17 +377,22 @@ function update_texts(wait=0) {
   setTimeout(function(){
     for (item in lib) {
       if (lib[item]["citation"]) {
-        var linkto = "<a href='https://www.zotero.org/groups/"+lib[item]["library"]["id"]+"/items/"+lib[item]["key"]+"/' target='_blank'>"+lib[item]["citation"]+"</a>";
+        var linkto = lib[item]["citation"]
       } else {
-        var linkto = "<a href='https://www.zotero.org/groups/"+lib[item]["library"]["id"]+"/items/"+lib[item]["key"]+"/' target='_blank'>"+lib[item]["bib"]+"</a>";
+        var linkto = lib[item]["bib"]
       }
 
       var regEx = new RegExp(`</?div[^>]*>`, "ig");
       linkto = linkto.replace(regEx,"")
 
       if (lib[item]["hash_id"]) {
-        linkto = "<span style='background:#aef7a6'>"+linkto+"</span>";
+        linkto = "<span style='background:#aef7a6'>"+linkto+"</span> ";
       }
+
+      lookuptext = encodeURI(extractContent(linkto)).replace("&","%26");
+
+      linkto = linkto + " <span class='linksto'><a href='https://www.zotero.org/groups/"+lib[item]["library"]["id"]+"/items/"+lib[item]["key"]+"/' target='_blank'>Zotero Entry</a> - Try: <a href='https://www.google.com/search?q="+lookuptext+"' target='_blank'>Google</a> |  <a href='https://scholar.google.com/scholar?q="+lookuptext+"' target='_blank'>Scholar</a></span>"
+
       $('#lib_links').append("<li>"+linkto+"</li>")
     }
 
