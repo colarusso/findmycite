@@ -144,7 +144,7 @@
     var regEx = new RegExp(`</?div[^>]*>`, "ig");
     cite_to_source = answer[1][2].replace(regEx,"")
     lookuptext = encodeURI(extractContent(cite_to_source)).replace("&","%26");
-    return "<hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:35px;'><p><font size=\"-1\">"+matchtext+"</font></p><blockquote style='border-left: 4px solid #ccc;padding-left:15px;'>"  + thisSent  + "</blockquote><p id='"+answer[1][1]+"' style='text-align:left;'>"+cite_to_source+" <p style='text-align:center;margin-bottom:50px;'> <a href='"+answer[1][3]+"' target='_blank'>Open Zotero Copy</a> | <a href='#search'>Back to Top</a> | <a href='https://www.google.com/search?q="+lookuptext+"' target='_blank'>Try Google Search</a></p>";
+    return "<hr style='height:1px;border:none;color:#333;background-color:#ccc;margin-bottom:35px;'><p><font size=\"-1\">"+matchtext+"</font></p><blockquote style='border-left: 4px solid #ccc;padding-left:15px;'>"  + thisSent  + "</blockquote><p id='"+answer[1][1]+"' style='text-align:left;'>"+cite_to_source+" <span class='linksto'><a href='"+answer[1][3]+"' target='_blank'>Zotero</a> | Try: <a href='https://www.google.com/search?q="+lookuptext+"' target='_blank'>Google</a> |  <a href='https://scholar.google.com/scholar?q="+lookuptext+"' target='_blank'>Scholar</a></span></li><p style='text-align:center;margin-bottom:50px;'>~ <a href='#search'>back to top</a> ~</p>";
 
     //#search="+thisSent.split(" ").slice(0,10).join('|').replace(/\|/ig," ")
 
@@ -446,7 +446,7 @@ function possible_cites() {
         for (cite in citations[key]) {
           var linkto = citations[key][cite]
           lookuptext = encodeURI(extractContent(linkto)).replace("&","%26");
-          html += "<li>"+linkto+" [<a href='https://www.google.com/search?q="+lookuptext+"' target='_blank'>Try Google</a>]</li>"
+          html += "<li>"+linkto+" <span class='linksto'>Try: <a href='https://www.google.com/search?q="+lookuptext+"' target='_blank'>Google</a> |  <a href='https://scholar.google.com/scholar?q="+lookuptext+"' target='_blank'>Scholar</a></span></li>"
 
         }
         html += "</ol></li><br>"

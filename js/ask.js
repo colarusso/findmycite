@@ -65,7 +65,7 @@ function ask(query=null,group=null) {
                 var regEx = new RegExp(`</?div[^>]*>`, "ig");
                 link_to_source = data["sources"][n][0].replace(regEx,"")
                 lookuptext = encodeURI(extractContent(link_to_source)).replace("&","%26");
-                sources += `<li>`+link_to_source+` [<a href="`+data["sources"][n][1]+`" target="_blank">Zotero</a> | <a href="https://www.google.com/search?q=`+lookuptext+`" target="_blank">Try Google</a>]</li>`;
+                sources += `<li>`+link_to_source+` <span class='linksto'><a href="`+data["sources"][n][1]+`" target="_blank">Zotero</a> | Try: <a href='https://www.google.com/search?q=`+lookuptext+`' target='_blank'>Google</a> |  <a href='https://scholar.google.com/scholar?q=`+lookuptext+`' target='_blank'>Scholar</a></span></li>`;
               }
             }
 

@@ -156,3 +156,20 @@ a.anchor {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+
+.linksto {
+  font-family: 'Inter', 'Arial';
+  background: #d4e9ff;
+  box-sizing: border-box;
+  font-weight:100;
+	font-size: 11px;
+	line-height: 15px;
+  text-transform: uppercase;
+  border-radius:3px;
+  padding: 2px 5px;
+  margin:0px 0px 0 0px;
+  box-sizing: border-box;
+  border: solid 1px #eee;
+  white-space:  nowrap;
+}
