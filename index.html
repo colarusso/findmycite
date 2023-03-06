@@ -30,7 +30,8 @@
       if ((window.location.protocol == "https:") | (window.location.protocol == "http:")) {
         var server = "https://tools.suffolklitlab.org"; // Production Server
       } else {
-        var server = "http://127.0.0.1:10104"; // Local Testing Server
+        var server = "https://tools.suffolklitlab.org"; // Production Server
+        //var server = "http://127.0.0.1:10100"; // Local Testing Server
       }
       var default_group = "4961358";
       var building_lib = 0;
@@ -39,6 +40,8 @@
     <script src="js/find.js"></script>
     <script src="js/ask.js"></script>
     <script src="js/suggest.js"></script>
+    <script src="js/guess.js"></script>
+    <script src="js/countable.js"></script>
 
   </head>
 
@@ -65,7 +68,8 @@
         <a id="menu_bs" href="javascript:void('');" onClick="tab('bs');">🤖 BS</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="menu_find" href="javascript:void('');" onClick="tab('find');">Find</a>&nbsp;&nbsp;&nbsp;
         <a id="menu_ask" href="javascript:void('');" onClick="tab('ask');">Ask</a>&nbsp;&nbsp;&nbsp;
-        <a id="menu_suggest" href="javascript:void('');" onClick="tab('suggest');">Suggest</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a id="menu_suggest" href="javascript:void('');" onClick="tab('suggest');">Suggest</a>&nbsp;&nbsp;&nbsp;
+        <a id="menu_guess" href="javascript:void('');" onClick="tab('guess');">Guess</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="menu_settings" href="javascript:void('');" onClick="tab('settings');">Library</a>
       </div>
       <div class="findmycite"><b>Find My Cite</b> <sup><font color="gray" size=-2>BETA</font></div>
@@ -151,15 +155,21 @@
         <ul>
           <h4><a name="ask_descript" href="#ask_descript" class="anchor" alt="deep link to this section"></a>Ask a question of your library</h4>
           <p>
-            What if you use the original query (e.g., "What is...?") to perform a traditional search then use the results of that search to seed the prompt to an LLM. You then ask it not to answer if the answer isn't in the seed, and you show citations to the texts returned by the original search. This is what we do with the <a href="javascript:void('');" onClick="tab('ask');">ask</a> tool.
+            What if you use the original query (e.g., "What is...?") to perform a traditional search then use the results of that search to seed the prompt to an LLM. You then ask it not to answer if the answer isn't in the seed, and you show citations to the texts returned by the original search. This is what we do with the <a href="javascript:void('');" onClick="tab('ask');">Ask</a> tool.
           </p>
           <h4><a name="suggest_descript" href="#suggest_descript" class="anchor" alt="deep link to this section"></a>Suggest text supported by your library</h4>
           <p>
-            There's no reason we have to limit this approach to questioning texts. We could just as easily create an anchor for more traditional text completion. E.g., "Complete the following paragraph using only information found in 'the seed.'"  This is what we do with the <a href="javascript:void('');" onClick="tab('suggest');">suggest</a> tool. 
+            There's no reason we have to limit this approach to questioning texts. We could just as easily create an anchor for more traditional text completion. E.g., "Complete the following paragraph using only information found in 'the seed.'"  This is what we do with the <a href="javascript:void('');" onClick="tab('suggest');">Suggest</a> tool. 
           </p>
           <h4><a name="find_descript" href="#find_descript" class="anchor" alt="deep link to this section"></a>Find a proposition in your library</h4>
-          <p>As for the <a href="javascript:void('');" onClick="tab('find');">find</a> tool, there we compare your proposition's embedding to that of sentences in your library, returning the most similar. It also has a nifty auto-complete feature that previews individual sentences from your library while you type. 
+          <p>As for the <a href="javascript:void('');" onClick="tab('find');">Find</a> tool, there we compare your proposition's embedding to that of sentences in your library, returning the most similar. It also has a nifty auto-complete feature that previews individual sentences from your library while you type. 
           </p>
+
+          
+          <h4><a name="guess_descript" href="#guess_descript" class="anchor" alt="deep link to this section"></a>Guess what word(s) should come next</h4>
+          <p>Tools like ChatGPT obsucre the true nature of Large Language Models. At their core they aim to predict the next word (or words) in a string of text. The <a href="javascript:void('');" onClick="tab('guess');">Guess</a> tool grants access to a raw LLM absent the artiface. 
+          </p>
+
         </ul>
 
 <p>
@@ -230,7 +240,7 @@
 
           <a name="ask"><h2>Ask a question of <a href="javascript:void('');" onClick="tab('settings');">your library</a><span id="lib_name_ask"></span></h2></a>
 
-          <textarea name='question' id="question" style="width:100%;height:80px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="500" placeholder="Ask a question here"></textarea>
+          <textarea name='question' id="question" style="width:100%;height:80px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="15000" placeholder="Ask a question here"></textarea>
 
           <div style="padding:5px 0 8px 0;"><span class="subtitle"></span></div>
 
@@ -255,7 +265,7 @@
 
         <a name="suggest"><h2>Suggest text supported by <a href="javascript:void('');" onClick="tab('settings');">your library</a><span id="lib_name_suggest"></span></h2></a>
 
-        <textarea name='seed' id="seed" style="width:100%;height:250px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="500" placeholder="Start a paragraph here"></textarea>
+        <textarea name='seed' id="seed" style="width:100%;height:250px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" maxlength="15000" onchange="localStorage.suggest_prompt = $('#seed').val();" placeholder="Start a paragraph here"></textarea>
 
         <div style="padding:5px 0 8px 0;"><span class="subtitle"></span></div>
 
@@ -273,6 +283,44 @@
         </div>
     </div>
     <!---   END COMPLETE   -->
+
+
+      <!---   START GUESS   -->
+      <div id="guess" style="display:none;float:left;width:100%;">
+
+        <a name="guess"><h2>Guess what word(s) should come next</h2></a>
+
+        <p>Tools like ChatGPT obsucre the true nature of Large Language Models. At their core they aim to predict the next word (or words) in a string of text. The interface below grants access to a raw LLM absent the artiface. <span style="background:rgb(255, 181, 165);"><b>Beware! You are entering the danger zone described in <a href="javascript:void('');" onClick="tab('bs');">🤖 BS</a></b></span>. Might I suggest comparing the output below with that found using the <a href="javascript:void('');" onClick="tab('suggest');">Suggest</a> tool? Additionally, if you're prompt grows beyond 2,000 words, only the last 2,000 will be used when guessing. <i>Unlike the other tools found here, you must have a valid <i>FindMyCite Key</i> entered under <a href="javascript:void('');" onClick="tab('settings');">Library</a> to use this feature.</i></p>
+
+
+        <span id="word_count" name="word_count" class="subtitle" style="float:right;color:red;font-weight:bold;">&nbsp;&nbsp;<span id="result__words">0</span> words</span>
+        <div id="prompt_area" style="position:absolute;z-index:100;padding-top:200px;margin:0 auto;"></div><textarea name='prompt' id="prompt" style="width:100%;height:325px;font-size:15px;padding:5px;box-sizing: border-box;border-radius: 5px; border: solid 1px #5e5e5e;resize:none;" onchange="localStorage.guess_prompt = $('#prompt').val();" placeholder="Place prompt here"></textarea>
+
+        <div style="padding:5px 0 8px 0;"><span class="subtitle"></span></div>
+
+        <p style="margin:0px 0px 5px 0px;">
+          <input type="button" class="ai_button" value="Guess the next word(s)" onCLick="guess($('#prompt').val(),$('#cite_key').val());"/>
+        </p>
+
+        <div id="output_complete" style="float:left;width:100%;">
+
+          <div id="loading_complete" style="display:none;width:100%;margin:50px auto;text-align:center;">
+            <img src="images/Ajax-loader.gif" width="35px;" height="35px;"/>
+          </div>
+          <div id="response_complete" style="float:left;display:none;width:100%;margin:0px auto 0px 0px;"></div>
+
+        </div>
+
+        <br>
+        <h3>Consider</h3>
+        <p>Raw LLMs perform reasonably well at rearranging text from their prompts (e.g., entity extraction, summarization, et al.). Try placing some text in the area above and following it with instructions like these?</p>
+        <ul>
+          <li>[some text] <a href="javascript:void('');" onClick="$('#prompt').val($('#prompt').val() + '\n\nRewrite the text above in plain language and at a sixth grade reading level.\n\n');">Rewrite the text above in plain language and at a sixth grade reading level.</a></li>
+          <li>[some text] <a href="javascript:void('');" onClick="$('#prompt').val($('#prompt').val() + '\n\nSummarize the text above in a bulleted list.\n\n');">Summarize the text above in a bulleted list.</a></li>
+        </ul>
+
+    </div>
+    <!---   END GUESS   -->
 
 
     <!---   START LIBRARY   -->
@@ -379,7 +427,7 @@
     function tab(choice){
 
       if ((choice=="none")) {
-        if ((window.location.hash=="#bs") | (window.location.hash=="#background") | (window.location.hash=="#tools") | (window.location.hash=="#ask_descript") | (window.location.hash=="#suggest_descript") | (window.location.hash=="#find_descript")) {
+        if ((window.location.hash=="#bs") | (window.location.hash=="#background") | (window.location.hash=="#tools") | (window.location.hash=="#ask_descript") | (window.location.hash=="#suggest_descript") | (window.location.hash=="#find_descript") | (window.location.hash=="#guess_descript"))  {
           choice = "bs";
         } else if (window.location.hash=="#find") {
           choice = "find";          
@@ -389,6 +437,9 @@
           history.replaceState(null, null, ' ');
         } else if (window.location.hash=="#suggest") {
           choice = "suggest";          
+          history.replaceState(null, null, ' ');
+        } else if (window.location.hash=="#guess") {
+          choice = "guess";          
           history.replaceState(null, null, ' ');
         } else if (window.location.hash=="#settings") {
           choice = "settings";          
@@ -426,6 +477,7 @@
         $('#find').hide();
         $('#ask').hide();
         $('#complete').hide();
+        $('#guess').hide();
         $('#tos').hide();
         $('#menu_bs').css('text-decoration', 'none');
         $('#menu_bs').css('font-weight', '600');
@@ -439,6 +491,9 @@
         $('#menu_suggest').css('text-decoration', 'underline');
         $('#menu_suggest').css('font-weight', '100');
         $('#menu_suggest').css('color', 'blue');
+        $('#menu_guess').css('text-decoration', 'underline');
+        $('#menu_guess').css('font-weight', '100');
+        $('#menu_guess').css('color', 'blue');
         $('#menu_settings').css('text-decoration', 'underline');
         $('#menu_settings').css('font-weight', '100');
         $('#menu_settings').css('color', 'blue');
@@ -449,6 +504,7 @@
         $('#find').show();
         $('#ask').hide();
         $('#complete').hide();
+        $('#guess').hide();
         $('#tos').hide();
         $('#menu_bs').css('text-decoration', 'underline');
         $('#menu_bs').css('font-weight', '100');
@@ -462,6 +518,9 @@
         $('#menu_suggest').css('text-decoration', 'underline');
         $('#menu_suggest').css('font-weight', '100');
         $('#menu_suggest').css('color', 'blue');
+        $('#menu_guess').css('text-decoration', 'underline');
+        $('#menu_guess').css('font-weight', '100');
+        $('#menu_guess').css('color', 'blue');
         $('#menu_settings').css('text-decoration', 'underline');
         $('#menu_settings').css('font-weight', '100');
         $('#menu_settings').css('color', 'blue');
@@ -472,6 +531,7 @@
         $('#find').hide();
         $('#ask').show();
         $('#complete').hide();
+        $('#guess').hide();
         $('#tos').hide();
         $('#menu_bs').css('text-decoration', 'underline');
         $('#menu_bs').css('font-weight', '100');
@@ -485,6 +545,9 @@
         $('#menu_suggest').css('text-decoration', 'underline');
         $('#menu_suggest').css('font-weight', '100');
         $('#menu_suggest').css('color', 'blue');
+        $('#menu_guess').css('text-decoration', 'underline');
+        $('#menu_guess').css('font-weight', '100');
+        $('#menu_guess').css('color', 'blue');
         $('#menu_settings').css('text-decoration', 'underline');
         $('#menu_settings').css('font-weight', '100');
         $('#menu_settings').css('color', 'blue');
@@ -495,6 +558,7 @@
         $('#find').hide();
         $('#ask').hide();
         $('#complete').show();
+        $('#guess').hide();
         $('#tos').hide();
         $('#menu_bs').css('text-decoration', 'underline');
         $('#menu_bs').css('font-weight', '100');
@@ -508,16 +572,20 @@
         $('#menu_suggest').css('text-decoration', 'none');
         $('#menu_suggest').css('font-weight', '600');
         $('#menu_suggest').css('color', 'black');
+        $('#menu_guess').css('text-decoration', 'underline');
+        $('#menu_guess').css('font-weight', '100');
+        $('#menu_guess').css('color', 'blue');
         $('#menu_settings').css('text-decoration', 'underline');
         $('#menu_settings').css('font-weight', '100');
         $('#menu_settings').css('color', 'blue');
         $('#seed').focus();
-      } else if (choice=="settings") {
+      } else if ((choice=="guess") && (building_lib==0)) {
         $('#bs').hide();
-        $('#library').show();
+        $('#library').hide();
         $('#find').hide();
         $('#ask').hide();
         $('#complete').hide();
+        $('#guess').show();
         $('#tos').hide();
         $('#menu_bs').css('text-decoration', 'underline');
         $('#menu_bs').css('font-weight', '100');
@@ -531,6 +599,36 @@
         $('#menu_suggest').css('text-decoration', 'underline');
         $('#menu_suggest').css('font-weight', '100');
         $('#menu_suggest').css('color', 'blue');
+        $('#menu_guess').css('text-decoration', 'none');
+        $('#menu_guess').css('font-weight', '600');
+        $('#menu_guess').css('color', 'black');
+        $('#menu_settings').css('text-decoration', 'underline');
+        $('#menu_settings').css('font-weight', '100');
+        $('#menu_settings').css('color', 'blue');
+        $('#prompt').focus();
+      } else if (choice=="settings") {
+        $('#bs').hide();
+        $('#library').show();
+        $('#find').hide();
+        $('#ask').hide();
+        $('#complete').hide();
+        $('#guess').hide();
+        $('#tos').hide();
+        $('#menu_bs').css('text-decoration', 'underline');
+        $('#menu_bs').css('font-weight', '100');
+        $('#menu_bs').css('color', 'blue');
+        $('#menu_find').css('text-decoration', 'underline');
+        $('#menu_find').css('font-weight', '100');
+        $('#menu_find').css('color', 'blue');
+        $('#menu_ask').css('text-decoration', 'underline');
+        $('#menu_ask').css('font-weight', '100');
+        $('#menu_ask').css('color', 'blue');
+        $('#menu_suggest').css('text-decoration', 'underline');
+        $('#menu_suggest').css('font-weight', '100');
+        $('#menu_suggest').css('color', 'blue');
+        $('#menu_guess').css('text-decoration', 'underline');
+        $('#menu_guess').css('font-weight', '100');
+        $('#menu_guess').css('color', 'blue');
         $('#menu_settings').css('text-decoration', 'none');
         $('#menu_settings').css('font-weight', '600');
         $('#menu_settings').css('color', 'black');
@@ -540,6 +638,7 @@
         $('#find').hide();
         $('#ask').hide();
         $('#complete').hide();
+        $('#guess').hide();
         $('#tos').show();
         $('#menu_bs').css('text-decoration', 'underline');
         $('#menu_bs').css('font-weight', '100');
@@ -553,6 +652,9 @@
         $('#menu_suggest').css('text-decoration', 'underline');
         $('#menu_suggest').css('font-weight', '100');
         $('#menu_suggest').css('color', 'blue');
+        $('#menu_guess').css('text-decoration', 'underline');
+        $('#menu_guess').css('font-weight', '100');
+        $('#menu_guess').css('color', 'blue');
         $('#menu_settings').css('text-decoration', 'underline');
         $('#menu_settings').css('font-weight', '100');
         $('#menu_settings').css('color', 'blue');
@@ -610,6 +712,13 @@
       com_par($('#seed').val(),localStorage.group);
      }
     });
+    
+    $('#prompt').keypress(function(e){
+    if(e.keyCode == 13 && !e.shiftKey) {
+      e.preventDefault();
+      guess($('#prompt').val(),$('#cite_key').val());
+     }
+    });
 
     function update_group(group){
       if (group=="") {
@@ -649,5 +758,27 @@
       }
       update_preview();
     }
+
+
+    var area = document.getElementById('prompt');
+
+    function callback_count (counter) {
+      //console.log(counter);
+      $('#result__words').html(counter.words);
+      if ($('#result__words').html()<1500) {
+        $('#word_count').css('color', 'green');
+        $('#word_count').css('font-weight', 'bold');
+      } else if (($('#result__words').html()>=1500) && ($('#result__words').html()<2000)) {
+        $('#text').css('background-color', '');
+        $('#word_count').css('color', 'orange');
+        $('#word_count').css('font-weight', 'bold');
+      } else {
+        $('#word_count').css('color', 'red');
+        $('#word_count').css('font-weight', 'bold');
+      }
+    }
+
+    Countable.live(area, callback_count);
+
   </script>
 </html>

@@ -175,6 +175,8 @@
     $('#loading').html("");
     $('#loading').show();
     start_spinner('loading');
+    $('#q').prop('disabled', true);
+    $('#q').css('background-color', '#ccc');
 
     // getNClosestAnswer allows for the return of multiple labels
     // here we've limited it to one. Additionally, we're filtering by
@@ -223,6 +225,8 @@
     $('#answer').html(html);
     $('#loading').hide();
     $('#answer').show();
+    $('#q').prop('disabled', false);
+    $('#q').css('background-color', '#fff');
     beep();
   }
 
@@ -416,7 +420,9 @@ function update_texts(wait=0) {
     possible_cites();
 
     autocomplete(document.getElementById("q"), Object.values(SentTexts));
-
+    $('#seed').val(localStorage.suggest_prompt);
+    $('#prompt').val( localStorage.guess_prompt);
+    Countable.live(area, callback_count);
 
   }, wait);
 }

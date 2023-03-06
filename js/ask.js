@@ -26,12 +26,16 @@ function ask(query=null,group=null) {
     $('#response_ask').hide();
     $('#loading_ask').show();
     $('#footer').css("margin-bottom","100%");
+    $('#question').prop('disabled', true);
+    $('#question').css('background-color', '#ccc');
 
     //query = $("#text").val()
 
     if ((query == null) | (query.trim() == "")) {
       alert("Please enter a question, and try again.")
       $('#loading_ask').hide();
+      $('#question').prop('disabled', false);
+      $('#question').css('background-color', '#fff');
     } else {
       var Data = { "q": query, "g":group, "test": localStorage.getItem('h_test'), "human": localStorage.getItem('human_ans') }
 
@@ -93,6 +97,8 @@ function ask(query=null,group=null) {
           } else {
             $('#loading_ask').hide();
             $('#response_ask').show();
+            $('#question').prop('disabled', false);
+            $('#question').css('background-color', '#fff');
             beep();
           }
         },
@@ -100,6 +106,8 @@ function ask(query=null,group=null) {
           err = JSON.parse(jqXHR.responseText)
           console.log(err)
           $('#loading_ask').hide();
+          $('#question').prop('disabled', false);
+          $('#question').css('background-color', '#fff');
           if (err["message"]) {
             $('#response_ask').html(clearR+"<h2>There was an error...</h2><ul><li>"+err["message"]+"</li></ul>")
           } else {

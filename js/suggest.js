@@ -2,6 +2,8 @@
 
 function com_par(query=null,group=null) {
 
+  localStorage.suggest_prompt = query;
+
   var human = "placeholder";
   var busy = 0;
   var go = 0;
@@ -26,12 +28,16 @@ function com_par(query=null,group=null) {
     $('#response_complete').hide();
     $('#loading_complete').show();
     $('#footer').css("margin-bottom","100%");
+    $('#seed').prop('disabled', true);
+    $('#seed').css('background-color', '#ccc');
 
     //query = $("#text").val()
 
     if ((query == null) | (query.trim() == "")) {
       alert("Please enter a question, and try again.")
       $('#loading_complete').hide();
+      $('#seed').prop('disabled', false);
+      $('#seed').css('background-color', '#fff');
     } else {
       var Data = { "q": query, "g":group, "test": localStorage.getItem('h_test'), "human": localStorage.getItem('human_ans') }
 
@@ -79,6 +85,7 @@ function com_par(query=null,group=null) {
               var regEx = new RegExp("\\s+", "ig");
               $('#seed').val($('#seed').val().trim(" \n") + " " + data["response"].replace(regEx," ").trim(" \n")); //+data["response"].trim(" \n"));
               $('#response_complete').html(sources);
+              localStorage.suggest_prompt = $('#seed').val();
             }
           } else if (data["status"] == 0) {
             localStorage.clear();
@@ -93,6 +100,8 @@ function com_par(query=null,group=null) {
           //} else {
             $('#loading_complete').hide();
             $('#response_complete').show();
+            $('#seed').prop('disabled', false);
+            $('#seed').css('background-color', '#fff');
             beep();
             //}
         },
@@ -106,6 +115,8 @@ function com_par(query=null,group=null) {
             $('#response_complete').html(clearR+"<h2>There was an error...</h2>")
           }
           $('#response_complete').show()
+          $('#seed').prop('disabled', false);
+          $('#seed').css('background-color', '#fff');
           beep();
         }
       });
