@@ -20,14 +20,14 @@ function guess(query=null,ckey=null) {
       url: server + "/guess/",
       data: Data,
 
-      //dataType: "json",
+      dataType: "json",
+      crossDomain:true,
       // --- OR ---
-      dataType: "jsonp",
-      jsonpCallback: 'callback',
+      //dataType: "jsonp",
+      //jsonpCallback: 'callback',
 
       contentType : "application/json",
       success: function(data) {
-
         //console.log(data)
         tmp_data = data
 
@@ -39,11 +39,14 @@ function guess(query=null,ckey=null) {
         } else if (data["status"] == 500) {
           beep();
           alert("There was an issue authorizing your usage. Make sure you have a valid FindMyCite Key entered under Library.");
+        } else {
         }
         $('#prompt').prop('disabled', false);
         $('#prompt').css('background-color', '#fff');
       },
       error: function (jqXHR, exception) {
+        alert("There was an issue. Try shortening your query.");
+
         err = JSON.parse(jqXHR.responseText)
         console.log(err)
         $('#loading_complete').hide();
