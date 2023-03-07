@@ -20,11 +20,11 @@ function guess(query=null,ckey=null) {
       url: server + "/guess/",
       data: Data,
 
-      dataType: "json",
-      crossDomain:true,
+      //dataType: "json",
+      //crossDomain:true,
       // --- OR ---
-      //dataType: "jsonp",
-      //jsonpCallback: 'callback',
+      dataType: "jsonp",
+      jsonpCallback: 'callback',
 
       contentType : "application/json",
       success: function(data) {
