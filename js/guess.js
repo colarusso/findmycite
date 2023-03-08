@@ -8,7 +8,7 @@ function guess(query=null,ckey=null) {
     alert("Please enter a question, and try again.")
     $('#loading_complete').hide();
   } else {
-    var Data = { "q": query, "ckey": ckey }
+    var Data = { "q": query, "ckey": ckey, "temp": 0.75 }
 
     //console.log(Data)
     //start_spinner('prompt_area');
@@ -20,11 +20,11 @@ function guess(query=null,ckey=null) {
       url: server + "/guess/",
       data: Data,
 
-      //dataType: "json",
-      //crossDomain:true,
+      dataType: "json",
+      crossDomain:true,
       // --- OR ---
-      dataType: "jsonp",
-      jsonpCallback: 'callback',
+      //dataType: "jsonp",
+      //jsonpCallback: 'callback',
 
       contentType : "application/json",
       success: function(data) {
