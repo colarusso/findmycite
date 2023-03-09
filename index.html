@@ -290,7 +290,7 @@
 
         <a name="guess"><h2>Guess what word(s) should come next</h2></a>
 
-        <p>Tools like ChatGPT obsucre the true nature of Large Language Models. At their core they aim to predict the next word (or words) in a string of text. The interface below grants access to a raw LLM absent the artiface. <span style="background:rgb(255, 181, 165);"><b>Beware! You are entering the danger zone described in <a href="javascript:void('');" onClick="tab('bs');">🤖&nbsp;BS</a></b></span>. Might I suggest comparing the output below with that found using the <a href="javascript:void('');" onClick="tab('suggest');">Suggest</a> tool? Additionally, if you're prompt grows beyond 2,000 words, only the last 2,000 will be used when guessing. <i>Unlike the other tools found here, you must have a valid <i>FindMyCite Key</i> entered under <a href="javascript:void('');" onClick="tab('settings');">Library</a> to use this feature.</i></p>
+        <p>Tools like ChatGPT obsucre the true nature of Large Language Models. At their core they aim to predict the next word (or words) in a string of text. The interface below grants access to a raw LLM absent the artiface. <span style="background:rgb(255, 181, 165);"><b>Beware! You are entering the danger zone described in <a href="javascript:void('');" onClick="tab('bs');">🤖&nbsp;BS</a></b></span>. Might I suggest comparing the output below with that found using the <a href="javascript:void('');" onClick="tab('suggest');">Suggest</a> tool? Additionally, if you're prompt grows much beyond 1,000 words, only the last 1,300 or so will be used when guessing. <i>Unlike the other tools found here, you must have a valid <i>FindMyCite Key</i> entered under <a href="javascript:void('');" onClick="tab('settings');">Library</a> to use this feature.</i></p>
 
 
         <span id="word_count" name="word_count" class="subtitle" style="float:right;color:red;font-weight:bold;">&nbsp;&nbsp;<span id="result__words">0</span> words</span>
@@ -765,10 +765,10 @@
     function callback_count (counter) {
       //console.log(counter);
       $('#result__words').html(counter.words);
-      if ($('#result__words').html()<1500) {
+      if ($('#result__words').html()<1000) {
         $('#word_count').css('color', 'green');
         $('#word_count').css('font-weight', 'bold');
-      } else if (($('#result__words').html()>=1500) && ($('#result__words').html()<2000)) {
+      } else if (($('#result__words').html()>=1000) && ($('#result__words').html()<1300)) {
         $('#text').css('background-color', '');
         $('#word_count').css('color', 'orange');
         $('#word_count').css('font-weight', 'bold');
