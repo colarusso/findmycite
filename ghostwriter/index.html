@@ -1,0 +1,465 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/HTML4/loose.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
+<HEAD>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+	<TITLE>Ghost Writer QnA</TITLE>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta property="og:title" content="QnA Markup Editor"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content="https://www.qnamarkup.org/"/>
+	<meta property="og:image" content="https://www.qnamarkup.org/images/QnA_300.png"/>
+	<meta property="og:site_name" content="QnA Markup"/>
+    	<meta property="og:description" content="An open source tool for turning structured text into an interactive set of questions and answers. Designed for people with no programing experience, it can be used to build expert systems and perform rules-based document construction."/>
+
+	<link rel="stylesheet" type="text/css" href="https://www.qnamarkup.org/css/generic.css">
+	<link rel="stylesheet" type="text/css" href="https://www.qnamarkup.org/css/main.css">
+	<style>
+		.embed_vid {
+			box-sizing: border-box;
+			float:left;
+			width:100%;
+			height:calc(26cqw); 
+		}
+
+		#codeblock {
+			box-sizing: border-box;
+			position:absolute;
+			top:95px;
+			bottom:70px;
+			left:25px;
+			right: calc(50% + 35px); 
+		}
+
+		#draftblock {
+			box-sizing: border-box;
+			position:absolute;
+			top:95px;
+			bottom:70px;
+			left:25px;
+			right: calc(50% + 35px); 
+		}
+
+		#right_panel {
+			box-sizing: border-box;
+			position:absolute;
+			top:95px;
+			right:35px;
+			width:50%;
+			padding-left: 0px;
+			bottom:69px;
+			background-color: #fff;
+			margin:1px 0 0 0;
+		}
+
+		#right_panel::after {
+			box-sizing: border-box;
+			content: '';
+			position: absolute;
+			left: 0;
+			width: 15px;
+			height: 100%;
+			cursor: ew-resize;
+		}
+
+	</style>
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="js/main.js"></script>
+    <script src="https://findmycite.org/js/spin.min.js"></script>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff" BACKGROUND="" MARGINWIDTH="0" MARGINHEIGHT="0">
+<FORM ID="QNAFORM" NAME="QNAFORM" ACTION="https://www.qnamarkup.org/" METHOD="POST" accept-charset="UTF-8">
+<div id="loading" style="display:none;position:absolute;z-index:100;width:100%;">
+<div style="background:yellow;padding:8px 10px;margin:5px auto;width:100px;text-align:center;">
+loading...
+</div></div>
+
+<div style="position:absolute;top:15px;left:25px;right:25px;overflow:hidden;">
+	<span style="float:right;">
+		<a id="menu_bs" href="../?#bs">🤖 BS</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a id="menu_find" href="../?#find">Find</a>&nbsp;&nbsp;&nbsp;
+		<a id="menu_ask" href="../?#ask">Ask</a>&nbsp;&nbsp;&nbsp;
+		<a id="menu_suggest" href="../?#suggest">Suggest</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<b>Ghost Write</b>&nbsp;&nbsp;&nbsp;
+		<a id="menu_guess" href="../?#guess">Guess</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a id="menu_settings" href="../?#settings">Library</a>
+	</span>
+	<font class="header">Find My Cite</font> <sup><font color="gray" size=-2>BETA</font></sup>
+</div>
+<div class="titleNtabs" style="position:absolute;top:50px;left:25px;right:25px;overflow:hidden;">
+	<div class="tab_line"><font class="tabtext">&nbsp;</font></div>
+</div>
+
+<input id="tabselect" name="tabselect" type="hidden" value="1"/>
+<input id="new" name="new" type="hidden" value="0"/>
+<div class="titleNtabs" style="position:absolute;top:50px;left:25px;right:460px;min-width:300px;overflow:hidden;">
+	<div id="tab01" class="tab_top"><a href="javascript:void('');" onClick="tabtoggle('tab01');" class="tabtext">Document Specs</a></div>
+	<div id="tab02" class="tab"><a href="javascript:void('');" onClick="tabtoggle('tab02');" class="tabtext">Draft</a></div>
+	<div style="float:left;margin: 0 0 0 15px;">
+		<select id="source" name="source" onClick="load_specs(document.getElementById(this.value).value);" class="example">
+			<option value="no_action">Load Template</option>
+			<option value="five_paragraph_essay">Diary Entry</option>
+			<option value="five_paragraph_essay">News Story</option>
+			<option value="five_paragraph_essay">5 ¶ Essay</option>
+			<option value="five_paragraph_essay">Short Poem</option>
+		</select>
+
+		<input id="upload" type="file"/> 
+		&nbsp;&nbsp;&nbsp;<a href="javascript:void('');" id="upload_link">Open</a>
+		&nbsp;&nbsp;<a href="javascript:void('');" id="upload_link" onClick="saveTextAsFile('markup','ghostwriterQnA.txt');">Save</a>
+		&nbsp;&nbsp;<a href="javascript:void('');" onClick="load_specs(document.getElementById('template_new').value);">New</a>
+	</div>
+</div>
+
+<div id="codeblock">
+	<textarea id=markup name=markup style="box-sizing: border-box;width:100%;height:100%;border: solid 1px #aaa;resize: none;" onkeydown="insertTab(this, event);"  wrap="off">
+	</textarea>
+</div>
+
+<div id="draftblock" style="display:none;">
+<textarea id=draft name=draft style="box-sizing: border-box;width:100%;height:100%;border: solid 1px #aaa;color:black;resize: none;resize: none;" wrap="on" disabled></textarea>
+</div>
+
+<div style="position:absolute;height:30px;bottom:25px;left:25px;right:25px;">
+
+	<div id="wrap_box" >
+		<label><input type=checkbox id="wrap" name="wrap" value="1" onChange="toggle_wrap('');" /> word wrap</label>&nbsp;&nbsp;&nbsp;&nbsp; 
+	</div>
+	<a id="tos" href="javascript:void('');" onClick="tab('tos');" >terms &amp; privacy</a> | 
+	<a href="mailto:litlab@suffolk.edu" >contact</a>
+
+	<a href="https://suffolklitlab.org/" alt="LIT Lab" target="_blank"><img src="../images/lit_suffolk.png" class="footer_logo" border="0" alt="LIT and Suffolk University Law School Logos" style="height:35px;" align="right"/></a>
+
+</div>
+</FORM>
+
+<div id="right_panel">
+<div style="box-sizing: border-box;float:left;height:100%;width:100%;border:#ffffff 1px solid;margin-left:10px;overflow: hidden;">
+	<div id="video" style="box-sizing: border-box;float:left;width:100%;">
+		<iframe id="intro_vid_0" class="embed_vid" src="https://www.youtube-nocookie.com/embed/qbPf9VRP6eU?rel=0" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+		<iframe id="intro_vid_1" class="embed_vid" style="display:none;" src="https://www.youtube-nocookie.com/embed/1t1OL2zN0LQ?rel=0" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+		<div style="box-sizing: border-box;float:left;width:100%;background:#eee;text-align: center;padding:4px;">
+			<a href="javascript:void('');" onClick="hide('video');show('hidden_video');$('#output_window').css('top','38px');">Hide Video</a> <!--|  
+			<a href="javascript:void('');" onClick="show('intro_vid_0');hide('intro_vid_1')">About LLMs</a> | 
+			<a href="javascript:void('');" onClick="hide('intro_vid_0');show('intro_vid_1')">Ghost Writer How To</a>-->
+		</div>
+	</div>
+	<div id="hidden_video" style="box-sizing: border-box;display:none;float:left;width:100%;">
+		<div style="box-sizing: border-box;float:left;width:100%;background:#eee;text-align: center;padding:3px;">
+			<a href="javascript:void('');" onClick="show('video');hide('hidden_video');$('#output_window').css('top','calc(38px + 26cqw)')">Show Video</a>
+		</div>
+	</div>
+
+	<div id="output_window" style="box-sizing: border-box;position:absolute;left:11px;right:-9px;text-align:left;padding:15px;bottom:135px;top:calc(38px + 26cqw);background:rgb(255, 255, 255);overflow-y: scroll;border-left:#aaa solid 1px;">
+		Welcome. Watch the above video to get oriented or jump in by hitting 'Start' below.
+	</div>
+	
+
+	<div id="start_box" style="box-sizing: border-box;position:absolute;width:100%;padding:0px;height:125px;bottom:0px;text-align: center;">
+		<input type="button" style="margin-top:5px;width:100%;height:30px;background:rgb(187, 186, 186)" value='Start' onclick="document.getElementById('output_window').innerHTML='';reply(document.getElementById('markup').value,null);hide('start_box');show('processing_box');hide('answer_box');"/>
+	</div>
+
+	<div id="processing_box" style="display:none;box-sizing: border-box;position:absolute;width:100%;padding:0px;height:125px;bottom:0px;">
+		<div id="spinner" style="position: relative; margin:0 auto;width:100px;background:white;">&nbsp;</div>
+	</div>
+
+	<div id="answer_box" style="display:none;box-sizing: border-box;position:absolute;width:100%;padding:0px;height:125px;bottom:0px;text-align: center;">
+		<textarea id="reply" name="reply" style="box-sizing: border-box;width:100%;height:80px;margin:0px;resize: none;"></textarea>
+		<input type="button" style="margin-top:5px;width:43%;height:30px;background:rgb(187, 186, 186)" value='Answer' onclick="reply(document.getElementById('markup').value,document.getElementById('reply').value)"/>
+		<input type="button" style="margin-top:5px;width:24%;height:30px;background:rgb(187, 186, 186)" value='Skip/Trash Q' onclick="reply(document.getElementById('markup').value,'skip')"/>
+		<input type="button" style="margin-top:5px;width:20%;height:30px;background:rgb(187, 186, 186)" value='Suggest A' onclick="reply(document.getElementById('markup').value,'')"/>
+		<input type="button" style="margin-top:5px;width:10%;height:30px;background:rgb(187, 186, 186)" value='Exit' onclick="exit()"/>
+	</div>
+
+
+</div>
+</div>
+
+<textarea id=five_paragraph_essay name=template_new style="display:none">{
+"credentials": {
+	"openai_key": "",
+	"openai_org": ""
+},
+"config": {
+	"ghostwriterQnA_version": "0.1",
+	"bottom_up_abstract": true,
+	"include_section_headings": true,
+	"max_discovery_questions": 5,
+	"max_follow_up_questions": 3,
+	"llm_temperature": 0.9,
+	"verbose": false
+},
+"background": {
+	"What is the project's goal?": "To inform its readers",
+	"Who is the project's audiance?": "the general public",
+	"What style should the project be written in?": "casual/informal",
+	"What is your thesis?": null,
+	"What's your first main point?": null,
+	"What's your second main point?": null,
+	"What's your third main point?": null
+},
+"sections": {
+	"Introduction": {
+	"description": "The introduction is the first paragraph of the essay, and it serves several purposes. This paragraph gets your reader's attention, develops the basic ideas of what you will cover, and provides the thesis statement for the essay. The thesis statement is usually only one sentence and is made up of the topic, focus, and three main points of the essay.",
+	"approx_length_in_words": 250,
+	"discovery_questions": [],
+	"summary": null,
+	"text": null
+	},
+	"First Point": {
+	"description": "A paragraph addressing your first main point. Each body paragraph should start with a transition \u2014 either a word or phrase, like First, or Another important point is. Then, the first sentence should continue with your topic sentence. The topic sentence tells your reader what the paragraph is about, like a smaller-level thesis statement. The rest of the paragraph will be made of supporting sentences. These sentences, at least four of them, will explain your topic sentence to your reader.",
+	"approx_length_in_words": 250,
+	"discovery_questions": [],
+	"summary": null,
+	"text": null
+	},
+	"Second Point": {
+	"description": "A paragraph addressing your second main point. Each body paragraph should start with a transition \u2014 either a word or phrase, like First, or Another important point is. Then, the first sentence should continue with your topic sentence. The topic sentence tells your reader what the paragraph is about, like a smaller-level thesis statement. The rest of the paragraph will be made of supporting sentences. These sentences, at least four of them, will explain your topic sentence to your reader.",
+	"approx_length_in_words": 250,
+	"discovery_questions": [],
+	"summary": null,
+	"text": null
+	},
+	"Third Point": {
+	"description": "A paragraph addressing your third main point. Each body paragraph should start with a transition \u2014 either a word or phrase, like First, or Another important point is. Then, the first sentence should continue with your topic sentence. The topic sentence tells your reader what the paragraph is about, like a smaller-level thesis statement. The rest of the paragraph will be made of supporting sentences. These sentences, at least four of them, will explain your topic sentence to your reader.",
+	"approx_length_in_words": 250,
+	"discovery_questions": [],
+	"summary": null,
+	"text": null
+	},
+	"Conclusion": {
+	"description": "The conclusion is the last paragraph of the essay. This paragraph brings the essay to a close, reminds the reader of the basic ideas from the essay, and restates the thesis statement. The conclusion should not contain new ideas, as it is the summation of the content of the essay. The restatement of the thesis is a simpler form that the one originally presented in the introduction.",
+	"approx_length_in_words": 250,
+	"discovery_questions": [],
+	"summary": null,
+	"text": null
+	}
+},
+"coherent_body": null,
+"abstract": null,
+"draft_document": null
+}</textarea>
+
+<textarea id=template_new name=template_new style="display:none">{
+"credentials": {
+	"openai_key": "",
+	"openai_org": ""
+},
+"config": {
+	"ghostwriterQnA_version": "0.1",
+	"bottom_up_abstract": true,
+	"include_section_headings": true,
+	"max_discovery_questions": 3,
+	"max_follow_up_questions": 1,
+	"llm_temperature": 0.9,
+	"verbose": false
+},
+"background": {
+	"Your Background Questions Go Here": null
+},
+"sections": {
+	"Your Section Name Goes Here": {
+	"description": "Your Section Description Goes Here",
+	"approx_length_in_words": 100,
+	"discovery_questions": [],
+	"summary": null,
+	"text": null
+	}
+},
+"coherent_body": null,
+"abstract": null,
+"draft_document": null
+}</textarea>
+
+<script type="text/javascript">
+
+const BORDER_SIZE = 15;
+const panel_0a = document.getElementById("codeblock");
+const panel_0b = document.getElementById("draftblock");
+const panel = document.getElementById("right_panel");
+const intro_vid_0 = document.getElementById("intro_vid_0");
+const intro_vid_1 = document.getElementById("intro_vid_1");
+
+let m_pos;
+function resize(e){
+  const dx = m_pos - e.x;
+  m_pos = e.x;
+  panel_0a.style.right = (parseInt(getComputedStyle(panel, '').width) + dx + 35) + "px";
+  panel_0b.style.right = (parseInt(getComputedStyle(panel, '').width) + dx + 35) + "px";
+  panel.style.width = (parseInt(getComputedStyle(panel, '').width) + dx) + "px";
+  panel.intro_vid_0.height = (parseInt(getComputedStyle(panel, '').width) + dx)/2 + "px";
+  panel.intro_vid_1.height = (parseInt(getComputedStyle(panel, '').width) + dx)/2 + "px";
+}
+
+panel.addEventListener("mousedown", function(e){
+  if (e.offsetX < BORDER_SIZE) {
+    m_pos = e.x;
+    document.addEventListener("mousemove", resize, false);
+  }
+}, false);
+
+document.addEventListener("mouseup", function(){
+    document.removeEventListener("mousemove", resize, false);
+}, false);
+
+// http://stackoverflow.com/a/11844403
+var unsaved = false;
+var sending = 0;
+$("#markup").change(function(){ //trigers change in all input fields including text type
+    unsaved = true;
+});
+function unloadPage(){
+    if(unsaved && sending != 1){
+			timeout = setTimeout(function() {
+				 $('#loading').hide();
+				 document.getElementById('new').value='0'
+			}, 1000);
+			return "You have unsaved changes. Do you want to leave this page and discard your changes or stay on this page?";
+    }
+}
+window.onbeforeunload = unloadPage;
+
+// h/t http://answers.splunk.com/answers/125819/fill-textarea-from-a-file.html
+ //External data file handling starts here
+ var control = document.getElementById("upload");
+     control.addEventListener("change", function(event){
+		if (window.File && window.FileReader && window.FileList && window.Blob) {
+			var reader = new FileReader();
+			 reader.onload = function(event){
+				 var contents = event.target.result;
+				   load_specs(contents);
+				   //loading();
+				   //document.QNAFORM.submit();
+			 };
+			 reader.onerror = function(event){
+				 console.error("File could not be read! Code " + event.target.error.code);
+			 };
+			 console.log("Filename: " + control.files[0].name);
+			 reader.readAsText(control.files[0]);
+		} else {
+			alert('This feature is not supported by your browser.');
+		}
+	 }, false);
+
+function start_spinner(target_id) {
+    var opts = {
+      lines: 13, // The number of lines to draw
+      length: 7, // The length of each line
+      width: 5, // The line thickness
+      radius: 15, // The radius of the inner circle
+      corners: 1, // Corner roundness (0..1)
+      rotate: 0, // The rotation offset
+      color: '#000', // #rgb or #rrggbb
+      speed: 1, // Rounds per second
+      trail: 60, // Afterglow percentage
+      shadow: false, // Whether to render a shadow
+      hwaccel: false, // Whether to use hardware acceleration
+      className: 'spinner', // The CSS class to assign to the spinner
+      zIndex: 2e9, // The z-index (defaults to 2000000000)
+      top: '20', // Top position relative to parent in px
+      left: '25' // Left position relative to parent in px
+    };
+    var target = document.getElementById(target_id);
+    var spinner = new Spinner(opts).spin(target);
+  }
+
+function load_specs(specs){
+	if (specs!="no_action") {
+	var go = 1;
+		try {
+			document.getElementById('draft').value = JSON.parse(specs)["draft_document"];
+		}
+		catch(err) {
+		alert('There was an issue with your document specifications file.');
+		go = 0;
+		}
+		if (go==1){
+		document.getElementById('markup').value = specs;
+		tabtoggle('tab01');
+		$("#source").val('no_action');
+		show('start_box');hide('processing_box');hide('answer_box');
+		}
+		$('#markup').prop('disabled', false);
+		$('#markup').css('background','#fff');
+	}
+}
+
+function reply(specs,reply){
+	$('#spinner').empty();
+	start_spinner('spinner');
+	hide('start_box');show('processing_box');hide('answer_box');
+	hide('video');show('hidden_video');$('#output_window').css('top','38px');
+	$('#markup').prop('disabled', true);
+	$('#markup').css('background','#eee');
+	//console.log(specs,reply);
+	call_api(specs,reply);
+}
+
+function exit(){
+	show('start_box');hide('processing_box');hide('answer_box');
+	$('#markup').prop('disabled', false);
+	$('#markup').css('background','#fff');
+}
+
+function call_api(document_specs=null,reply=null) {
+
+
+	var Data = { "document_specs": {}, "reply":'None' }
+
+	console.log(Data)
+
+	var server = "https://tools.suffolklitlab.org"; // Production Server
+	//var server = "http://127.0.0.1:10100"; // Local Testing Server
+
+	$.ajax({
+      type: "POST",
+      url: server + "/ghostwriter/",
+      data: Data,
+
+      dataType: "json",
+      crossDomain:true,
+      // --- OR ---
+      //dataType: "jsonp",
+      //jsonpCallback: 'callback',
+
+      contentType : "application/json",
+      success: function(data) {
+        //console.log(data)
+        if (data["status"] == 200) {
+            beep();
+        } else if (data["status"] == 500) {
+          beep();
+          alert("There was an issue.");
+        }
+		hide('start_box');
+		hide('processing_box');
+		show('answer_box');
+		$('#reply').focus();
+      },
+      error: function (jqXHR, exception) {
+        beep();
+        alert("There was an issue.");
+		hide('start_box');
+		hide('processing_box');
+		show('answer_box');
+		$('#reply').focus();
+        //err = JSON.parse(jqXHR.responseText)
+        //console.log(err)
+      }
+    });
+
+}
+
+function beep() {
+  var snd = new Audio("data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");  
+  snd.play();
+}
+
+
+
+</script>
+
+</BODY>
+</HTML>
