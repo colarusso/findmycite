@@ -208,3 +208,12 @@ div.tab_line {
 	font-variant: small-caps;
 	line-height: 20px;
 }
+
+.embed_vid_placeholder {
+	box-sizing: border-box;
+	background:black;
+	background-image:url(../images/video_coming_soon.png);
+	background-size: 900px 510px;
+	width:900px;
+	height:510px;
+}

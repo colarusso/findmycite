@@ -4,7 +4,7 @@
       xmlns:fb="http://www.facebook.com/2008/fbml">
 <HEAD>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
-	<TITLE>Ghost Write QnA</TITLE>
+	<TITLE>Ghost Writer QnA</TITLE>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 	<meta property="og:site_name" content="Find My Cite"/>
@@ -13,11 +13,12 @@
   	<meta property="og:description" content="Are you a Zotero user? Do you ever wish you could search your libraries by idea not keywords? What about the ability to ask questions of your texts? Then this page is for you. Download information from one of your group libraries and interact with it using a number of NLP tools."/>
   	<meta property="og:image" content="images/thefuture.png"/>
 
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-
 	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="js/main.js"></script>
-    <script src="../js/spin.min.js"></script>
+	<script src="../js/spin.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="css/main.css?v=2023-05-10.13:09">
+	<script src="js/main.js?v=2023-05-10.13:09"></script>
+
 
 </HEAD>
 
@@ -55,7 +56,7 @@ loading...
 			<option value="five_paragraph_essay">Diary Entry</option>
 			<option value="five_paragraph_essay">News Story</option>
 			<option value="five_paragraph_essay">5 ¶ Essay</option>
-			<option value="five_paragraph_essay">Short Poem</option>
+			<option value="short_poem">Short Poem</option>
 		</select>
 
 		<input id="upload" type="file"/> 
@@ -92,8 +93,9 @@ loading...
 <div id="right_panel">
 <div style="box-sizing: border-box;float:left;height:100%;width:100%;border:#ffffff 1px solid;margin-left:10px;overflow: hidden;">
 	<div id="video" style="box-sizing: border-box;float:left;width:100%;">
+		<center><img id="intro_vid_0" class="embed_vid" src="../images/video_coming_soon.png"></center>
 		<!--<iframe id="intro_vid_0" class="embed_vid" src="https://www.youtube-nocookie.com/embed/qbPf9VRP6eU?rel=0" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>-->
-		<div style="box-sizing: border-box;float:left;width:100%;background:#eee;text-align: center;padding:4px;">
+		<div style="box-sizing: border-box;float:left;width:100%;background:#eee;text-align: center;padding:4px;z-index:1;">
 			<a href="javascript:void('');" onClick="hide('video');show('hidden_video');$('#output_window').css('top','38px');localStorage.hidevideo=1;$('#output_window').scrollTop($('#output_window')[0].scrollHeight);" class="smallcap">hide video</a>
 		</div>
 	</div>
@@ -103,11 +105,10 @@ loading...
 		</div>
 	</div>
 
-	<div id="output_window" style="box-sizing: border-box;position:absolute;left:11px;right:-9px;text-align:left;padding:0 15px;bottom:135px;top:calc(38px + 26cqw);background:rgb(255, 255, 255);overflow-y: scroll;border-left:#aaa solid 1px;">
-		Welcome. Watch the above video to get oriented, or jump in by hitting 'Build from Document Specs' below.
+	<div id="output_window" style="box-sizing: border-box;position:absolute;left:11px;right:-9px;text-align:left;padding:0 15px;bottom:135px;top:calc(38px + 26cqw);background:rgb(255, 255, 255);overflow-y: scroll;border-left:#aaa solid 1px;">   
+		<p style="text-align:center;background:#faef8e;padding:15px;margin:10px 0 0 0;border: 1px solid #888;">FWIW, the author of this site will discuss their work at this year's <a href="https://2023.calicon.org/sessions/findmyciteorg-llm-sandbox-legal-educators" target="_blank">CALIcon</a> (June 16, 2023).</p>
 	</div>
 	
-
 	<div id="start_box" style="box-sizing: border-box;position:absolute;width:100%;padding:0px;height:125px;bottom:0px;text-align: center;">
 		<input type="button" style="margin-top:5px;width:100%;height:30px;background:rgb(187, 186, 186)" value='Build from Document Specs' onclick="build_button();"/>
 	</div>
@@ -129,24 +130,21 @@ loading...
 </div>
 </div>
 
-<textarea id=five_paragraph_essay name=template_new style="display:none">{
-"credentials": {
-	"openai_key": "",
-	"openai_org": ""
-},
+<textarea id="five_paragraph_essay" style="display:none">{
 "config": {
 	"ghostwriterQnA_version": "0.1",
-	"bottom_up_abstract": true,
-	"include_section_headings": true,
-	"max_discovery_questions": 5,
-	"max_follow_up_questions": 3,
-	"llm_temperature": 0.9,
+	"bottom_up_abstract": false,
+	"include_section_headings": false,
+	"max_discovery_questions": 3,
+	"max_follow_up_questions": 1,
+	"llm_temperature": 0.7,
 	"verbose": false
 },
 "background": {
-	"What is the project's goal?": "To inform its readers",
-	"Who is the project's audiance?": "the general public",
-	"What style should the project be written in?": "casual/informal",
+	"What type of document is this?": "A five paragraph essay.",
+	"What is the project's goal?": null,
+	"Who is the project's audience?": null,
+	"What style should the project be written in?": null,
 	"What is your thesis?": null,
 	"What's your first main point?": null,
 	"What's your second main point?": null,
@@ -194,27 +192,25 @@ loading...
 "draft_document": null
 }</textarea>
 
-<textarea id=template_new name=template_new style="display:none">{
-"credentials": {
-	"openai_key": "",
-	"openai_org": ""
-},
+
+<textarea id="short_poem" style="display:none">{
 "config": {
 	"ghostwriterQnA_version": "0.1",
-	"bottom_up_abstract": true,
-	"include_section_headings": true,
-	"max_discovery_questions": 3,
+	"bottom_up_abstract": false,
+	"include_section_headings": false,
+	"max_discovery_questions": 2,
 	"max_follow_up_questions": 1,
 	"llm_temperature": 0.9,
 	"verbose": false
 },
 "background": {
-	"Your Background Questions Go Here": null
+	"What type of document is this?": "A short rhyming poem.",
+	"What is the topic?": null
 },
 "sections": {
-	"Your Section Name Goes Here": {
-	"description": "Your Section Description Goes Here",
-	"approx_length_in_words": 100,
+	"A poem": {
+	"description": "A short rhyming poem.",
+	"approx_length_in_words": 250,
 	"discovery_questions": [],
 	"summary": null,
 	"text": null
@@ -225,9 +221,37 @@ loading...
 "draft_document": null
 }</textarea>
 
+<textarea id="template_new" style="display:none">{
+  "config": {
+	"ghostwriterQnA_version": "0.1",
+	"bottom_up_abstract": false,
+	"include_section_headings": false,
+	"max_discovery_questions": 3,
+	"max_follow_up_questions": 1,
+	"llm_temperature": 0.7,
+	"verbose": false
+  },
+  "background": {
+	"Background Question Goes Here": null
+  },
+  "sections": {
+	"Section Name Goes Here": {
+	"description": "Section Description Goes Here",
+	"approx_length_in_words": 100,
+	"discovery_questions": [],
+	"summary": null,
+	"text": null
+	}
+  },
+  "coherent_body": null,
+  "abstract": null,
+  "draft_document": null
+}</textarea>
+
 <script type="text/javascript">
 
 var running = 0; 
+var current_section = "before times";
 
 const BORDER_SIZE = 15;
 const panel = document.getElementById("right_panel");
@@ -344,7 +368,7 @@ function load_specs(specs){
 		}
 		$('#markup').prop('disabled', false);
 		$('#markup').css('background','#fff');
-		$('#output_window').empty();
+		//$('#output_window').empty();
 		$('#spinner').empty();
 		localStorage.specs = specs
 	}
@@ -360,7 +384,6 @@ function reply(specs,reply){
 	//console.log(specs,reply);
 	call_api(specs,reply);
 }
-
 
 function call_api(document_specs=null,reply=null) {
 
@@ -400,44 +423,65 @@ function call_api(document_specs=null,reply=null) {
 		contentType : "text/plain;charset=UTF-8",
 		success: function(data) {
 			if (running == 1) {
-				document.getElementById('draft').value = data["specs"];
 
-				localStorage.user_interactions =  JSON.stringify(data["specs"]["user_interactions"])
-				delete data["specs"]["user_interactions"]
-				document.getElementById('markup').value = JSON.stringify(data["specs"], null, 4);
-				localStorage.specs=document.getElementById('markup').value
-				document.getElementById('draft').value = data["specs"]["draft_document"];
-				
-				if (data["output"]["log"]){
-						new_log = data["output"]["log"].replace("\n", "<br>");
-						$('#output_window').append("<div class='text_wrapper'><p class='output_log'>"+new_log+"</p></div>");
-				}
+				console.log(current_section);
+				console.log(data["output"]);
 
-				if (data["output"]=="ALL_DONE"){
-					$('#output_window').append("<div class='text_wrapper'><p class='output_text' style='background-color:#7fffb0;'>Your draft document is ready for review.</p></div>");
-					$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
-					tabtoggle('tab02');
-					exit_button();
-				
-				} else {
-
-					new_text = data["output"]["text"].replace("\n", "<br>");
-					progress = data["output"]["max_possible_questions"] - data["output"]["answered_questions"];
-					if (data["output"]["type"]=="follow up question") {
-						followup_padding = "style='margin-left:25px;'";
-					} else {
-						followup_padding = "";
-					}
-					$('#output_window').append("<div class='progress'> ≤ "+progress+" questions remaining</div><div class='text_wrapper'><p class='output_text' "+followup_padding+">"+new_text+"</p></div>");
-					$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
-
-					if (data["output"]["type"]=="error message"){
+				if (data["output"]["type"]=="error message"){
+						new_text = data["output"]["text"].replaceAll("\n", "<br>");
+						$('#output_window').append("<div class='text_wrapper'><p class='output_text' style='background-color:#fee;'>"+new_text+"</p></div>");
 						$('#output_window').append("<div class='text_wrapper'><p class='error'>there was an error</p></div>");
 						$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
 						exit_button();
+				} else {
 
+					if (current_section != data["output"]["section"]) {
+						current_section = data["output"]["section"];
+						if (current_section=="background") {
+							$('#output_window').append("<div class='text_wrapper'><p class='output_text'>Before we get into the body of our text, let's start with some background questions.</p></div>");
+							$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
+						} else if (data["output"]!="ALL_DONE") {
+							$('#output_window').append("<div class='text_wrapper'><p class='output_text'>The following questions will focus on info needed to write '"+current_section+"'. Here's the section's description:\n\n"+data["specs"]["sections"][current_section]["description"]+"</p></div>");
+							$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
+						}
+					}
+
+					document.getElementById('draft').value = data["specs"];
+
+					localStorage.user_interactions =  JSON.stringify(data["specs"]["user_interactions"])
+					delete data["specs"]["user_interactions"]
+					document.getElementById('markup').value = JSON.stringify(data["specs"], null, 4);
+					localStorage.specs=document.getElementById('markup').value
+					document.getElementById('draft').value = data["specs"]["draft_document"];
+					
+					if (data["output"]["log"]){
+							if (data["output"]["log"].trim()!="") {
+								new_log = data["output"]["log"].replaceAll("\n", "<br>");
+								$('#output_window').append("<div class='text_wrapper'><div class='progress' style='text-align:left'>Here's a look at our prompt(s)</div><p class='output_log'>"+new_log+"</p></div>");
+								document_specs["user_interactions"]["log"] = "";
+								localStorage.user_interactions = document_specs["user_interactions"];
+							}
+					} 
+
+					if (data["output"]=="ALL_DONE"){
+						$('#output_window').append("<div class='text_wrapper'><p class='output_text' style='background-color:#7fffb0;'>Your draft document is ready for review.</p></div>");
+						$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
+						tabtoggle('tab02');
+						exit_button();
+					
 					} else {
 
+						new_text = data["output"]["text"].replaceAll("\n", "<br>");
+						progress = data["output"]["max_possible_questions"] - data["output"]["answered_questions"];
+						if (data["output"]["type"]=="follow up question") {
+							followup_padding = "style='margin-left:25px;'";
+						} else {
+							followup_padding = "";
+						}
+						$('#output_window').append("<div class='progress'> ≤ "+progress+" questions remaining</div><div class='text_wrapper'><p class='output_text' "+followup_padding+">"+new_text+"</p></div>");
+						$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
+
+						
 						if (data["output"]["can_skip"]=="yes"){
 							$("#skip_").prop("disabled",false);
 						} else {
@@ -461,9 +505,9 @@ function call_api(document_specs=null,reply=null) {
 						hide('processing_box');
 						show('answer_box');
 						$('#reply').focus();
+					
 					}
 				}
-				
 				beep();
 			}
 		},
@@ -495,6 +539,7 @@ $('#reply').keypress(function(e){
 });
 
 function build_button() {
+	current_section = "before times";
 	hide('start_box');
 	show('processing_box');
 	hide('answer_box');
