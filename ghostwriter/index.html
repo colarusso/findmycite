@@ -51,7 +51,7 @@ loading...
 	<div id="tab01" class="tab_top"><a href="javascript:void('');" onClick="tabtoggle('tab01');" class="tabtext">Document Specs</a></div>
 	<div id="tab02" class="tab"><a href="javascript:void('');" onClick="tabtoggle('tab02');" class="tabtext">Draft</a></div>
 	<div style="float:left;margin: 0 0 0 15px;">
-		<select id="source" name="source" onClick="load_specs(document.getElementById(this.value).value);" class="example">
+		<select id="source" name="source" onClick="load_specs(document.getElementById(this.value).value);$('#output_window').empty();" class="example">
 			<option value="no_action">Load Template</option>
 			<option value="news_article">News Article</option>
 			<option value="journal_entry">Journal Entry</option>
@@ -62,7 +62,7 @@ loading...
 		<input id="upload" type="file"/> 
 		&nbsp;&nbsp;&nbsp;<a href="javascript:void('');" id="upload_link">Open</a>
 		&nbsp;&nbsp;<a href="javascript:void('');" id="upload_link" onClick="saveTextAsFile('markup','ghostwriterQnA.txt');">Save</a>
-		&nbsp;&nbsp;<a href="javascript:void('');" onClick="load_specs(document.getElementById('template_new').value);">New</a>
+		&nbsp;&nbsp;<a href="javascript:void('');" onClick="load_specs(document.getElementById('template_new').value);$('#output_window').empty();">New</a>
 	</div>
 </div>
 
@@ -262,7 +262,7 @@ loading...
       "text": null
     },
     "The Body": {
-      "description": "Build on the content found in the The Lead and background information. Provide detail and texture to events.",
+      "description": "Build on the content found in the The Lead and background information. Provide detail, context, and texture to events.",
       "approx_length_in_words": 250,
       "discovery_questions": [],
       "summary": null,
@@ -406,6 +406,7 @@ $("#markup").change(function(){ //trigers change in all input fields including t
 			 reader.onload = function(event){
 				 var contents = event.target.result;
 				   load_specs(contents);
+				   $('#output_window').empty();
 				   //loading();
 				   //document.QNAFORM.submit();
 			 };
