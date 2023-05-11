@@ -53,8 +53,8 @@ loading...
 	<div style="float:left;margin: 0 0 0 15px;">
 		<select id="source" name="source" onClick="load_specs(document.getElementById(this.value).value);" class="example">
 			<option value="no_action">Load Template</option>
-			<!--<option value="five_paragraph_essay">Diary Entry</option>-->
 			<option value="news_article">News Article</option>
+			<option value="journal_entry">Journal Entry</option>
 			<!--<option value="five_paragraph_essay">5 ¶ Essay</option>-->
 			<option value="short_poem">Short Poem</option>
 		</select>
@@ -192,6 +192,48 @@ loading...
 "draft_document": null
 }</textarea>
 
+
+<textarea id="journal_entry" style="display:none">{
+  "config": {
+    "ghostwriterQnA_version": "0.1",
+    "bottom_up_abstract": true,
+    "include_section_headings": true,
+    "max_discovery_questions": 3,
+    "max_follow_up_questions": 1,
+    "llm_temperature": 0.7,
+    "verbose": false
+  },
+  "framing": "You are helping someone write a short journal entry in which they reflect on their past week. Your job is to collect information and write a first draft.",
+  "background": {
+    "How comfortable did you feel brainstorming in front of the team this week?": null,
+    "When your fellow team members said they'd get something done, did they?": null,
+    "Did you start the week knowing what your goals were and how to reach them?": null,
+    "What worked well this week?": null,
+    "What didn't work well this week?": null,
+    "Can you think of anything new we should try. If so, what?": null
+  },
+  "sections": {
+    "General": {
+      "description": "A reflective journal entry exploring the issues found in the background information.",
+      "approx_length_in_words": 500,
+      "discovery_questions": [],
+      "summary": null,
+      "text": null
+    },
+    "Specific": {
+      "description": "A deeper dive into an event from the week, maybe something discussed in the General section. This section should focus on how the event made the author feel and what they learned from the experience, either about themselves or the work.",
+      "approx_length_in_words": 500,
+      "discovery_questions": [],
+      "summary": null,
+      "text": null
+    }
+  },
+  "coherent_body": null,
+  "abstract": null,
+  "draft_document": null
+}</textarea>
+
+
 <textarea id="news_article" style="display:none">{
   "config": {
     "ghostwriterQnA_version": "0.1",
@@ -202,7 +244,7 @@ loading...
     "llm_temperature": 0.7,
     "verbose": false
   },
-  "framing": "You are writing a news article. Your job is to collect information and help write a first draft.",
+  "framing": "You are helping someone write a news article. Your job is to collect information and write a first draft.",
   "background": {
     "What is today's date?": null,
     "Who?": null,
@@ -249,7 +291,7 @@ loading...
     "llm_temperature": 0.9,
     "verbose": false
   },
-  "framing": "You are helping write a short rhyming poem. Your job is to collect information and help write a first draft.",
+  "framing": "You are helping write a short rhyming poem. Your job is to collect information and write a first draft.",
   "background": {
     "What topics and themes do you want the poem to grapple with?": null,
     "What metaphors do you want to explore?": null,
@@ -594,6 +636,8 @@ function build_button() {
 	hide('answer_box');
 	document.getElementById('output_window').innerHTML='';
 	reply(document.getElementById('markup').value,null);
+	$('#answer_').css('background','rgb(187, 186, 186)');
+	$('#answer_').val('Answer');
 }
 
 function answer_button() {
@@ -605,20 +649,28 @@ function answer_button() {
 	} else {
 		alert("Your answer is blank. Please add text.")
 	}
+	$('#answer_').css('background','rgb(187, 186, 186)');
+	$('#answer_').val('Answer');
 }
 function skip_button() {
 	reply(document.getElementById('markup').value,'skip');
 	$('#output_window').append("<div class='text_wrapper'><p class='input_text'>[skipping and removing question]</p></div>");
 	document.getElementById('reply').value = ""
 	$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
+	$('#answer_').css('background','rgb(187, 186, 186)');
+	$('#answer_').val('Answer');
 }
 function suggest_button() {
 	reply(document.getElementById('markup').value,'');
 	$('#output_window').append("<div class='text_wrapper'><p class='input_text'>[asking for suggestion]</p></div>");
 	document.getElementById('reply').value = ""
 	$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
+	$('#answer_').css('background','orange');
+	$('#answer_').val('Adopt (you can edit) & Answer');
 }
 function exit_button() {
+	$('#answer_').css('background','rgb(187, 186, 186)');
+	$('#answer_').val('Answer');
 	running == 0;
 	show('start_box');hide('processing_box');hide('answer_box');
 	document.getElementById('reply').value = "";
