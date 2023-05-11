@@ -53,9 +53,9 @@ loading...
 	<div style="float:left;margin: 0 0 0 15px;">
 		<select id="source" name="source" onClick="load_specs(document.getElementById(this.value).value);" class="example">
 			<option value="no_action">Load Template</option>
-			<option value="five_paragraph_essay">Diary Entry</option>
-			<option value="five_paragraph_essay">News Story</option>
-			<option value="five_paragraph_essay">5 ¶ Essay</option>
+			<!--<option value="five_paragraph_essay">Diary Entry</option>-->
+			<option value="news_article">News Article</option>
+			<!--<option value="five_paragraph_essay">5 ¶ Essay</option>-->
 			<option value="short_poem">Short Poem</option>
 		</select>
 
@@ -67,7 +67,7 @@ loading...
 </div>
 
 <div id="codeblock">
-	<textarea id=markup name=markup style="box-sizing: border-box;width:100%;height:100%;border: solid 1px #aaa;resize: none;" onkeydown="insertTab(this, event);" wrap="off">
+	<textarea id=markup name=markup style="box-sizing: border-box;width:100%;height:100%;border: solid 1px #aaa;resize: none;padding:10px;" onkeydown="insertTab(this, event);" wrap="off">
 	</textarea>
 </div>
 
@@ -192,56 +192,105 @@ loading...
 "draft_document": null
 }</textarea>
 
+<textarea id="news_article" style="display:none">{
+  "config": {
+    "ghostwriterQnA_version": "0.1",
+    "bottom_up_abstract": false,
+    "include_section_headings": false,
+    "max_discovery_questions": 3,
+    "max_follow_up_questions": 1,
+    "llm_temperature": 0.7,
+    "verbose": false
+  },
+  "framing": "You are writing a news article. Your job is to collect information and help write a first draft.",
+  "background": {
+    "What is today's date?": null,
+    "Who?": null,
+    "What?": null,
+    "When?": null,
+    "Where?": null,
+    "How?": null
+  },
+  "sections": {
+  "Lead": {
+    "description": "Provide the most important information here, sticking to the 5Ws and H (i.e., who, what, when, where, and how from the background information)",
+    "approx_length_in_words": 150,
+    "discovery_questions": [],
+    "summary": null,
+    "text": null
+  },
+  "Body": {
+    "description": "Build on the content found in the Lead and background information. Provide detail and texture to events.",
+    "approx_length_in_words": 250,
+    "discovery_questions": [],
+    "summary": null,
+    "text": null
+  },
+  "Tail": {
+    "description": "Summarize the story and point to what's likely to happen next.",
+    "approx_length_in_words": 50,
+    "discovery_questions": [],
+    "summary": null,
+    "text": null
+  }
+  },
+  "coherent_body": null,
+  "abstract": null,
+  "draft_document": null
+}</textarea>
 
 <textarea id="short_poem" style="display:none">{
-"config": {
-	"ghostwriterQnA_version": "0.1",
-	"bottom_up_abstract": false,
-	"include_section_headings": false,
-	"max_discovery_questions": 2,
-	"max_follow_up_questions": 1,
-	"llm_temperature": 0.9,
-	"verbose": false
-},
-"background": {
-	"What type of document is this?": "A short rhyming poem.",
-	"What is the topic?": null
-},
-"sections": {
-	"A poem": {
-	"description": "A short rhyming poem.",
-	"approx_length_in_words": 250,
-	"discovery_questions": [],
-	"summary": null,
-	"text": null
-	}
-},
-"coherent_body": null,
-"abstract": null,
-"draft_document": null
+  "config": {
+    "ghostwriterQnA_version": "0.1",
+    "bottom_up_abstract": false,
+    "include_section_headings": false,
+    "max_discovery_questions": 3,
+    "max_follow_up_questions": 0,
+    "llm_temperature": 0.9,
+    "verbose": false
+  },
+  "framing": "You are helping write a short rhyming poem. Your job is to collect information and help write a first draft.",
+  "background": {
+    "What topics and themes do you want the poem to grapple with?": null,
+    "What metaphors do you want to explore?": null,
+    "How would you like the reader to feel?": null
+  },
+  "sections": {
+    "A poem": {
+      "description": "A short rhyming poem.",
+      "approx_length_in_words": 250,
+      "discovery_questions": [],
+      "summary": null,
+      "text": null
+    }
+  },
+  "coherent_body": null,
+  "abstract": null,
+  "draft_document": null
 }</textarea>
 
 <textarea id="template_new" style="display:none">{
   "config": {
-	"ghostwriterQnA_version": "0.1",
-	"bottom_up_abstract": false,
-	"include_section_headings": false,
-	"max_discovery_questions": 3,
-	"max_follow_up_questions": 1,
-	"llm_temperature": 0.7,
-	"verbose": false
+    "ghostwriterQnA_version": "0.1",
+    "bottom_up_abstract": false,
+    "include_section_headings": false,
+    "max_discovery_questions": 3,
+    "max_follow_up_questions": 1,
+    "llm_temperature": 0.7,
+    "verbose": false
   },
+  "framing": "You are helping write something. Your job is to collect information and help write a first draft.",
   "background": {
-	"Background Question Goes Here": null
+    "Background Question Goes Here": null
   },
   "sections": {
-	"Section Name Goes Here": {
-	"description": "Section Description Goes Here",
-	"approx_length_in_words": 100,
-	"discovery_questions": [],
-	"summary": null,
-	"text": null
-	}
+    "Section Name Goes Here": {
+      "description": "Section Description Goes Here",
+      "approx_length_in_words": 100,
+      "discovery_questions": [],
+      "summary": null,
+      "text": null
+    }
   },
   "coherent_body": null,
   "abstract": null,
@@ -440,7 +489,7 @@ function call_api(document_specs=null,reply=null) {
 						if (current_section=="background") {
 							$('#output_window').append("<div class='text_wrapper'><p class='output_text'>Before we get into the body of our text, let's start with some background questions.</p></div>");
 							$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
-						} else if (data["output"]!="ALL_DONE") {
+						} else if (data["output"]["type"]!="ALL_DONE") {
 							$('#output_window').append("<div class='text_wrapper'><p class='output_text'>The following questions will focus on info needed to write '"+current_section+"'. Here's the section's description:\n\n"+data["specs"]["sections"][current_section]["description"]+"</p></div>");
 							$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
 						}
@@ -450,7 +499,8 @@ function call_api(document_specs=null,reply=null) {
 
 					localStorage.user_interactions =  JSON.stringify(data["specs"]["user_interactions"])
 					delete data["specs"]["user_interactions"]
-					document.getElementById('markup').value = JSON.stringify(data["specs"], null, 4);
+					delete data["specs"]["config"]["speedrun"]
+					document.getElementById('markup').value = JSON.stringify(data["specs"], null, 2);
 					localStorage.specs=document.getElementById('markup').value
 					document.getElementById('draft').value = data["specs"]["draft_document"];
 					
@@ -463,7 +513,7 @@ function call_api(document_specs=null,reply=null) {
 							}
 					} 
 
-					if (data["output"]=="ALL_DONE"){
+					if (data["output"]["type"]=="ALL_DONE"){
 						$('#output_window').append("<div class='text_wrapper'><p class='output_text' style='background-color:#7fffb0;'>Your draft document is ready for review.</p></div>");
 						$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
 						tabtoggle('tab02');
@@ -514,10 +564,9 @@ function call_api(document_specs=null,reply=null) {
 		error: function (jqXHR, exception) {
 			if (running == 1) {
 				beep();
-				hide('start_box');
-				hide('processing_box');
-				show('answer_box');
-				$('#reply').focus();
+				$('#output_window').append("<div class='text_wrapper'><p class='error'>there was an error. please try again.</p></div>");
+				$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
+				exit_button();
 				//err = JSON.parse(jqXHR.responseText)
 				//console.log(err)
 			}
@@ -576,6 +625,7 @@ function exit_button() {
 	$('#markup').prop('disabled', false);
 	$('#markup').css('background','#fff');
 	localStorage.user_interactions = JSON.stringify({"skips":0,"interview":{},"log":""});
+	$('#reply').focus();
 }
 
 function load_page() {
@@ -585,7 +635,7 @@ function load_page() {
 	if (localStorage.specs){
 		load_specs(localStorage.specs)
 	} else {
-		load_specs(document.getElementById("five_paragraph_essay").value)
+		load_specs(document.getElementById("news_article").value)
 	}
 	
 	if (localStorage.word_wrap == 1){
