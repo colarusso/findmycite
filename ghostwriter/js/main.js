@@ -84,6 +84,7 @@ function hide(id) {
 
 //tab toggle
 function tabtoggle(id) {
+
 	if (id == "tab01") {
 		show('codeblock');
 		show('wrap_box');

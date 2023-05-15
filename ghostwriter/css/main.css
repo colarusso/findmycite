@@ -107,7 +107,7 @@ div.tab_line {
 #draft {
 	box-sizing: border-box;
 	width:100%;
-	height:calc(100vh - 240px);
+	height:calc(100vh - 165px);
 	border: solid 1px #aaa;
 	color:black;
 	resize: none;

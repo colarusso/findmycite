@@ -4,7 +4,7 @@
       xmlns:fb="http://www.facebook.com/2008/fbml">
 <HEAD>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
-	<TITLE>Ghost Writer QnA</TITLE>
+	<TITLE>Ghostwriter QnA</TITLE>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 	<meta property="og:site_name" content="Find My Cite"/>
@@ -35,7 +35,7 @@ loading...
 		<a id="menu_find" href="../?#find">Find</a>&nbsp;&nbsp;&nbsp;
 		<a id="menu_ask" href="../?#ask">Ask</a>&nbsp;&nbsp;&nbsp;
 		<a id="menu_suggest" href="../?#suggest">Suggest</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-		<b>Ghost Write</b>&nbsp;&nbsp;&nbsp;
+		<b>Ghostwrite</b>&nbsp;&nbsp;&nbsp;
 		<a id="menu_guess" href="../?#guess">Guess</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
 		<a id="menu_settings" href="../?#settings">Library</a>
 	</span>
@@ -48,8 +48,8 @@ loading...
 <input id="tabselect" name="tabselect" type="hidden" value="1"/>
 <input id="new" name="new" type="hidden" value="0"/>
 <div class="titleNtabs" style="position:absolute;top:50px;left:25px;min-width:300px;overflow:hidden;">
-	<div id="tab01" class="tab_top"><a href="javascript:void('');" onClick="tabtoggle('tab01');" class="tabtext">Document Specs</a></div>
-	<div id="tab02" class="tab"><a href="javascript:void('');" onClick="tabtoggle('tab02');" class="tabtext">Draft</a></div>
+	<div id="tab01" class="tab_top"><a href="javascript:void('');" onClick="update_draft();tabtoggle('tab01');" class="tabtext">Document Specs</a></div>
+	<div id="tab02" class="tab"><a href="javascript:void('');" onClick="update_draft();tabtoggle('tab02');" class="tabtext">Draft</a></div>
 	<div style="float:left;margin: 0 0 0 15px;">
 		<select id="source" name="source" onClick="load_specs(document.getElementById(this.value).value);$('#output_window').empty();" class="example">
 			<option value="no_action">Load Template</option>
@@ -61,19 +61,17 @@ loading...
 
 		<input id="upload" type="file"/> 
 		&nbsp;&nbsp;&nbsp;<a href="javascript:void('');" id="upload_link">Open</a>
-		&nbsp;&nbsp;<a href="javascript:void('');" id="upload_link" onClick="saveTextAsFile('markup','ghostwriterQnA.txt');">Save</a>
+		&nbsp;&nbsp;<a href="javascript:void('');" id="upload_link" onClick="update_draft();saveTextAsFile('markup','ghostwriterQnA.txt');">Save</a>
 		&nbsp;&nbsp;<a href="javascript:void('');" onClick="load_specs(document.getElementById('template_new').value);$('#output_window').empty();">New</a>
 	</div>
 </div>
 
 <div id="codeblock">
-	<textarea id=markup name=markup style="box-sizing: border-box;width:100%;height:100%;border: solid 1px #aaa;resize: none;padding:10px;" onkeydown="insertTab(this, event);" wrap="off">
-	</textarea>
+	<textarea id=markup name=markup style="box-sizing: border-box;width:100%;height:100%;border: solid 1px #aaa;resize: none;padding:10px;" onkeydown="insertTab(this, event);" wrap="off"></textarea>
 </div>
 
 <div id="draftblock" style="display:none;">
-	<textarea id=draft name=draft wrap="on" disabled></textarea>
-	<div id='draft_instructions'>Looking to edit this draft? Make your changes in <i>Document Specs</i> or copy to a text editor.</div>
+	<textarea id='draft' name='draft' wrap="on"></textarea>
 </div>
 
 <div style="position:absolute;height:30px;bottom:25px;left:25px;right:25px;">
@@ -187,9 +185,12 @@ loading...
 	"text": null
 	}
 },
-"coherent_body": null,
-"abstract": null,
-"draft_document": null
+"draft_document": {
+    "abstract": null,
+    "coherent_body": null,
+    "draft_document_first": null,
+    "draft_document_last": null
+}
 }</textarea>
 
 
@@ -228,9 +229,12 @@ loading...
       "text": null
     }
   },
-  "coherent_body": null,
-  "abstract": null,
-  "draft_document": null
+  "draft_document": {
+    "abstract": null,
+    "coherent_body": null,
+    "draft_document_first": null,
+    "draft_document_last": null
+  }
 }</textarea>
 
 
@@ -254,7 +258,7 @@ loading...
     "How?": null
   },
   "sections": {
-    "The Lead": {
+    "The Lead/Lede": {
       "description": "Provide the most important information here, sticking to the 5Ws and H (i.e., who, what, when, where, and how from the background information)",
       "approx_length_in_words": 250,
       "discovery_questions": [],
@@ -276,9 +280,12 @@ loading...
       "text": null
     }
   },
-  "coherent_body": null,
-  "abstract": null,
-  "draft_document": null
+  "draft_document": {
+    "abstract": null,
+    "coherent_body": null,
+    "draft_document_first": null,
+    "draft_document_last": null
+  }
 }</textarea>
 
 <textarea id="short_poem" style="display:none">{
@@ -306,9 +313,12 @@ loading...
       "text": null
     }
   },
-  "coherent_body": null,
-  "abstract": null,
-  "draft_document": null
+  "draft_document": {
+    "abstract": null,
+    "coherent_body": null,
+    "draft_document_first": null,
+    "draft_document_last": null
+  }
 }</textarea>
 
 <textarea id="template_new" style="display:none">{
@@ -334,9 +344,12 @@ loading...
       "text": null
     }
   },
-  "coherent_body": null,
-  "abstract": null,
-  "draft_document": null
+  "draft_document": {
+    "abstract": null,
+    "coherent_body": null,
+    "draft_document_first": null,
+    "draft_document_last": null
+  }
 }</textarea>
 
 <script type="text/javascript">
@@ -446,7 +459,7 @@ function load_specs(specs){
 	if (specs!="no_action") {
 		var go = 1;
 		try {
-			document.getElementById('draft').value = JSON.parse(specs)["draft_document"];
+			document.getElementById('draft').value = JSON.parse(specs)["draft_document"]["draft_document_last"];
 		}
 		catch(err) {
 			alert('There is an issue with your document specifications file.');
@@ -457,6 +470,15 @@ function load_specs(specs){
 			tabtoggle('tab01');
 			$("#source").val('no_action');
 			show('start_box');hide('processing_box');hide('answer_box');
+
+			if (JSON.parse(specs)["draft_document"]["draft_document_last"]!=null) {
+				$('#draft').prop('disabled', false);
+				$('#draft').css('background','#fff');
+			} else {
+				$('#draft').prop('disabled', true);
+				$('#draft').css('background','#eee');
+			}
+
 		}
 		$('#markup').prop('disabled', false);
 		$('#markup').css('background','#fff');
@@ -473,6 +495,8 @@ function reply(specs,reply){
 	hide('video');show('hidden_video');$('#output_window').css('top','38px');
 	$('#markup').prop('disabled', true);
 	$('#markup').css('background','#eee');
+	$('#draft').prop('disabled', true);
+	$('#draft').css('background','#eee');
 	//console.log(specs,reply);
 	call_api(specs,reply);
 }
@@ -530,22 +554,22 @@ function call_api(document_specs=null,reply=null) {
 					if (current_section != data["output"]["section"]) {
 						current_section = data["output"]["section"];
 						if (current_section=="background") {
-							$('#output_window').append("<div class='text_wrapper'><p class='output_text'>Before we get into the body of our text, let's start with some background questions.</p></div>");
+							$('#output_window').append("<div class='text_wrapper'><p class='output_text' style='background-color:#7fffb0;'>Before we get into the body of our text, let's start with some background questions.</p></div>");
 							$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
 						} else if (data["output"]["type"]!="ALL_DONE") {
-							$('#output_window').append("<div class='text_wrapper'><p class='output_text'>The following questions will focus on info needed to write '"+current_section+"'. Here's the section's description:\n\n"+data["specs"]["sections"][current_section]["description"]+"</p></div>");
+							$('#output_window').append("<div class='text_wrapper'><p class='output_text' style='background-color:#7fffb0;'>The following questions will focus on info needed to write '"+current_section+"'. Here's the section's description:\n\n"+data["specs"]["sections"][current_section]["description"]+"</p></div>");
 							$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
 						}
 					}
 
-					document.getElementById('draft').value = data["specs"];
+					//document.getElementById('draft').value = data["specs"];
 
 					localStorage.user_interactions =  JSON.stringify(data["specs"]["user_interactions"])
 					delete data["specs"]["user_interactions"]
 					delete data["specs"]["config"]["speedrun"]
 					document.getElementById('markup').value = JSON.stringify(data["specs"], null, 2);
 					localStorage.specs=document.getElementById('markup').value
-					document.getElementById('draft').value = data["specs"]["draft_document"];
+					document.getElementById('draft').value = data["specs"]["draft_document"]["draft_document_first"];
 					
 					if (data["output"]["log"]){
 							if (data["output"]["log"].trim()!="") {
@@ -559,6 +583,7 @@ function call_api(document_specs=null,reply=null) {
 					if (data["output"]["type"]=="ALL_DONE"){
 						$('#output_window').append("<div class='text_wrapper'><p class='output_text' style='background-color:#7fffb0;'>Your draft document is ready for review.</p></div>");
 						$("#output_window").scrollTop($("#output_window")[0].scrollHeight);
+						update_draft();
 						tabtoggle('tab02');
 						exit_button();
 					
@@ -688,7 +713,7 @@ function load_page() {
 	if (localStorage.specs){
 		load_specs(localStorage.specs)
 	} else {
-		load_specs(document.getElementById("news_article").value)
+		load_specs(document.getElementById("journal_entry").value)
 	}
 	
 	if (localStorage.word_wrap == 1){
@@ -730,6 +755,21 @@ function preloadFunc()
     }
 
 window.onpaint = load_page();
+
+function update_draft(){
+	tmp_json = JSON.parse(document.getElementById('markup').value);
+	tmp_json["draft_document"]["draft_document_last"] = document.getElementById('draft').value
+
+	if ((tmp_json["draft_document"]["draft_document_last"]!=null) && (tmp_json["draft_document"]["draft_document_last"]!="")) {
+		document.getElementById('markup').value = JSON.stringify(tmp_json, null, 2);
+		$('#draft').prop('disabled', false);
+		$('#draft').css('background','#fff');
+	} else {
+		$('#draft').prop('disabled', true);
+		$('#draft').css('background','#eee');
+	}
+
+}
 
 </script>
 
