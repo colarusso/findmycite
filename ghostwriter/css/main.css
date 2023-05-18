@@ -217,3 +217,15 @@ div.tab_line {
 	width:900px;
 	height:510px;
 }
+
+#start_box{
+	background:white;
+}
+
+#processing_box{
+	background:white;
+}
+
+#answer_box {
+	background:white;
+}
